@@ -1,0 +1,511 @@
+/* ===== VARIABLES CSS ===== */
+:root {
+    --primary-color: #1e40af;
+    --primary-hover: #1e3a8a;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --background-color: #f1f5f9;
+    --card-background: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --radius: 8px;
+    --radius-lg: 12px;
+}
+
+/* ===== ESTILOS GENERALES ===== */
+.detalles-inspeccion-page {
+    min-height: 100vh;
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-primary);
+    line-height: 1.6;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ===== HEADER DE LA PÁGINA ===== */
+.page-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    transform: translate(40px, -40px);
+}
+
+.page-header h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+}
+
+.page-header p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #f1f5f9;
+}
+
+.page-header strong {
+    font-weight: 600;
+    margin-right: 0.5rem;
+    color: #ffffff;
+}
+
+/* ===== STATUS PILLS ===== */
+.status-pill {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    margin-left: 0.5rem;
+}
+
+.status-pill.finalizado {
+    background-color: #10b981;
+    color: #ffffff;
+    border: 1px solid #059669;
+}
+
+.status-pill.pendiente {
+    background-color: #f59e0b;
+    color: #ffffff;
+    border: 1px solid #d97706;
+}
+
+/* ===== SECCIONES DE INSPECCIÓN ===== */
+.inspeccion-section {
+    background: var(--card-background);
+    border-radius: var(--radius-lg);
+    padding: 0;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inspeccion-section:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.inspeccion-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.inspeccion-section h2 svg {
+    color: var(--primary-color);
+    font-size: 1.125rem;
+}
+
+/* ===== TABLAS ===== */
+.inspeccion-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin: 0;
+}
+
+/* Estilos para tablas con thead (como la de inspecciones) */
+.inspeccion-table thead {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.inspeccion-table thead th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Estilos para tablas sin thead (información general, pesajes, etc.) */
+.inspeccion-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.inspeccion-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.inspeccion-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.inspeccion-table tbody td {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    vertical-align: top;
+}
+
+/* Primera columna (labels) más destacada */
+.inspeccion-table tbody td:first-child {
+    background-color: #f8fafc;
+    font-weight: 500;
+    color: var(--text-primary);
+    width: 40%;
+    border-right: 1px solid var(--border-color);
+}
+
+.inspeccion-table tbody td:last-child {
+    color: var(--text-secondary);
+}
+
+/* ===== STATUS EN TABLAS ===== */
+.status-ok {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #bbf7d0;
+}
+
+.status-nok {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #fecaca;
+}
+
+.status-obs {
+    background-color: #fef3c7;
+    color: #92400e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #fde68a;
+}
+
+/* ===== BOTONES ===== */
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+    background-color: #f8fafc;
+    border-color: var(--secondary-color);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+/* ===== ESTADOS DE CARGA Y ERROR ===== */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 1.125rem;
+    margin: 2rem;
+    padding: 1rem;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .detalles-inspeccion-page {
+        padding: 1rem;
+    }
+
+    .page-header {
+        padding: 1.5rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .inspeccion-section h2 {
+        padding: 1rem 1.25rem;
+        font-size: 1.125rem;
+    }
+
+    .inspeccion-table tbody td,
+    .inspeccion-table thead th {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+    .detalles-inspeccion-page {
+        padding: 0.75rem;
+    }
+
+    .page-header {
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    .page-header p {
+        font-size: 0.875rem;
+    }
+
+    .inspeccion-section {
+        margin-bottom: 1rem;
+    }
+
+    .inspeccion-section h2 {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    /* Ajustar tablas para móviles */
+    .inspeccion-table tbody td:first-child {
+        width: 45%;
+        font-size: 0.8rem;
+    }
+
+    .inspeccion-table tbody td {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .inspeccion-table thead th {
+        padding: 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .detalles-inspeccion-page {
+        padding: 0.5rem;
+    }
+
+    .page-header {
+        padding: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.125rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .page-header p {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+
+    /* Convertir tablas de información en formato vertical */
+    .inspeccion-table tbody tr {
+        display: block;
+        margin-bottom: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
+
+    .inspeccion-table tbody td {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        border: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .inspeccion-table tbody td:first-child {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .inspeccion-table tbody td:last-child {
+        border-bottom: none;
+        background-color: white;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    /* Para tablas con thead (inspecciones) */
+    .inspeccion-table thead {
+        display: none;
+    }
+
+    .inspeccion-table tbody tr:has(td[data-label]) {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 0.75rem;
+        background: white;
+    }
+
+    .inspeccion-table td[data-label] {
+        display: block;
+        padding: 0.25rem 0;
+        border: none;
+        position: relative;
+        padding-left: 40%;
+        text-align: right;
+    }
+
+    .inspeccion-table td[data-label]:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 0;
+        width: 35%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-align: left;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+/* ===== ANIMACIONES Y TRANSICIONES ===== */
+.inspeccion-section,
+.inspeccion-table tr,
+.btn-primary,
+.btn-secondary {
+    transition: all 0.2s ease;
+}
+
+/* ===== ACCESIBILIDAD ===== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== UTILIDADES ===== */
+.text-center {
+    text-align: center;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+/* ===== MEJORAS ESPECÍFICAS PARA DATOS NUMÉRICOS ===== */
+.inspeccion-table tbody td:last-child {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-weight: 500;
+}
+
+/* Destacar diferencias importantes */
+.inspeccion-table tbody tr:has(td:contains("Diferencia")) td:last-child {
+    font-weight: 600;
+    color: var(--primary-color);
+}

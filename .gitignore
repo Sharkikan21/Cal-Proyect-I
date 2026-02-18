@@ -1,0 +1,34 @@
+# --- Ignorar libros pesados ---
+Libros_Guillermo/
+
+# --- Ignorar Entornos Virtuales de Python (¡Muy importante!) ---
+venv/
+env/
+.venv/
+.env/
+Antiguo/Sensor/.venv/
+Antiguo/Sensor/venv/
+
+# --- Ignorar Archivos de Python Compilados ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Ignorar Librerías de Node.js (si usas JS/React/etc) ---
+node_modules/
+npm-debug.log
+
+# --- Archivos de Sistema y Editor ---
+.DS_Store
+.vscode/
+.idea/
+
+# --- Archivos basura de LaTeX ---
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.zip

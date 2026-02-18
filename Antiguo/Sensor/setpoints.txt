@@ -1,0 +1,15 @@
+setpoints = {
+    "temperatura_nominal": {"valor": 70, "tolerancia": 4, "unidad": "°C"},
+    "flujo_masico_cal": {"valor": 16, "unidad": "tph"},
+    "porcentaje_solido_deseado": {"valor": 15, "unidad": "%"},
+    "presion_minima_operacion": {"valor": 275.8, "unidad": "kPa"},
+    "agitadores": {
+        "2270-ZM-009-31A": {"valor": 40, "unidad": "%"},
+        "2270-ZM-009-32A": {"valor": 40, "unidad": "%"},
+        "2270-ZM-009-23A": {"valor": 40, "unidad": "%"}
+    },
+    "switch_LAHH_11826": {
+        "valor": 70,
+        "unidad": "%"
+    }
+}

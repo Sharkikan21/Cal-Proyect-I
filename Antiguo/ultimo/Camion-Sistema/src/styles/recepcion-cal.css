@@ -1,0 +1,437 @@
+/* Estilos específicos para el módulo de Recepción Cal */
+
+.recepcion-cal-page {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.recepcion-cal-page .proceso-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recepcion-cal-page .proceso-header h1 {
+    margin: 0 0 15px 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.recepcion-cal-page .proceso-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.recepcion-cal-page .proceso-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.recepcion-cal-page .proceso-progress {
+    margin-bottom: 20px;
+}
+
+.recepcion-cal-page .progress-steps {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.recepcion-cal-page .step {
+    padding: 10px 20px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.recepcion-cal-page .step.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.recepcion-cal-page .step.completed {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.recepcion-cal-page .proceso-camion-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    min-height: 600px;
+}
+
+.recepcion-cal-page .ui-panel {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.recepcion-cal-page .visual-panel {
+    background: #f8f9fa;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recepcion-cal-page .etapa-no-disponible {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.recepcion-cal-page .etapa-no-disponible h2 {
+    color: #dc3545;
+    margin-bottom: 15px;
+}
+
+.recepcion-cal-page .proceso-completado {
+    text-align: center;
+    padding: 40px 20px;
+    color: #28a745;
+}
+
+.recepcion-cal-page .proceso-completado h2 {
+    margin-bottom: 15px;
+    color: #28a745;
+}
+
+.recepcion-cal-page .proceso-completado p {
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+/* Estilos para componentes específicos de recepcion-cal */
+
+/* Inspección B */
+.inspeccion-b-container {
+    padding: 20px;
+}
+
+.inspeccion-header {
+    margin-bottom: 20px;
+}
+
+.inspeccion-header h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.checklist-section {
+    margin-bottom: 30px;
+}
+
+.checklist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.btn-checklist {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.checklist-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.inspection-options {
+    margin-bottom: 30px;
+}
+
+.inspection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.inspection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.part-label {
+    font-weight: 500;
+    color: #333;
+}
+
+.btn-inspection {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-inspection.approved {
+    background: #28a745;
+}
+
+.btn-inspection:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mangueras */
+.mangueras-section {
+    margin-bottom: 30px;
+}
+
+.mangueras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.manguera-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.manguera-item h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.manguera-asignada {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.btn-asignar {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Evacuación */
+.evacuacion-cal-container {
+    padding: 20px;
+}
+
+.evacuacion-header {
+    margin-bottom: 20px;
+}
+
+.evacuacion-header h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.evacuacion-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.action-section {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-completar-evacuacion,
+.btn-guardar {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-completar-evacuacion {
+    background: #28a745;
+    color: white;
+}
+
+.btn-guardar {
+    background: #007bff;
+    color: white;
+}
+
+.btn-completar-evacuacion:hover,
+.btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.info-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.info-card h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.info-card p {
+    margin-bottom: 8px;
+    color: #666;
+}
+
+/* Estados de evacuación completada */
+.evacuacion-completada {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.completada-content {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.icon-completada {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.completada-content h2 {
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+.completada-content p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .recepcion-cal-page .proceso-camion-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .recepcion-cal-page .proceso-info {
+        grid-template-columns: 1fr;
+    }
+
+    .recepcion-cal-page .progress-steps {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .recepcion-cal-page .step {
+        width: 100%;
+        text-align: center;
+    }
+
+    .inspection-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mangueras-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-completar-evacuacion,
+    .btn-guardar {
+        width: 100%;
+    }
+}

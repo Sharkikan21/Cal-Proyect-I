@@ -1,0 +1,379 @@
+/* UbicaciÃ³n: src/styles/Navbar.css */
+
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #ecf0f1;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ecf0f1;
+    text-decoration: none;
+    position: relative;
+    z-index: 1001;
+}
+
+.navbar-brand span {
+    white-space: nowrap;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+    min-width: 0;
+}
+
+.navbar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #bdc3c7;
+    text-decoration: none;
+    position: relative;
+    padding: 0.45rem 0.5rem;
+    border-radius: 999px;
+    transition: color 0.2s ease-in-out, background 0.2s ease;
+}
+
+.navbar-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.navbar-link.active {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.navbar-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #3498db;
+}
+
+/* --- Etiqueta animada junto al icono (desktop) --- */
+.navbar-link .link-label {
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateX(-6px);
+    padding-left: 0;
+    transition:
+        max-width 220ms ease,
+        opacity 180ms ease,
+        transform 220ms ease,
+        padding 220ms ease;
+}
+
+.navbar-link:hover .link-label,
+.navbar-link:focus-visible .link-label {
+    max-width: 180px;
+    opacity: 1;
+    transform: translateX(0);
+    padding-left: 0.4rem;
+}
+
+/* Accesibilidad: reduce animaciÃ³n si el usuario prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+
+    .navbar-link .link-label,
+    .navbar-link:hover .link-label,
+    .navbar-link:focus-visible .link-label {
+        transition: none;
+        transform: none;
+    }
+}
+
+.user-info-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid #34495e;
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- Estilo especÃ­fico para el texto de logout en escritorio --- */
+.logout-btn span {
+    display: none;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #bdc3c7;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn:hover {
+    color: #e74c3c;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+/* --- Breakpoint "compacto" para laptops anchas --- */
+@media (max-width: 1280px) {
+    .navbar-menu {
+        gap: 1rem;
+    }
+
+    .navbar-links {
+        gap: 0.75rem;
+    }
+
+    .navbar-link span:not(.link-label) {
+        display: none;
+    }
+
+    .user-details .user-role {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        padding: 0 1rem;
+        position: relative;
+    }
+
+    .navbar-brand span {
+        font-size: 0.95rem;
+        line-height: 1.1;
+        white-space: nowrap;
+    }
+
+    .hamburger-btn {
+        display: block;
+    }
+
+    .navbar-menu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 60px);
+        background-color: #34495e;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0;
+        margin: 0;
+        max-height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        transition: max-height 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    .navbar-menu.open {
+        max-height: calc(100vh - 60px);
+        visibility: visible;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+    }
+
+    /* Reset de estilos de contenedores internos */
+    .navbar-links,
+    .user-info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+        width: 100%;
+    }
+
+    /* Estilo unificado para enlaces de navegación */
+    .navbar-menu .navbar-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #2c3e50;
+        width: 100%;
+        color: #ecf0f1;
+        text-decoration: none;
+        font-size: 1rem;
+        background: transparent;
+        border-radius: 0;
+        transition: background-color 0.2s ease;
+    }
+
+    .navbar-menu .navbar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+
+    .navbar-menu .navbar-link.active {
+        background-color: var(--primary-color);
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+    .navbar-menu .navbar-link.active::after {
+        display: none;
+    }
+
+    /* Separador visual entre navegación y usuario */
+    .user-info-container {
+        border-top: 2px solid #2c3e50;
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+    }
+
+    /* Estilo para información del usuario */
+    .navbar-menu .user-details {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #2c3e50;
+        width: 100%;
+        color: #bdc3c7;
+        font-weight: normal;
+        background: rgba(0, 0, 0, 0.1);
+        cursor: default;
+    }
+
+    /* Estilo para botón de logout */
+    .navbar-menu .logout-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #2c3e50;
+        color: #ecf0f1;
+        font-size: 1rem;
+        cursor: pointer;
+        justify-content: flex-start;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .navbar-menu .logout-btn:hover {
+        background-color: rgba(231, 76, 60, 0.2);
+        color: #e74c3c;
+    }
+
+    .logout-btn span {
+        display: inline;
+    }
+
+    /* En móvil mostramos siempre la etiqueta */
+    .navbar-link .link-label {
+        max-width: none;
+        opacity: 1;
+        transform: none;
+        padding-left: 0;
+        transition: none;
+    }
+
+    /* Evitar scroll del body cuando el menú está abierto */
+    body.menu-open {
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0 0.75rem;
+    }
+
+    .navbar-brand {
+        font-size: 1rem;
+        gap: 0.5rem;
+    }
+
+    .navbar-menu .navbar-link,
+    .navbar-menu .user-details,
+    .navbar-menu .logout-btn {
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Desktop: centrar íconos y fijar usuario a la derecha */
+@media (min-width: 1025px) {
+    .navbar-content {
+        display: grid;
+        /* en vez de flex */
+        grid-template-columns: auto 1fr auto;
+        /* izquierda | centro | derecha */
+        align-items: center;
+    }
+
+    .navbar-menu {
+        /* El contenedor de íconos NO debe estirarse */
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        /* íconos centrados en la columna central */
+        flex: 0 0 auto;
+        /* no ocupar todo el ancho */
+        margin: 0;
+        /* sin márgenes auto aquí */
+    }
+
+    .user-info-container {
+        justify-self: end;
+        /* pegado al extremo derecho */
+        margin-left: 0;
+        /* evitar empujes raros */
+    }
+}

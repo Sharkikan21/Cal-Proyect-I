@@ -1,0 +1,439 @@
+/* ManguerasAdmin.css */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.mangueras-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    color: #333;
+}
+
+.mangueras-table th,
+.mangueras-table td {
+    padding: 16px 20px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.mangueras-table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+.mangueras-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* --- Estilos para la Barra de Progreso --- */
+/* --- Estilos para la Barra de Progreso --- */
+.progress-bar-container {
+    /* ESTA LÍNEA ES LA CLAVE PARA QUE EL CENTRADO FUNCIONE */
+    position: relative;
+
+    width: 100%;
+    min-width: 120px;
+    height: 24px;
+    background-color: #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-bar-text {
+    /* Estas 5 propiedades centran el texto perfectamente */
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: #333;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-align: center;
+    /* Asegura que el texto esté centrado si es largo */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* --- Estilos para la Etiqueta de Estado --- */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 16px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.85em;
+    text-transform: capitalize;
+    display: inline-block;
+    min-width: 80px;
+    text-align: center;
+}
+
+.status-optimo {
+    background-color: #28a745;
+}
+
+.status-alerta {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.status-critico {
+    background-color: #dc3545;
+}
+
+.status-retirada {
+    background-color: #6c757d;
+}
+
+
+/* --- Estilos para los Botones de Acciones --- */
+.table-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.table-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.table-actions button:hover {
+    color: #007bff;
+}
+
+.nueva-manguera-button {
+    background-color: #007bff;
+    /* Un azul primario */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.nueva-manguera-button:hover {
+    background-color: #0056b3;
+    /* Un azul más oscuro al pasar el mouse */
+}
+
+.nueva-manguera-button svg {
+    /* Estilos para el icono + */
+    font-size: 1.2rem;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    flex-wrap: wrap;
+    /* permite que los botones bajen */
+}
+
+.admin-header h1 {
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* --- Estilos para el Botón Principal "Nueva Manguera" --- */
+.admin-header .nueva-manguera-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    background-color: #007bff;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.admin-header .nueva-manguera-button:hover {
+    background-color: #0056b3;
+}
+
+.admin-header .nueva-manguera-button:active {
+    transform: scale(0.98);
+}
+
+/* --- Estilos para la Barra de Progreso --- */
+.progress-bar-container {
+    position: relative;
+    /* Clave para el centrado del texto */
+    width: 100%;
+    min-width: 120px;
+    height: 24px;
+    background-color: #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-bar-text {
+    position: absolute;
+    /* Clave para el centrado */
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centrado perfecto */
+
+    color: #333;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* ManguerasAdmin.css */
+
+/* Contenedor para alinear el círculo y el texto */
+.status-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Espacio entre el círculo y el texto */
+    font-weight: 500;
+}
+
+/* Estilo base para el círculo */
+.status-icon {
+    display: inline-block;
+    width: 10px;
+    /* Ancho y alto deben ser iguales */
+    height: 10px;
+    /* Ancho y alto deben ser iguales */
+    border-radius: 50%;
+    /* Esto crea el círculo */
+    vertical-align: middle;
+    margin-right: 8px;
+    /* Espacio entre el círculo y el texto */
+}
+
+/* Colores para cada estado */
+/* Estos nombres deben coincidir con el 'nivel' que devuelve tu función */
+.status-icon.status-optimo,
+.status-icon.status-normal {
+    color: #28a745;
+    /* Verde */
+}
+
+.status-icon.status-alerta {
+    color: #ffc107;
+    /* Naranja/Amarillo */
+}
+
+.status-icon.status-critico {
+    color: #dc3545;
+    /* Rojo */
+}
+
+.status-icon.status-retirada {
+    color: #6c757d;
+    /* Gris */
+}
+
+.status-icon.status-normal,
+.status-icon.status-optimo {
+    background-color: var(--success-color);
+}
+
+.status-icon.status-alerta {
+    background-color: var(--warning-color);
+}
+
+.status-icon.status-critico {
+    background-color: var(--danger-color);
+}
+
+.status-icon.status-retirada {
+    background-color: var(--gray-color);
+}
+
+.header-actions {
+    display: flex;
+    gap: .5rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+/* Estilo base compartido por ambos botones para no repetir código */
+.nueva-manguera-button,
+.limpieza-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* Espacio entre el ícono y el texto */
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    /* Bordes más redondeados y modernos */
+    font-weight: 600;
+    /* Texto en negrita */
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nueva-manguera-button:hover,
+.limpieza-button:hover {
+    transform: translateY(-2px);
+    /* Efecto de "levantarse" al pasar el mouse */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo específico para el botón de "Nueva Manguera" (Azul - Acción Primaria) */
+.nueva-manguera-button {
+    background-color: #4f46e5;
+    /* Azul índigo */
+    color: white;
+}
+
+/* Estilo específico para el botón de "Limpieza" (Naranja/Rojo - Acción de Alerta) */
+.limpieza-button {
+    background-color: #f97316;
+    /* Naranja vibrante */
+    color: white;
+}
+
+/* ManguerasAdmin.css */
+
+/* --- Estilos para los Botones de Acción del Formulario --- */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    /* <-- La línea clave: apila los elementos verticalmente */
+    gap: 1rem;
+    /* Ahora esto crea un espacio vertical entre los botones */
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* ESTILO BASE - Se aplica a AMBOS botones para que sean iguales en tamaño y forma */
+.form-actions button {
+    min-width: 140px;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    /* <-- AÑADE ESTA LÍNEA para unificar la fuente */
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Estilo para el botón de Cancelar (secundario) */
+.form-actions button[type="button"] {
+    background-color: #f8f9fa;
+    /* Fondo claro */
+    color: #343a40;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #e2e6ea;
+    border-color: #ced4da;
+}
+
+/* Estilo para el botón de Crear/Actualizar (primario) */
+.form-actions .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    /* El borde coincide con el fondo */
+}
+
+.form-actions .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* ====== Header responsivo (título + botones) ====== */
+/* No tocamos tus estilos base .admin-header / .header-actions;
+   solo añadimos breakpoints para que los botones no desaparezcan. */
+
+@media (max-width: 992px) {
+
+    /* Botones un poco más compactos en laptops pequeñas */
+    .header-actions .nueva-manguera-button,
+    .header-actions .limpieza-button {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* En tablet/phone: los botones bajan debajo del título */
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-actions {
+        margin-left: 0;
+        /* ya no forzamos a la derecha */
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* 2 columnas en móviles medianos */
+        gap: .5rem;
+    }
+
+    .header-actions .nueva-manguera-button,
+    .header-actions .limpieza-button {
+        width: 100%;
+        justify-content: center;
+        white-space: nowrap;
+        /* evita cortes feos del texto */
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* En phones chicos, apilar botones uno bajo otro */
+    .header-actions {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+	itle{Bitácora de Desarrollo: Proyecto de Monitoreo de Flujo de Cal}
+\author{Gemini CLI \& Simón Villavicencio}
+\date{12 de Febrero de 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Resumen de Análisis Inicial}
+
+En esta sesión se comenzó con un análisis completo del estado actual del proyecto. Se revisaron los documentos de progreso (`resumen_progreso.txt`, `bitacora_05_02_2026.tex`), el código fuente del backend (`cal_monitoring_backend/`) y la estructura del informe (`Informe/`).
+
+El análisis concluyó que el proyecto tiene una lógica de negocio (`core_logic.py`) robusta y bien definida, capaz de procesar datos de sensores, evaluar un sistema de alarmas configurable y analizar curvas de reactividad de la cal. La capa de API (`main.py`) está inicializada pero pendiente de desarrollo para exponer dicha lógica.
+
+\section*{2. Aclaraciones y Requisitos Clave para el Desarrollo}
+
+Se establecieron dos puntos fundamentales que guiarán las siguientes fases del proyecto:
+
+\subsection*{2.1. Infraestructura de Datos en AWS}
+
+Se confirma que se tiene acceso a servicios de **Amazon Web Services (AWS)** para la gestión de datos. Esto representa un cambio estratégico a mediano y largo plazo.
+
+\begin{itemize}
+    \item El uso actual de un archivo Excel (`Tabla_Completa.xlsx`) para la ingesta de datos se considera una solución temporal para el desarrollo y las pruebas iniciales.
+    \item En el futuro, la arquitectura del sistema deberá migrar hacia el uso de servicios de AWS. Posibles candidatos incluyen:
+    \begin{itemize}
+        \item 	extbf{Amazon S3:} Para el almacenamiento de datos históricos o archivos planos.
+        \item 	extbf{Amazon RDS o DynamoDB:} Para una base de datos estructurada que registre eventos, alarmas y curvas de reactividad.
+        \item 	extbf{Amazon Kinesis:} Para la ingesta de datos de sensores en tiempo real.
+    \end{itemize}
+    \item Todas las decisiones de desarrollo futuro, especialmente en la capa de persistencia y acceso a datos, tendrán en cuenta esta capacidad.
+\end{itemize}
+
+\subsection*{2.2. Necesidad de un Generador de Datos Ficticios}
+
+Se establece el requisito de crear un mecanismo para **generar datos de sensores ficticios y dinámicos**.
+
+\begin{itemize}
+    \item 	extbf{Objetivo:} Facilitar las pruebas de la lógica del backend y permitir el desarrollo y la visualización de una interfaz de usuario (página web) sin depender de un archivo estático.
+    \item 	extbf{Funcionalidad Deseada:} El generador debería ser capaz de simular diferentes escenarios operacionales de la planta, tales como:
+    \begin{itemize}
+        \item Operación normal.
+        \item Condiciones que disparen alarmas específicas (niveles altos/bajos, temperaturas críticas).
+        \item Ciclos completos que generen curvas de reactividad (lenta, media, rápida).
+        \item Cambios en el modo de operación (produciendo, lavando, inactivo).
+    \end{itemize}
+    \item Este generador de datos se convierte en una tarea prioritaria para agilizar el desarrollo concurrente del backend y el frontend.
+\end{itemize}
+
+\section*{3. Próximos Pasos}
+
+Considerando los nuevos requisitos, el plan de acción se ajusta a:
+\begin{enumerate}[label=\arabic*.]
+    \item 	extbf{Actualizar la bitácora:} Documentar estos nuevos requisitos en el presente archivo. (Completado)
+    \item 	extbf{Crear un generador de datos:} Desarrollar un script en Python que genere datos de sensores realistas y los guarde o los sirva de alguna forma.
+    \item 	extbf{Desarrollar la API:} Construir los endpoints en `main.py` para que consuman los datos (inicialmente del generador) y expongan el estado de la planta, las alarmas y las curvas de reactividad.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,2111 @@
+/* Estilos globales - MANTENIDOS EXACTAMENTE IGUAL */
+:root {
+    --primary-color: #1a3a5f;
+    --secondary-color: #2c5282;
+    --accent-color: #4299e1;
+    --success-color: #38a169;
+    --warning-color: #e6a23c;
+    --danger-color: #e53e3e;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --gray-color: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: #f5f7fa;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Navbar - MANTENIDO IGUAL */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    text-decoration: none;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.navbar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.user-info-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Estilos para la tarjeta de información dentro del modal */
+.info-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f8f9fa;
+}
+
+.info-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 0.5rem;
+}
+
+.info-card p {
+    margin-bottom: 0.25rem;
+}
+
+/* Color del borde según el estado */
+.info-card.alerta {
+    border-left: 5px solid #ffc107;
+    /* Naranja */
+}
+
+.info-card.critico {
+    border-left: 5px solid #dc3545;
+    /* Rojo */
+}
+
+/* Estilos para los mensajes de alerta */
+.alert-message,
+.critical-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.alert-message {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.critical-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.logout-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Botones - MEJORADOS PERO COMPATIBLES */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    /* ¡IMPORTANTE! Asegura que el texto sea blanco y visible */
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    /* Para que se vea más como un botón de acción */
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-actions .btn-secondary {
+    background-color: transparent;
+    color: var(--gray-color);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary,
+.btn-secondary,
+.tab {
+    display: inline-flex;
+    /* Usa flexbox para alinear */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    gap: 8px;
+    /* Espacio consistente entre ícono y texto (si lo hay) */
+}
+
+/* Asegura que los botones de acción en tablas también se centren */
+.table-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-actions .btn-secondary:hover {
+    background-color: #f8f9fa;
+    color: var(--dark-color);
+    border-color: var(--dark-color);
+}
+
+.manguera-selector-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Contenedor para el código y las horas (lado izquierdo) */
+.manguera-item-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.manguera-item-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 150px;
+}
+
+/* Estilo para el texto del porcentaje "XX%" */
+.progress-percentage {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 40px;
+    text-align: right;
+}
+
+.progress-bar-container {
+    flex-grow: 1;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progress-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Espacio entre la barra y el texto */
+    padding: 8px 10px !important;
+    /* Asegura un padding consistente */
+}
+
+.progress-cell .progress-bar-container {
+    flex-grow: 1;
+    /* La barra ocupa el espacio disponible */
+    height: 10px;
+    /* Un poco más alta para que se vea bien */
+    background-color: #e9ecef;
+    border-radius: 99px;
+}
+
+.progress-cell .progress-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.progress-cell .progress-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    min-width: 40px;
+    /* Ancho fijo para que no "salte" al cambiar de 9% a 10% */
+    text-align: left;
+}
+
+/* El relleno de color de la barra */
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #38a169, #4299e1);
+    border-radius: 99px;
+    transition: width 0.5s ease-in-out;
+}
+
+.btn-secondary {
+    /* --- Propiedades añadidas para centrar --- */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Espacio entre el ícono y el texto */
+
+    /* --- Estilos que ya tenías --- */
+    background-color: transparent;
+    color: var(--gray-color);
+    border: 1px solid var(--border-color);
+    /* ...etc... */
+}
+
+.btn-secondary:hover {
+    background-color: #f8f9fa;
+    /* Un fondo muy ligero al pasar el mouse */
+    color: var(--dark-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #e9ecef, #dee2e6);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Formularios - MANTENIDOS IGUAL */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    /* Apila los botones verticalmente */
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+/* Centra el botón de 'Iniciar Proceso' / 'Detalles' en la última columna */
+.camion-item .camion-cell:last-child {
+    justify-content: center;
+}
+
+/* Estilos para la alerta de error */
+.error-alerta {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.error-alerta p {
+    margin: 0;
+}
+
+.error-alerta span {
+    margin-right: 5px;
+}
+
+/* Tablas y listas - MANTENIDAS IGUAL */
+.camion-list-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.search-bar {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-input {
+    position: relative;
+    max-width: 500px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-color);
+}
+
+.search-input input {
+    width: 100%;
+    padding: 10px 12px 10px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.camion-list-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 120px;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+.header-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.header-cell.active {
+    color: var(--accent-color);
+}
+
+.header-cell .sort-indicator {
+    margin-left: 8px;
+    font-size: 0.8em;
+    color: var(--accent-color);
+    vertical-align: middle;
+    /* Alinea mejor la flecha */
+}
+
+/* Mejora visual del encabezado */
+.camion-list-header .header-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Espacio entre ícono y texto */
+    padding: 0 10px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.header-cell:hover {
+    color: var(--accent-color);
+}
+
+.sort-indicator {
+    margin-left: 5px;
+}
+
+.camion-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 120px;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s;
+}
+
+.camion-item:hover {
+    background-color: #f8f9fa;
+}
+
+.camion-cell {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* Componentes específicos - MANTENIDOS */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-small {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-left-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+    text-align: center;
+}
+
+.error-message {
+    color: var(--danger-color);
+    background-color: rgba(229, 62, 62, 0.1);
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--danger-color);
+}
+
+/* === ESTILOS PARA EL POP-UP DE ALERTA === */
+
+.alert-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 1001;
+    /* Debe estar por encima del overlay */
+    width: 90%;
+    max-width: 450px;
+    overflow: hidden;
+}
+
+.alert-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.alert-modal-header svg {
+    font-size: 1.5rem;
+}
+
+.alert-modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.alert-modal-body {
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--dark-color);
+}
+
+.alert-modal-footer {
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    text-align: right;
+    border-top: 1px solid var(--border-color);
+}
+
+.alert-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--warning-color);
+    background-color: rgba(230, 162, 60, 0.1);
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+}
+
+/* Proceso de camión - MEJORADO PARA MEJOR LAYOUT 3D */
+.proceso-camion-page {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    min-height: calc(100vh - 140px);
+}
+
+.proceso-header {
+    margin-bottom: 2rem;
+}
+
+.proceso-info {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.proceso-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.proceso-progress::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--border-color);
+    z-index: 1;
+}
+
+.progress-step {
+    position: relative;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    z-index: 2;
+    font-weight: 500;
+}
+
+.progress-step.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.progress-step.completed {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.proceso-content {
+    margin-top: 2rem;
+}
+
+/* MEJORAS ESPECÍFICAS PARA EL LAYOUT DEL MODELO 3D */
+.proceso-camion-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    /* Más espacio para el modelo 3D */
+    gap: 2rem;
+    align-items: stretch;
+    min-height: 650px;
+    /* Altura mínima garantizada */
+}
+
+.ui-panel {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pesaje-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    height: fit-content;
+    /* Se ajusta al contenido */
+}
+
+/* Panel visual - MEJORADO SIGNIFICATIVAMENTE */
+.visual-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 650px;
+    /* Altura mínima garantizada */
+    background-color: white;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Contenedor del modelo 3D - OPTIMIZADO */
+.pesaje-visual {
+    flex: 1;
+    min-height: 600px;
+    /* Altura mínima para el modelo */
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Asegurar que el canvas ocupe todo el espacio */
+.pesaje-visual canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.pesaje-visual>div,
+.pesaje-visual>div>div {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Pesaje inicial y final - MANTENIDOS PERO MEJORADOS */
+.pesaje-inicial-container,
+.pesaje-final-container {
+    margin-top: 1rem;
+}
+
+.pesaje-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.pesaje-guia,
+.pesaje-resumen {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pesaje-guia h3,
+.pesaje-resumen h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.pesaje-guia p {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.pesaje-guia p:last-child {
+    border-bottom: none;
+}
+
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.resumen-item:last-child {
+    border-bottom: none;
+}
+
+.positivo {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.negativo {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+/* Inspección B - MANTENIDOS TODOS LOS ESTILOS EXISTENTES */
+.inspeccion-b-container {
+    margin-top: 1rem;
+}
+
+.checklist-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.checklist-section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.checklist-section h3 {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1rem;
+}
+
+.checklist-items {
+    padding: 1rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.checklist-item:last-child {
+    margin-bottom: 0;
+}
+
+.checklist-item input[type="checkbox"] {
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+.comentarios-section {
+    margin-bottom: 1.5rem;
+}
+
+.comentarios-section textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    resize: vertical;
+}
+
+/* Estilos para la visualización 3D en la inspección B - MANTENIDOS */
+.inspeccion-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.inspeccion-visual {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.camera-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: var(--border-radius);
+}
+
+.camera-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.camera-button:hover {
+    background-color: #f0f0f0;
+}
+
+.camera-button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.scene-container {
+    flex: 1;
+    min-height: 400px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* Evacuación - MANTENIDOS TODOS LOS ESTILOS */
+.evacuacion-container {
+    margin-top: 1rem;
+}
+
+.evacuacion-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.evacuacion-status {
+    margin-bottom: 2rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    background-color: #f8f9fa;
+}
+
+.status-indicator.pending {
+    border-left: 4px solid var(--warning-color);
+}
+
+.status-indicator.completed {
+    border-left: 4px solid var(--success-color);
+    background-color: rgba(56, 161, 105, 0.1);
+}
+
+.truck-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.status-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* TODOS LOS ESTILOS DE INSPECCIÓN MANTENIDOS EXACTAMENTE IGUAL */
+.app-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.truck-icon {
+    font-size: 24px;
+    color: #1a3a5f;
+}
+
+.app-header h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a3a5f;
+}
+
+.progress-text {
+    margin-left: auto;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Layout principal para la inspección 3D - MANTENIDO */
+.inspeccion-b-container .main-content {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    padding: 24px;
+    height: calc(100vh - 72px);
+    overflow: hidden;
+}
+
+/* Canvas / 3D area - MANTENIDO */
+.canvas-section {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    padding: 24px;
+    overflow: hidden;
+}
+
+.canvas-wrapper {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Botones de cámara - MANTENIDOS */
+.camera-buttons {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #adb5bd #f8f9fa;
+}
+
+.camera-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.camera-buttons::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.camera-buttons::-webkit-scrollbar-thumb {
+    background-color: #adb5bd;
+    border-radius: 10px;
+}
+
+.camera-buttons button {
+    padding: 10px 16px;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #495057;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.camera-buttons button:hover {
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    border-color: #ced4da;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.camera-buttons button.active {
+    background: linear-gradient(to bottom, #1a3a5f, #2c5282);
+    color: #fff;
+    border-color: #1a3a5f;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Summary panel - MANTENIDO */
+.summary-panel {
+    /* Tus reglas existentes para hacerlo invisible se mantienen */
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.summary-panel h2 {
+    border-left: none;
+    padding-left: 0;
+}
+
+.summary-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.summary-panel::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.summary-panel::-webkit-scrollbar-thumb {
+    background-color: #adb5bd;
+    border-radius: 10px;
+}
+
+.summary-list {
+    list-style: none;
+    margin-top: 12px;
+    flex-grow: 1;
+    border-radius: 8px;
+    padding: 2px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-left: 3px solid #e9ecef;
+    transition: all 0.2s ease-in-out;
+}
+
+.summary-item:hover {
+    background-color: #f8f9fa;
+    border-color: var(--accent-color);
+    transform: translateX(2px);
+}
+
+.summary-item::before {
+    display: none !important;
+}
+
+
+
+/* TODOS LOS ESTILOS DE FORMULARIOS Y MODALES MANTENIDOS */
+.part-form .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.part-form .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 16px 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    border: 1px solid #e2e8f0;
+    position: relative;
+}
+
+.part-form .radio-group label:hover {
+    border-color: #3b82f6;
+    transform: translateX(4px);
+}
+
+.part-form .radio-group input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    outline: none;
+    position: relative;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    flex-shrink: 0;
+}
+
+.part-form .radio-group input[type="radio"]:checked {
+    border-color: var(--primary-color);
+}
+
+.part-form .radio-group .radio-option-verde input[type="radio"]:checked {
+    background-color: #22c55e;
+    border-color: #166534;
+}
+
+.part-form .radio-group .radio-option-rojo input[type="radio"]:checked {
+    background-color: #ef4444;
+    border-color: #991b1b;
+}
+
+.part-form .status-indicator {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.part-form .status-indicator.verde {
+    background-color: #22c55e;
+}
+
+.part-form .status-indicator.rojo {
+    background-color: #ef4444;
+}
+
+.part-form .radio-content strong {
+    font-weight: 600;
+    color: #374151;
+}
+
+.part-form .radio-content .description {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+/* Pills - MANTENIDOS */
+.status-pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 999px;
+    text-transform: capitalize;
+}
+
+.status-pill.pendiente {
+    background: #e9ecef;
+    color: #6c757d;
+}
+
+.status-pill.verde {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-pill.naranja {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.status-pill.rojo {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* Formulario modal - MANTENIDO */
+.part-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    max-width: 340px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #adb5bd #f8f9fa;
+}
+
+.part-form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.part-form::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.part-form::-webkit-scrollbar-thumb {
+    background-color: #adb5bd;
+    border-radius: 10px;
+}
+
+.part-form h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 1.2rem;
+    /* Un poco más grande */
+    font-weight: 600;
+    /* Semi-negrita */
+    color: var(--primary-color);
+    text-align: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    /* Una línea divisoria sutil */
+}
+
+.part-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #495057;
+}
+
+.part-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.part-form .btn-primary {
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white !important;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.part-form .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(44, 82, 130, 0.25);
+}
+
+.part-form .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--gray-color);
+}
+
+.part-form .btn-primary:hover {
+    background: linear-gradient(to bottom, #2c5282, #3b6ba5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.part-form .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.part-form .btn-primary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transition: all 0.6s;
+}
+
+.part-form .btn-primary:hover::after {
+    left: 100%;
+}
+
+/* Grupo de radio buttons - MANTENIDO */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.radio-group label:hover {
+    background-color: #e9ecef;
+    transform: translateX(2px);
+}
+
+.radio-group input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #adb5bd;
+    border-radius: 50%;
+    outline: none;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.radio-group input[type="radio"]:checked {
+    border-color: #1a3a5f;
+    border-width: 5px;
+    background-color: #fff;
+}
+
+/* Overlay para el fondo cuando aparece el modal - MANTENIDO */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+}
+
+.modal-form {
+    position: fixed;
+    /* Se posiciona relativo a la ventana */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Truco para centrarlo perfectamente */
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    /* Ancho máximo para que no sea demasiado grande en pantallas grandes */
+    z-index: 1001;
+    /* ¡CRÍTICO! Un z-index MÁS ALTO que el del overlay */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Modales mejorados - MANTENIDOS PERO CON MEJORAS MENORES */
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.manguera-selector-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.manguera-selector-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.manguera-selector-item:hover {
+    background-color: #f8f9fa;
+}
+
+.loading-spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    /* Gris claro */
+    border-top: 3px solid #007bff;
+    /* Azul primario */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animación que hace girar el spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal-header button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Animación para el modal - MANTENIDA */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Estilos para los indicadores de estado en el modal - MANTENIDOS */
+.status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-indicator.verde {
+    background-color: #0f5132;
+}
+
+.status-indicator.naranja {
+    background-color: #664d03;
+}
+
+.status-indicator.rojo {
+    background-color: #842029;
+}
+
+/* Estilos para las opciones de radio según su estado - MANTENIDOS */
+.radio-option-verde {
+    border-left: 4px solid #0f5132;
+}
+
+.radio-option-naranja {
+    border-left: 4px solid #664d03;
+}
+
+.radio-option-rojo {
+    border-left: 4px solid #842029;
+}
+
+/* TODOS LOS ESTILOS DE EVACUACIÓN MANTENIDOS */
+.evacuacion-status {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.status-circle-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+}
+
+.status-circle-outer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(#f97316 0%,
+            #fb923c 12.5%,
+            #fdba74 25%,
+            #10b981 37.5%,
+            #34d399 50%,
+            #6ee7b7 62.5%,
+            #3b82f6 75%,
+            #60a5fa 87.5%,
+            #f97316 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.status-indicator.completed .status-circle-outer {
+    background: conic-gradient(#10b981 0%, #34d399 25%, #6ee7b7 50%, #34d399 75%, #10b981 100%);
+}
+
+.status-circle-inner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.check-icon {
+    font-size: 1.8rem;
+    color: #10b981;
+    transition: all 0.3s ease;
+}
+
+.status-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgba(249, 115, 22, 0.2);
+    z-index: 1;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.completed .status-pulse {
+    background-color: rgba(16, 185, 129, 0.2);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+}
+
+/* Tabs - MANTENIDOS */
+.tab-toggle {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0;
+    padding: 0 16px;
+}
+
+.tab {
+    position: relative;
+    padding: 12px 24px;
+    border: none;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #dee2e6;
+    min-width: 120px;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab:hover {
+    background: linear-gradient(to bottom, #e9ecef, #dee2e6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.tab.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+}
+
+.tab.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    animation: shine 2s infinite;
+}
+
+.tab-icon {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+@keyframes shine {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Estados finalizados - MANTENIDOS */
+.estado-finalizado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background: linear-gradient(to right, #38a169, #48bb78);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(56, 161, 105, 0.2);
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.estado-finalizado::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transition: all 0.6s;
+}
+
+.estado-finalizado:hover::after {
+    left: 100%;
+}
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #dee2e6;
+    color: #6c757d;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+}
+
+.list-header {
+    padding-left: 2rem;
+}
+
+.summary-panel::before {
+    display: none !important;
+}
+
+/* 2. Solución para el espacio blanco y el botón */
+/* Usamos !important para forzar a la lista a crecer y ocupar 
+   el espacio sobrante, eliminando el hueco. */
+.summary-panel .summary-list {
+    flex-grow: 1 !important;
+}
+
+
+/* RESPONSIVE DESIGN - MEJORADO PARA TODOS LOS COMPONENTES */
+@media (max-width: 1200px) {
+    .proceso-camion-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .visual-panel {
+        min-height: 500px;
+    }
+
+    .pesaje-visual {
+        min-height: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 15px;
+    }
+
+    .proceso-camion-page {
+        padding: 1rem;
+    }
+
+    /* LAYOUT MÓVIL MEJORADO PARA PESAJE */
+    .proceso-camion-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .visual-panel {
+        min-height: 400px;
+        order: -1;
+        /* El modelo 3D aparece primero en móvil */
+    }
+
+    .pesaje-visual {
+        min-height: 350px;
+    }
+
+    .pesaje-info {
+        padding: 1rem;
+    }
+
+    .proceso-info {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+    }
+
+    .proceso-progress {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 10px;
+        margin-bottom: 1rem;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .proceso-progress::-webkit-scrollbar {
+        display: none;
+    }
+
+    .proceso-progress::before {
+        display: none !important;
+    }
+
+    .progress-step {
+        flex-shrink: 0;
+        white-space: nowrap;
+        font-weight: 500;
+        font-size: 0.9em;
+        padding: 8px 20px;
+        background-color: white;
+        color: #343a40;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+
+    .progress-step.active {
+        background-color: #1a3a5f;
+        color: white;
+        border-color: #1a3a5f;
+        transform: translateY(-2px);
+    }
+
+    .progress-step.completed {
+        background-color: #38a169;
+        color: white;
+        border-color: #38a169;
+    }
+
+    /* RESPONSIVE PARA INSPECCIÓN B */
+    .inspeccion-b-container .main-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .summary-panel {
+        height: auto;
+        order: 2;
+    }
+
+    .canvas-section {
+        padding: 1rem;
+        order: 1;
+    }
+
+    .canvas-wrapper {
+        aspect-ratio: 16 / 9;
+        max-height: 400px;
+    }
+
+    /* RESPONSIVE PARA OTROS COMPONENTES */
+    .pesaje-content {
+        grid-template-columns: 1fr;
+    }
+
+    .checklist-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .camion-list-header,
+    .camion-item {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .camion-cell:nth-child(4),
+    .header-cell:nth-child(4) {
+        display: none;
+    }
+
+    .inspeccion-content {
+        grid-template-columns: 1fr;
+    }
+
+    .scene-container {
+        min-height: 300px;
+    }
+
+    .form-group input {
+        font-size: 16px;
+        /* Evita zoom en iOS */
+    }
+}
+
+@media (max-width: 576px) {
+    .proceso-camion-page {
+        padding: 0.5rem;
+    }
+
+    .visual-panel {
+        min-height: 300px;
+    }
+
+    .pesaje-visual {
+        min-height: 250px;
+    }
+
+    .btn-primary {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    .proceso-info {
+        padding: 0.75rem;
+    }
+
+    .proceso-info>div {
+        min-width: 100%;
+    }
+
+    .camion-list-header,
+    .camion-item {
+        grid-template-columns: 1fr 120px;
+    }
+
+    .camion-cell:nth-child(3),
+    .header-cell:nth-child(3) {
+        display: none;
+    }
+}
+
+/* MEJORAS ESPECÍFICAS PARA PANTALLAS GRANDES */
+@media (min-width: 1400px) {
+    .proceso-camion-layout {
+        grid-template-columns: 1fr 1.5fr;
+        /* Aún más espacio para el modelo 3D */
+    }
+
+    .pesaje-visual {
+        min-height: 700px;
+    }
+
+    .visual-panel {
+        min-height: 750px;
+    }
+}
+
+/* ASEGURAR QUE EL CANVAS OCUPE TODO EL ESPACIO DISPONIBLE */
+@media (min-width: 769px) {
+    .pesaje-visual {
+        min-height: 600px;
+    }
+
+    .visual-panel {
+        min-height: 650px;
+    }
+}

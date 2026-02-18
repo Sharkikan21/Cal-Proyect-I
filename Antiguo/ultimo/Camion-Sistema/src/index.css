@@ -1,0 +1,21 @@
+/* Ubicación: src/index.css - VERSIÓN CORREGIDA Y SIMPLIFICADA */
+
+:root {
+  /* Mantenemos las definiciones de fuente base */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Eliminamos las reglas de color y fondo oscuro de aquí */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  /* El color de fondo y de texto ahora será controlado
+     por tus archivos Recepcion.css y pesaje.css */
+}

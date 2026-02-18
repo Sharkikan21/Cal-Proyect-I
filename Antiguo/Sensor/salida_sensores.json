@@ -1,0 +1,770 @@
+{
+    "2270-LSHH-11826": {
+        "equipos": [
+            "2270-ZM-009-01"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "FAULT",
+                "descripcion": "Permite descargar cal si LAHH-11826 == 0. Bloquea al finalizar. Alarma DCS.",
+                "nombre_equipo": "LIME SILO - Alarma Alta Alta"
+            }
+        ]
+    },
+    "2270-LSLL-11829": {
+        "equipos": [
+            "2270-ZM-009-01"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "WARNING",
+                "descripcion": "Alarma de nivel bajo en DCS.",
+                "nombre_equipo": "LIME SILO - Alarma Baja Baja"
+            }
+        ]
+    },
+    "2270-LIT-11825": {
+        "equipos": [
+            "2270-ZM-009-01",
+            "2270-ZM-009-02A"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 95,
+                "tipo_alarma": "FAULT",
+                "descripcion": "Nivel sobre 95%. Bloquea descarga al terminar. Alarma en DCS.",
+                "nombre_equipo": "LIME SILO - Transmisor de Nivel"
+            },
+            {
+                "operador": "<=",
+                "valor": 5,
+                "tipo_alarma": "WARNING",
+                "descripcion": "Nivel bajo (≤ 5%). Alarma DCS.",
+                "nombre_equipo": "LIME SILO - Transmisor de Nivel"
+            },
+            {
+                "operador": "<",
+                "valor": 70,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Puede iniciar el proceso de carga si el nivel es menor al 70%.",
+                "nombre_equipo": "LIME SILO - Interlock de carga"
+            },
+            {
+                "operador": ">=",
+                "valor": 70,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "El compresor no puede operar si el nivel es igual o mayor al 70%.",
+                "nombre_equipo": "LIME UNLOADING COMPRESSOR - Interlock bloqueo"
+            },
+            {
+                "operador": "==",
+                "valor": 70,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "El compresor opera hasta el final de la descarga si el nivel es 70%.",
+                "nombre_equipo": "LIME UNLOADING COMPRESSOR - Interlock habilitación"
+            },
+            {
+                "operador": "<",
+                "valor": 5,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No se puede iniciar proceso de carga al VORTEX. Alarma DCS.",
+                "nombre_equipo": "LIME SILO - Alarma Bajo Nivel para carga VORTEX"
+            }
+        ]
+    },
+    "2270-SAL-11818": {
+        "equipos": [
+            "2270-ZM-009-21"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "WARNING",
+                "descripcion": "Detener válvula rotatoria. Alarma DCS.",
+                "nombre_equipo": "LIME SILO ROTARY VALVE"
+            },
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "FAULT",
+                "descripcion": "La válvula rotatoria del silo está detenida. Alarma DCS.",
+                "nombre_equipo": "LIME SILO ROTARY VALVE - Estado detenido"
+            }
+        ]
+    },
+    "2270-SAL-11817": {
+        "equipos": [
+            "2270-ZM-009-04"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "WARNING",
+                "descripcion": "Detener alimentador de tornillo. Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER SCREW FEEDER"
+            },
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "FAULT",
+                "descripcion": "El alimentador de tornillo está detenido. Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER SCREW FEEDER - Estado detenido"
+            }
+        ]
+    },
+    "2270-TAHH-11801": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "tipo": "relativo_a_SP",
+                "operador": "+",
+                "delta": 10,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Secuencia Start/Stop. Alarma en DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Alta Alta Temperatura"
+            },
+            {
+                "tipo": "relativo_a_SP",
+                "operador": "+",
+                "delta": 10,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Secuencia start/stop. Mostrar alarma en DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Alta Alta Temperatura"
+            }
+        ]
+    },
+    "2270-TAH-11801": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "tipo": "relativo_a_SP",
+                "operador": "+",
+                "delta": 5,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Detiene alimentador de tornillo. Mantiene abierta válvula 2270-TV-11801. Alarma DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Alta Temperatura"
+            },
+            {
+                "tipo": "relativo_a_SP",
+                "operador": "+",
+                "delta": 5,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Detiene tornillo alimentador. Mantiene abierta válvula 2270-TV-11801. Alarma en DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Alta Temperatura"
+            }
+        ]
+    },
+    "2270-TAL-11801": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "tipo": "relativo_a_SP",
+                "operador": "-",
+                "delta": 5,
+                "unidad": "°C",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Temperatura baja. Alarma en DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Baja Temperatura"
+            },
+            {
+                "tipo": "relativo_a_SP",
+                "operador": "-",
+                "delta": 5,
+                "unidad": "°C",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Temperatura baja. Mostrar alarma en DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Baja Temperatura"
+            }
+        ]
+    },
+    "2270-PALL-11834": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 275.8,
+                "unidad": "kPa",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Presión baja. Secuencia Start/Stop. Alarma DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Alarma Baja Presión"
+            }
+        ]
+    },
+    "2270-FIT-11801": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 86.36,
+                "unidad": "m3/h",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Flujo bajo. Secuencia Start/Stop. Alarma DCS.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Transmisor de Flujo"
+            }
+        ]
+    },
+    "2270-LIT-11850": {
+        "equipos": [
+            "2270-ZM-009-12A/13A",
+            "2270-ZM-009-18",
+            "2270-ZM-009-31A/32A"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 5,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No operar agitadores ni bombas de recirculación o transferencia. Alarma en DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER - Transmisor de Nivel"
+            },
+            {
+                "operador": "<",
+                "valor": 40,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No operar agitadores 1 y 2. Alarma en DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER - Transmisor de Nivel"
+            },
+            {
+                "operador": ">",
+                "valor": 95,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Cerrar válvulas 2270-TV-11801 y 2270-TV-11808. Detener tornillo alimentador. Alarma DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER - Transmisor de Nivel"
+            },
+            {
+                "operador": ">",
+                "valor": 40,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Iniciar agitadores si nivel > 40%.",
+                "nombre_equipo": "AGITATORS LIME SEPARATING CHAMBERS 1 & 2"
+            },
+            {
+                "operador": ">",
+                "valor": 40,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Iniciar bomba de transferencia si nivel está entre 40% y 100%.",
+                "nombre_equipo": "LIME TRANSFER PUMP"
+            },
+            {
+                "operador": "<",
+                "valor": 100,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Iniciar bomba de transferencia si nivel está entre 40% y 100%.",
+                "nombre_equipo": "LIME TRANSFER PUMP"
+            },
+            {
+                "operador": "<",
+                "valor": 5,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No se puede operar agitador, bomba de recirculación ni bomba de transferencia. Alarma DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER - Nivel Muy Bajo"
+            },
+            {
+                "operador": ">",
+                "valor": 95,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Cerrar válvula 2270-TV-11801 y HV-11808. Detener tornillo alimentador. Alarma DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER - Nivel Muy Alto"
+            }
+        ]
+    },
+    "2270-LIT-11845": {
+        "equipos": [
+            "2270-ZM-009-19",
+            "2270-ZM-009-2"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 5,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Alarma: bajo nivel en tanque. Bombas PP-208/209. Alarma en DCS.",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMP BOX - Transmisor de Nivel"
+            },
+            {
+                "operador": "<",
+                "valor": 40,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No operar agitador de caja de bomba de descarga. Alarma en DCS.",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMP BOX - Transmisor de Nivel"
+            },
+            {
+                "operador": ">",
+                "valor": 95,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No operar bomba de transferencia ZM-009-12/13. Alarma en DCS.",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMP BOX - Transmisor de Nivel"
+            },
+            {
+                "operador": ">",
+                "valor": 70,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Puede iniciar proceso de carga al VORTEX PRE-MIXER 2270-ZM-009-30",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMPBOX - Interlock de carga a VORTEX"
+            },
+            {
+                "operador": ">=",
+                "valor": 40,
+                "unidad": "%",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar agitador de descarga (2270-ZM-009-23).",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMPBOX - Interlock de agitador"
+            },
+            {
+                "operador": "<",
+                "valor": 40,
+                "unidad": "%",
+                "tipo_alarma": "WARNING",
+                "descripcion": "No se puede operar agitador de caja de bomba de descarga (2270-ZM-009-23). Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMP BOX - Nivel Bajo"
+            },
+            {
+                "operador": ">",
+                "valor": 95,
+                "unidad": "%",
+                "tipo_alarma": "FAULT",
+                "descripcion": "No operar bomba de transferencia (2270-ZM-009-12/13). Detener preparación de lechada. Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER DISCHARGE PUMP BOX - Nivel Alto Alto"
+            }
+        ]
+    },
+    "2270-TT-11824A": {
+        "equipos": [
+            "2270-ZM-009-06"
+        ],
+        "condiciones": [
+            {
+                "operador": "between",
+                "rango": [
+                    40,
+                    60
+                ],
+                "unidad": "°C",
+                "tipo_alarma": "NORMAL",
+                "descripcion": "Operación normal entre 40°C y 60°C.",
+                "nombre_equipo": "LIME SLAKER - Transmisor de Temperatura A"
+            }
+        ]
+    },
+    "2270-TAH-11824A": {
+        "equipos": [
+            "2270-ZM-009-06"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 80,
+                "unidad": "°C",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Temperatura alta. Alarma en DCS.",
+                "nombre_equipo": "LIME SLAKER - Alarma Alta Temperatura A"
+            }
+        ]
+    },
+    "2270-TT-11824B": {
+        "equipos": [
+            "2270-ZM-009-06"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 65,
+                "unidad": "°C",
+                "tipo_alarma": "NORMAL",
+                "descripcion": "Operación normal si < 65°C.",
+                "nombre_equipo": "LIME SLAKER - Transmisor de Temperatura B"
+            }
+        ]
+    },
+    "2270-TAH-11824B": {
+        "equipos": [
+            "2270-ZM-009-06"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 80,
+                "unidad": "°C",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Temperatura alta. Alarma en DCS.",
+                "nombre_equipo": "LIME SLAKER - Alarma Alta Temperatura B"
+            }
+        ]
+    },
+    "2270-TAHH-11824B": {
+        "equipos": [
+            "2270-ZM-009-06"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 85,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Parada de emergencia. Alarma en DCS.",
+                "nombre_equipo": "LIME SLAKER - Alarma Alta Alta Temperatura B"
+            }
+        ]
+    },
+    "2270-PDIA-11892": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 70,
+                "unidad": "kPa",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Presión específica detectada. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Presión de línea"
+            }
+        ]
+    },
+    "2270-PIT-11895": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 50,
+                "unidad": "kPa",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Presión baja. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Transmisor de Presión"
+            }
+        ]
+    },
+    "2270-TIT-11893": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 65,
+                "unidad": "°C",
+                "tipo_alarma": "NORMAL",
+                "descripcion": "Temperatura < 65°C. Operación normal.",
+                "nombre_equipo": "LUBRICATION - Temperatura T1"
+            }
+        ]
+    },
+    "2270-TAH-11893": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 80,
+                "unidad": "°C",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Temperatura alta. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Alarma Alta Temperatura T1"
+            }
+        ]
+    },
+    "2270-TAHH-11893": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 85,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Parada de emergencia. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Alarma Alta Alta Temperatura T1"
+            }
+        ]
+    },
+    "2270-TIT-118934": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 45,
+                "unidad": "°C",
+                "tipo_alarma": "NORMAL",
+                "descripcion": "Temperatura < 45°C. Operación normal.",
+                "nombre_equipo": "LUBRICATION - Temperatura T2"
+            }
+        ]
+    },
+    "2270-TAH-11894": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 70,
+                "unidad": "°C",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Temperatura alta. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Alarma Alta Temperatura T2"
+            }
+        ]
+    },
+    "2270-TAHH-11894": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 80,
+                "unidad": "°C",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Parada de emergencia. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Alarma Alta Alta Temperatura T2"
+            }
+        ]
+    },
+    "2270-FSL-11896": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 10,
+                "unidad": "L/min",
+                "tipo_alarma": "NORMAL",
+                "descripcion": "Flujo mayor a 10 L/min. Operación normal.",
+                "nombre_equipo": "LUBRICATION - Flujo Línea Principal"
+            }
+        ]
+    },
+    "2270-FAL-11896": {
+        "equipos": [
+            "2270-ZM-009-34"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 5,
+                "unidad": "L/min",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Flujo < 5 L/min. Alarma en DCS.",
+                "nombre_equipo": "LUBRICATION - Alarma Baja Flujo"
+            }
+        ]
+    },
+    "2270-PDAH-11827": {
+        "equipos": [
+            "2270-ZM-009-22"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 0,
+                "tipo_alarma": "WARNING",
+                "descripcion": "Alarma por condición de presión. Mostrar en DCS.",
+                "nombre_equipo": "LIME SILO VENT - Alarma Alta Presión"
+            }
+        ]
+    },
+    "2270-YL-11826": {
+        "equipos": [
+            "2260-ZM-009-02"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 1,
+                "tipo_alarma": "WARNING",
+                "descripcion": "Alarma por switch de nivel activo (70% capacidad). Mostrar en DCS.",
+                "nombre_equipo": "LIME UNLOADING COMPRESSOR - Indicador de Nivel"
+            }
+        ]
+    },
+    "2270-ZM-009-14A/B": {
+        "equipos": [
+            "2270-ZM-009-21"
+        ],
+        "condiciones": [
+            {
+                "custom": "MANUAL_GATE_VALVE == OPEN",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Se puede iniciar válvula rotatoria del silo de cal.",
+                "nombre_equipo": "LIME SILO ROTATORY VALVE - Interlock de activación"
+            },
+            {
+                "custom": "BOTTOM_BIN_14A == OFF",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Se puede iniciar válvula rotatoria del silo de cal.",
+                "nombre_equipo": "LIME SILO ROTATORY VALVE - Interlock de activación"
+            },
+            {
+                "custom": "BOTTOM_BIN_14B == OFF",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Se puede iniciar válvula rotatoria del silo de cal.",
+                "nombre_equipo": "LIME SILO ROTATORY VALVE - Interlock de activación"
+            },
+            {
+                "custom": "PNEUMATIC_GATE_VALVE == CLOSED",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Se puede iniciar válvula rotatoria del silo de cal.",
+                "nombre_equipo": "LIME SILO ROTATORY VALVE - Interlock de activación"
+            }
+        ]
+    },
+    "2270-ZM-009-21": {
+        "equipos": [
+            "2270-ZM-009-04"
+        ],
+        "condiciones": [
+            {
+                "custom": "LIME_SILO_ROTARY_VALVE == STOPPED",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Se puede iniciar el tornillo alimentador si la válvula rotatoria está detenida.",
+                "nombre_equipo": "LIME SLAKER SCREW FEEDER - Interlock de arranque"
+            }
+        ]
+    },
+    "2270-ZV-11852": {
+        "equipos": [
+            "2270-ZM-009-20"
+        ],
+        "condiciones": [
+            {
+                "custom": "SOLENOID_VALVE == OPEN",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar ventilador de escape de cal.",
+                "nombre_equipo": "LIME SCRUBBER EXHAUST FAN"
+            },
+            {
+                "custom": "STATE_2270-HS-11810 == ENABLED_FROM_DCS",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar ventilador de escape de cal.",
+                "nombre_equipo": "LIME SCRUBBER EXHAUST FAN"
+            }
+        ]
+    },
+    "2270-TV-11801": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "custom": "SCRUBBER_FAN_2270-ZM-009-20 == OPERATING",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar Vortex Pre-Mixer si se cumplen todas las condiciones.",
+                "nombre_equipo": "VORTEX PRE-MIXER"
+            },
+            {
+                "custom": "VALVE_2270-TV-11801 == OPEN",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar Vortex Pre-Mixer si se cumplen todas las condiciones.",
+                "nombre_equipo": "VORTEX PRE-MIXER"
+            },
+            {
+                "custom": "SCREW_FEEDER_2270-ZM-009-04 == OPERATING",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar Vortex Pre-Mixer si se cumplen todas las condiciones.",
+                "nombre_equipo": "VORTEX PRE-MIXER"
+            }
+        ]
+    },
+    "2270-TIC-11801": {
+        "equipos": [
+            "2270-ZM-009-30"
+        ],
+        "condiciones": [
+            {
+                "custom": "VALOR_TIC_11801 controla apertura de 2270-TV-11801 y 2270-HV-11808",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Control de apertura de válvulas TV/HV basado en valor TIC.",
+                "nombre_equipo": "VORTEX PRE-MIXER - Control de válvulas"
+            }
+        ]
+    },
+    "2270-ZM-009-31A/32": {
+        "equipos": [
+            "2270-ZM-009-08/09"
+        ],
+        "condiciones": [
+            {
+                "custom": "TIEMPO_OPERACION_AGITADOR >= 2 minutos",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Inicia bomba de recirculación tras 2 min de operación del agitador.",
+                "nombre_equipo": "LIME RECYCLE PUMP"
+            }
+        ]
+    },
+    "2270-ZV-11880": {
+        "equipos": [
+            "2270-ZM-009-29"
+        ],
+        "condiciones": [
+            {
+                "custom": "VALVULA_SOLENOIDE_2270-ZV-11880 == OPEN",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Puede operar el ventilador de extracción.",
+                "nombre_equipo": "LIME SCRUBBER EXHAUST FAN"
+            },
+            {
+                "custom": "STATE_2270-HS-11810 == ENABLED_FROM_DCS",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Puede operar el ventilador de extracción.",
+                "nombre_equipo": "LIME SCRUBBER EXHAUST FAN"
+            }
+        ]
+    },
+    "2270-LALL-11850": {
+        "equipos": [
+            "2270-ZM-009-12/13"
+        ],
+        "condiciones": [
+            {
+                "custom": "LALL-11850 debe estar presente",
+                "tipo_alarma": "INTERLOCK",
+                "descripcion": "Permite iniciar bombas de transferencia ZM-009-12 o 13.",
+                "nombre_equipo": "LIME TRANSFER PUMP"
+            }
+        ]
+    }
+}

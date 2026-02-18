@@ -1,0 +1,130 @@
+:root {
+    --page-start: #f4f7fb;
+    --page-end: #edf2f8;
+    --brand-900: #1f3b66;
+    --brand-800: #274c77;
+    --brand-600: #3f6ea8;
+    --brand-500: #3b82f6;
+    --brand-400: #60a5fa;
+    --card-bg: #ffffff;
+    --card-border: rgba(31, 59, 102, 0.12);
+    --shadow: 0 12px 32px rgba(31, 59, 102, 0.12);
+    --text-main: #0f172a;
+    --text-dim: #475569;
+    --track: #e6edf7;
+    --ring: #d6e4f5;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --page-start: #0f1b2d;
+        --page-end: #0d1626;
+        --card-bg: rgba(255, 255, 255, 0.06);
+        --card-border: rgba(255, 255, 255, 0.12);
+        --shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+        --text-main: #e5e7eb;
+        --text-dim: #9aa7ba;
+        --track: rgba(255, 255, 255, 0.12);
+        --ring: rgba(255, 255, 255, 0.2);
+    }
+}
+
+.session-loader {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    --text-main: #0f172a;
+    --text-dim: #475569;
+    --card-bg: #ffffff;
+    --card-border: rgba(17, 24, 39, .08);
+    --track: #e6edf7;
+    --ring: #d6e4f5;
+    --shadow: 0 12px 28px rgba(2, 6, 23, 0.08);
+    backdrop-filter: blur(2px);
+    z-index: 9999;
+}
+
+.session-card {
+    width: min(92vw, 560px);
+    padding: 28px 26px;
+    border-radius: 22px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.session-logo {
+    height: 34px;
+    margin-bottom: 12px;
+    opacity: .95;
+}
+
+.session-spinner {
+    --size: 52px;
+    width: var(--size);
+    height: var(--size);
+    margin: 2px auto 16px;
+    border-radius: 999px;
+    border: 3px solid var(--ring);
+    border-top-color: var(--brand-500);
+    animation: spin .9s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.session-title {
+    margin: 0 0 6px 0;
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.2;
+    color: var(--text-main);
+    letter-spacing: .2px;
+    font-weight: 700;
+}
+
+.session-subtitle {
+    margin: 0 0 18px 0;
+    color: var(--text-dim);
+    font-size: 14px;
+}
+
+.session-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--track);
+    overflow: hidden;
+    position: relative;
+}
+
+.session-progress-bar {
+    width: 42%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand-500), var(--brand-400));
+    border-radius: 999px;
+    animation: indeterminate 1.15s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    50% {
+        transform: translateX(8%);
+    }
+
+    100% {
+        transform: translateX(120%);
+    }
+}
+
+.session-card :focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 4px;
+}

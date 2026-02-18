@@ -1,0 +1,110 @@
+\section{Pregunta 3}
+
+
+
+\section*{Problema 1: Homenaje a la `Matrizenmechanik'. (Puntaje: 24/60)}
+
+Inspirados por el formalismo desarrollado por Heisenberg, Born y Jordan en la década de 1920, consideremos un sistema físico de dimensión 3. En una base ortonormal $\{|v_1\rangle, |v_2\rangle, |v_3\rangle\}$, el Hamiltoniano $H$ y un observable $A$ están dados por:
+
+\begin{equation}
+H = E_0 \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix}, \quad A = a \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+\end{equation}
+
+donde $E_0$ y $a$ son constantes reales positivas con dimensiones apropiadas.
+
+\begin{enumerate}
+    \item[a)] Si se mide la energía, ¿qué valores pueden obtenerse? Indique la degeneración de cada autovalor.
+    \item[b)] Suponga que se mide la energía y se obtiene el valor $E_0$. Inmediatamente después se mide $A$. ¿Qué valores se pueden obtener y con qué probabilidades?
+    \item[c)] Calcule el conmutador $[H, A]$. ¿Son compatibles estos observables? Comente sobre la existencia de una base común de autoestados.
+    \item[d)] Supongamos que al tiempo $t=0$ el sistema se encuentra en el estado:
+    \begin{equation}
+    |\psi(0)\rangle = \frac{1}{\sqrt{2}} (|v_1\rangle + |v_2\rangle)
+    \end{equation}
+    Calcule el estado al tiempo $t$, $|\psi(t)\rangle$, y el valor de expectación del observable $A$ en función del tiempo, $\langle A \rangle(t)$.
+\end{enumerate}
+
+\section*{Problema 2: Preguntas generales de desarrollo breve. (Puntaje: 18/60)}
+
+\begin{enumerate}
+    \item[a)] Enuncie la condición para que un observable $\hat{Q}$ (que no depende explícitamente del tiempo) sea una constante de movimiento. Si $\hat{Q}$ no conmuta con el Hamiltoniano $\hat{H}$, ¿es posible que el valor de expectación $\langle \hat{Q} \rangle$ sea constante en el tiempo para algún estado particular? Justifique.
+    
+    \item[b)] \textbf{¡Falla en el confinamiento!} Una partícula está en el estado fundamental de una caja infinita (entre $x=0$ y $x=L$). Súbitamente, ocurre una falla en el sistema de confinamiento y la pared derecha se desplaza instantáneamente a $x=2L$. Calcule la probabilidad de que la partícula permanezca en el estado fundamental de la nueva configuración expandida.
+    
+    \item[c)] \textbf{Diseño de un punto cuántico.} Un estudiante de ingeniería intenta diseñar un dispositivo modelándolo con el siguiente potencial 1D, buscando confinar una partícula y modificar sus propiedades mediante una impureza atractiva en el centro:
+    \begin{equation}
+    V(x) = \begin{cases} -V_0 \delta(x) & \text{si } -L/2 < x < L/2 \\ \infty & \text{si } |x| \geq L/2 \end{cases}
+    \end{equation}
+    donde $V_0 > 0$. Bosqueje cualitativamente la función de onda del estado fundamental ($\psi_1(x)$) y del primer estado excitado ($\psi_2(x)$). Justifique las características principales de sus gráficos (simetría, número de nodos, y comportamiento en $x=0$). Notar que se pide bosquejar, no calcular la solución.
+\end{enumerate}
+
+\section*{Problema 3: Preguntas generales de desarrollo breve parte 2. (Puntaje: 18/60)}
+
+\begin{enumerate}
+    \item[a)] \textbf{La Preocupación de Schrödinger.} Erwin Schrödinger estaba profundamente incómodo con la idea de las superposiciones cuánticas, lo que lo llevó a formular su famosa paradoja del gato: un experimento mental donde un gato estaría simultáneamente vivo y muerto según las reglas cuánticas, algo claramente absurdo en el mundo macroscópico. En el formalismo estándar (interpretación de Copenhague), ¿cuál es el rol del postulado de la medición y por qué es necesario para reconciliar la evolución unitaria (ecuación de Schrödinger) con la observación de resultados definidos en experimentos macroscópicos (¡como un gato vivo o muerto!)?
+    
+    \item[b)] Considere dos observables, $A$ y $B$, que conmutan ($[A, B] = 0$). Un estudiante afirma: \textit{``Si medimos A y obtenemos el autovalor $a_i$, el estado resultante del sistema es necesariamente un autoestado de B''}. ¿Es esta afirmación siempre verdadera? Justifique su respuesta y, si es falsa, indique bajo qué condición adicional sería verdadera.
+    
+    \item[c)] En el casino de la FCFM, Abi y Ben discuten qué ocurre tras medir un observable $\Omega$. Han medido $\Omega$ y obtuvieron $\omega_n$, por lo que el sistema quedó en $|\omega_n\rangle$ (autovector de $\Omega$). Ben afirma: \textit{``Como no haremos más mediciones, $|\omega_n\rangle$ seguirá siendo autovector de $\Omega$ para cualquier $t > 0$. Al fin y al cabo, solo evoluciona unitariamente.''} Abi duda: \textit{``No siempre. Puede `desparramarse' en la base de $\Omega$.''}
+    
+    \textbf{Pregunta (breve):} ¿Quién tiene razón? Justifique en pocas líneas usando la evolución $|\psi(t)\rangle = e^{-iHt/\hbar}|\omega_n\rangle$. Indique la condición (en términos de conmutadores) bajo la cual $|\omega_n\rangle$ permanece autovector de $\Omega$, y explique qué ocurre en caso contrario en el espacio de estados.
+\end{enumerate}
+
+
+
+
+\section*{Problema 1: Oscilador armónico con un twist. (18 puntos)}
+
+Considere una partícula de masa $m$ en un potencial armónico de frecuencia $\omega$. Al tiempo $t=0$, el sistema se encuentra en el estado:
+
+\begin{equation}
+|\psi(0)\rangle = \frac{1}{\sqrt{2}}|0\rangle + \frac{1}{\sqrt{2}}|2\rangle
+\end{equation}
+
+\begin{enumerate}
+    \item[a)] Calcule $\langle X^2 \rangle$ y $\langle P^2 \rangle$ al tiempo $t=0$ usando los operadores de creación y destrucción. Verifique que se satisface el principio de incertidumbre.
+    \item[b)] Determine la paridad del estado inicial $|\psi(0)\rangle$. Luego, usando argumentos de simetría y sin calcular explícitamente la evolución temporal, demuestre que $\langle X \rangle(t) = 0$ y $\langle P \rangle(t) = 0$ para todo $t > 0$.
+    \item[c)] Si al tiempo $t=0$ se aplica instantáneamente una perturbación que desplaza el mínimo del potencial a la posición $x_0$. El nuevo Hamiltoniano es $H' = \frac{P^2}{2m} + \frac{1}{2}m\omega^2(X-x_0)^2$. Sin resolver la ecuación de Schrödinger explícitamente, argumente cualitativamente cómo evolucionará el sistema. ¿Qué valores de expectación oscilarán y con qué frecuencia?
+\end{enumerate}
+
+\section*{Problema 2: El retorno del momento angular. (18 puntos)}
+
+Un sistema cuántico tiene momento angular $\ell = 1$ y su Hamiltoniano está dado por:
+
+\begin{equation}
+H = \alpha(L_x^2 - L_y^2)
+\end{equation}
+
+donde $\alpha > 0$ es una constante con dimensiones apropiadas.
+
+\begin{enumerate}
+    \item[a)] Sin hacer cálculos explícitos, explique por qué $H$ debe ser diagonal por bloques en la base común a $L^2$ y $L_z$. ¿Cuántos bloques hay y de qué dimensión?
+    \item[b)] Encuentre los autovalores de energía. Ayuda: Puede ser útil reescribir el Hamiltoniano en términos de $L_\pm = L_x \pm iL_y$.
+    \item[c)] Si al tiempo $t=0$ el sistema está en el estado $|1, 0\rangle_z$, calcule la probabilidad de encontrar $L_z = \hbar$ al tiempo $t$.
+\end{enumerate}
+
+\section*{Problema 3: Preguntas conceptuales/ de desarrollo breve. (24 puntos)}
+
+\begin{enumerate}
+    \item[a)] \textbf{Peculiaridad de la reversión temporal.}
+    Para una partícula sin spin, el operador de reversión temporal tiene la forma $\Theta = UK$ donde $K$ es el operador de conjugación compleja y $U$ es un operador unitario apropiado. En simetrías continuas, un operador unitario $G(\epsilon) = e^{i\epsilon \hat{O}/\hbar}$ que conmuta con el Hamiltoniano genera una cantidad conservada $\hat{O}$ según el Teorema de Noether cuántico.
+    \begin{enumerate}
+        \item[i)] Demuestre que si el Hamiltoniano $H$ es invariante bajo reversión temporal (i.e., $\Theta H \Theta^{-1} = H$), entonces se cumple:
+        \begin{equation}
+        \Theta U(t) \Theta^{-1} = U(-t)
+        \end{equation}
+        donde $U(t) = e^{-iHt/\hbar}$ es el operador de evolución temporal.
+        \item[ii)] Explique por qué esta relación implica que no existe una cantidad conservada asociada a la invariancia bajo reversión temporal, a diferencia de lo que ocurre con simetrías continuas como traslación espacial (momento) o rotación (momento angular).
+    \end{enumerate}
+
+    \item[b)] \textbf{Principio variacional.} Un estudiante utiliza el principio variacional con la función de prueba $\psi(x) = A x e^{-\alpha x^2}$ (pensando en estados ligados) para un potencial par $V(x) = V(-x)$. Obtiene una cota de energía $E_{var}$.
+    \begin{itemize}
+        \item ¿Esta cota corresponde al estado fundamental del sistema? Justifique usando argumentos de paridad.
+        \item Si el estudiante hubiera usado en cambio $\phi(x) = A e^{-\beta x^2}$, ¿qué estado estaría estimando? ¿Cuál de las dos cotas será menor y por qué?
+    \end{itemize}
+
+    \item[c)] \textbf{Mediciones y evolución temporal.} Considere un sistema preparado en un estado que es combinación de dos autoestados del Hamiltoniano con energías $E_1$ y $E_2$. Se realiza una secuencia de mediciones de energía, con intervalos de tiempo $\Delta t$ entre mediciones sucesivas.
+    \begin{itemize}
+        \item Para $\Delta t \to 0$, ¿qué ocurre con la evolución del sistema?
+        \item Para $\Delta t \gg \hbar/|E_1 - E_2|$, bosqueje cualitativamente la probabilidad de obtener $E_1$ en función del tiempo entre la primera medición (en $t=0$) y una medición posterior.
+    \end{itemize}
+\end{enumerate}

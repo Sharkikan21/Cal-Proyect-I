@@ -1,0 +1,184 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      5.5.3 (05/09/2018)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R. @ppizarror
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo.pizarro@ing.uchile.cl, ppizarror.com
+%
+% Manual template: [http://latex.ppizarror.com/Template-Informe/]
+% Licencia MIT:    [https://opensource.org/licenses/MIT/]
+
+
+
+\documentclass[letterpaper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage[T1]{fontenc}
+\usepackage{array}
+
+
+% INFORMACIÓN DEL DOCUMENTO Y DATOS PARA PORTADA
+% Para cambiar el estilo de la portada y los encabezados-pie de página entrar a la carpeta lib y el archivo config.tex (lib\config.tex) y modificar las lineas 33 y 32 (funciones \portraitstyle y \hfstyle) cambiando el número del parámetro styleX.
+% Importante al cambiar el estilo de portada VERIFICAR que esta cumpla los requisitos formales.
+\def\titulodelinforme {Reconstrucción Examen} % <--- modificar ---
+\def\temaatratar {} % <--- modificar ---
+
+\def\autordeldocumento {Simón Villavicencio} 
+\def\nombredelcurso {Mecanica cuantica}
+\def\codigodelcurso {EL6046-1} % <--- modificar si es necesario ---
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de fisica}
+\def\imagendepartamento {departamentos/fcfm}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+% PORTADA (Valor 0,3 puntos)
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Estudiante:
+	& \begin{tabular}[t]{@{}l@{}}
+		 % <--- Modificar ---
+            %Ana Rubilar\\
+             
+		Simón Villavicencio
+      
+	\end{tabular} \\
+ 
+	%Mesón de trabajo:
+	%& \begin{tabular}[t]{@{}l@{}}
+	%    N° X        % 
+	%\end{tabular}\\
+	Profesor:
+	& \begin{tabular}[t]{@{}l@{}}
+		  %Alex Navas \\
+		  Luis Foa. 
+	\end{tabular} \\
+ 
+	%Auxiliares:
+	%& \begin{tabular}[t]{@{}l@{}}
+	%	Alex Rivas\\
+%
+	%\end{tabular} \\
+	%& \\
+
+	%Auxiliar:
+	%%	Sebastian Guzman \\
+        %Constanza Leiva \\
+        %Juan P. Baez H.\\
+        %Kevin Chamorro
+	%%\end{tabular} \\
+	%&% \\
+
+%    Ayudantes:
+%	& \begin{tabular}[t]{@{}l@{}}
+		%Camila Palma Caris \\
+ %       Constanza Leiva \\
+  %      Juan P. Baez H.\\
+   %     Kevin Chamorro
+	%\end{tabular} \\
+	& \\
+	\multicolumn{2}{l}{Fecha: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+\setlength\parindent{0pt}
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+
+
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+
+% PORTADA
+\input{lib/page/portrait}
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+
+
+% ======================= INICIO DEL DOCUMENTO =======================
+
+% Portada (ya creada, valor de 0.3 puntos)
+% Resumen (ya creado, valor de 0.7 puntos)
+\noindent
+\newpage
+
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Índice, se puede borrar
+
+
+
+
+
+\newpage
+% Análisis de resultados (valor de 0.5 puntos)
+%\input{actividad1}
+
+
+\newpage
+% Conclusión (valor 1 punto)
+\input{actividad2}
+
+\newpage
+%\input{actividad3}
+
+
+
+
+
+
+\newpage
+%\input{conclusiones}
+
+%\input{actividad4}
+
+
+
+\newpage
+%\input{referencias}
+
+
+
+%Aspectos formales (valor 0,5 puntos)
+% REFERENCIAS, utilizar solo si es necesario
+
+%\newpage
+%\begin{references}
+%\end{references}
+
+% ANEXOS, utilizar solo si es necesario
+
+%\begin{anexo}
+%\end{anexo}
+
+% FIN DEL DOCUMENTO
+\end{document}

@@ -1,0 +1,50 @@
+Resumen Detallado del Progreso del Proyecto (05/02/2026, 21:02)
+
+1. ¿Qué se ha hecho hasta el momento?
+
+    - Análisis exhaustivo de cuatro documentos PDF clave para entender el dominio minero, los requisitos técnicos, la filosofía de control industrial y la arquitectura de la planta de cal.
+    - Análisis del código existente en la carpeta `cal_monitoring_backend` (`main.py`, `core_logic.py`, `test_core_logic.py`).
+    - Identificación y corrección de un error crítico en la ruta de carga de la configuración de alarmas: se movió el contenido JSON de `logica_planta.py` a `cal_monitoring_backend/config/alarm_config.json` y se actualizó `test_core_logic.py` para usar la nueva ruta.
+    - Se recomendó y se asume la instalación de librerías Python esenciales (`fastapi`, `uvicorn`, `sqlalchemy`, `pandas`, `python-dotenv`, `pytest`).
+    - Se generó un `TODO` list detallado con los próximos pasos del desarrollo.
+    - Se creó una bitácora en formato LaTeX (`Informe/bitacora_05_02_2026.tex`) que resume todo lo anterior, para asegurar la persistencia del contexto.
+
+2. ¿Qué contiene el código existente (`cal_monitoring_backend`)?
+
+    - `main.py`: Punto de entrada de una aplicación FastAPI. Actualmente es un esqueleto con un endpoint raíz, diseñado para expandirse con las funcionalidades de la API REST.
+    - `core_logic.py`: Contiene la lógica de negocio central:
+        - Funciones para cargar datos de sensores (Excel) y configuraciones de alarmas (JSON).
+        - Utilidades para mapear TAGs de sensores a columnas de datos.
+        - Lógica para evaluar condiciones de alarma (absolutas, relativas a setpoints, complejas).
+        - Función para determinar el modo operativo actual de la planta (ej. "produciendo", "lavando").
+        - Una clase `ReactivityMonitor` para detectar y clasificar curvas de reactividad de la cal basándose en cambios de temperatura.
+    - `test_core_logic.py`: Un script de pruebas básicas que demuestra y valida las funcionalidades de `core_logic.py` usando datos de ejemplo y la configuración de alarmas.
+    - `config/alarm_config.json`: Archivo JSON con la configuración detallada y externalizada de alarmas e interlocks, incluyendo TAGs de sensores, equipos asociados y condiciones de activación.
+
+3. ¿Cómo se relaciona el código con los archivos PDF analizados?
+
+    - El código implementa directamente los objetivos de la *Etapa 2* de la `Especificación Instrumentación Y Software`, enfocada en supervisión y análisis operacional.
+    - `core_logic.py` incorpora conceptos clave de la *reactividad de la cal* y *monitoreo de hidratación* descritos en `La Cal es un Reactivo Químico` y `Filosofía de Control`.
+    - `alarm_config.json` traduce las *alarmas e interlocks* de la `Filosofía de Control`, utilizando los mismos TAGs y condiciones.
+    - La lectura de datos de Excel en `core_logic.py` está diseñada para procesar los "datos operacionales reales (variables PLC/SCADA)" mencionados en la `Especificación Instrumentación Y Software`.
+    - Los TAGs específicos en el código (`2270-FIT-11801`, etc.) corresponden a la instrumentación identificada en `Especificación Instrumentación Y Software` y visualizada en `flujo_mineria.pdf`.
+
+4. ¿Cómo funciona el código (flujo general)?
+
+    - Carga de Configuraciones: El sistema lee los umbrales de alarma y las condiciones desde `alarm_config.json`.
+    - Ingesta de Datos: Para las pruebas, se usan datos históricos de sensores de un archivo Excel.
+    - Procesamiento: `core_logic.py` procesa los datos de los sensores para:
+        - Mapear TAGs a columnas de datos.
+        - Evaluar alarmas según las condiciones definidas.
+        - Determinar el modo operativo de la planta.
+        - Detectar y registrar eventos de reactividad de la cal.
+    - Salida: Actualmente, las pruebas imprimen estos resultados. En el futuro, `main.py` expondrá estas funcionalidades a través de una API REST.
+
+5. ¿Cómo ejecutarlo?
+
+    - Requisitos: Python 3.x, pip, entorno virtual activado.
+    - Instalación: `pip install fastapi uvicorn sqlalchemy pandas python-dotenv pytest`
+    - Ejecutar pruebas: Desde la carpeta `cal_monitoring_backend`, ejecutar `python test_core_logic.py`.
+    - Ejecutar FastAPI (futuro): Una vez que se implementen los endpoints, desde `cal_monitoring_backend`, ejecutar `uvicorn main:app --reload`. La API estará disponible en `http://127.0.0.1:8000`.
+
+Este documento proporciona un resumen detallado de nuestro trabajo y el estado actual del proyecto.

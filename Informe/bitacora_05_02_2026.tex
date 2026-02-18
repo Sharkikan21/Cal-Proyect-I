@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+	itle{Bitácora de Desarrollo: Proyecto de Monitoreo de Flujo de Cal}
+\author{Gemini CLI}
+\date{5 de Febrero de 2026, 21:02}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Introducción al Proyecto}
+
+El objetivo principal es desarrollar un software para monitorear el flujo de la cal dentro de una minera. Se cuenta con:
+\begin{itemize}
+    \item Una carpeta "Antiguo" con un trabajo previo abandonado (Fase 1 casi completa, Fase 2 con errores, a rehacer).
+    \item Cuatro documentos PDF relevantes para el proyecto.
+    \item Una carpeta "Informe" con una plantilla LaTeX para documentar el progreso.
+    \item Una carpeta "cal\_monitoring\_backend" generada previamente, que será el punto de partida del nuevo software.
+\end{itemize}
+
+\section*{2. Revisión de Documentación Clave (PDFs)}
+
+\subsection*{2.1. Análisis de ``40202412-La-Cal-Es-Un-Reactivo-Parte-I.pdf''}
+Este documento es un texto técnico exhaustivo sobre la cal. Aportó una base teórica sólida, destacando:
+\begin{itemize}
+    \item La cal como reactivo fundamental en minería, especialmente en procesos hidrometalúrgicos.
+    \item La importancia de la hidratación (apagado) y la formación de lechada de cal, con énfasis en el control de variables como temperatura, proporción agua/cal, agitación y calidad del agua.
+    \item Los desafíos y variables críticas en el transporte hidráulico de la lechada de cal (granulometría, viscosidad, pH, incrustaciones, corrosión).
+    \item La necesidad de instrumentación para monitorear y controlar estos procesos.
+\end{itemize}
+Este PDF subraya que el monitoreo del flujo de cal no es solo cantidad, sino también las propiedades de la lechada y las condiciones de su preparación y transporte.
+
+\subsection*{2.2. Análisis de ``Especificación Instrumentación Y Software – Etapas 2 Y 3.pdf''}
+Documento crucial que define el alcance y los requisitos del software. Se estructura en dos etapas:
+\begin{itemize}
+    \item 	extbf{Etapa 2 (Supervisión Integral y Análisis Operacional):} Se enfoca en la instrumentación existente. Incluye dashboards en tiempo real, registro histórico, alertas automáticas (nivel, flujo anómalo, equipos fuera de servicio) y análisis básico de causas. Menciona explícitamente la instrumentación actual (LT, FT, pHT, DT).
+    \item 	extbf{Etapa 3 (Control Avanzado y Optimización del Sistema):} Requiere instrumentación adicional para control PID/cascada, ajuste automático de setpoints, detección predictiva de fallas y optimización.
+\end{itemize}
+Este documento es la hoja de ruta directa para la construcción del software, traduciendo los conceptos del primer PDF en requisitos concretos.
+
+\subsection*{2.3. Análisis de ``Filosofía de control 4-V2-2270-IC-IPC-136001\_0\_PDF.pdf''}
+Este documento detalla la filosofía de control para la planta de lechada de cal, proporcionando el "cómo" se controlan los procesos. Sus puntos clave son:
+\begin{itemize}
+    \item 	extbf{Arquitectura de Control:} Sistema de Control Distribuido (DCS), con instrumentación conectada vía FIELDBUS FOUNDATION y cableado directo.
+    \item 	extbf{Modos de Operación:} Manual (Mantenimiento) y Automático (Operación).
+    \item 	extbf{Alarmas e Interlocks:} Tablas extensas con equipos, tags, condiciones (ej. parada de emergencia, sobrecarga, niveles críticos, temperaturas, flujos) y las acciones/alarmas resultantes en el DCS.
+    \item 	extbf{Secuencias Operacionales:} Descripciones detalladas de las secuencias de carga del silo, descarga a pre-mezclador, preparación de lechada (con control de temperatura por PID y alarmas), y sistema de dilución.
+\end{itemize}
+Este PDF visualiza la implementación práctica de los conceptos de los PDFs anteriores, proporcionando tags específicos y lógicas de operación.
+
+\subsection*{2.4. Análisis de ``flujo\_mineria.pdf''}
+Es un Diagrama de Flujo de Proceso (PFD) para la planta de lechada de cal. Complementa los documentos anteriores con una representación visual completa del sistema, incluyendo:
+\begin{itemize}
+    \item Equipos principales (silo, alimentadores, pre-mezclador, slaker, cámaras de separación, bombas, tanques de almacenamiento).
+    \item Flujos de materiales (cal viva, agua, lechada, recirculación).
+    \item Ubicación de la instrumentación con sus respectivos tags (FIT, LIT, TIT, PIT).
+    \item Notas sobre el consumo de cal y los tiempos de operación.
+\end{itemize}
+Este PFD es el plano arquitectónico que une los conceptos teóricos y los requisitos de software e instrumentación en una vista unificada del proceso.
+
+\section*{3. Análisis del Código Existente (cal\_monitoring\_backend)}
+
+\subsection*{3.1. ``cal\_monitoring\_backend/main.py''}
+Es el punto de entrada de la aplicación FastAPI. Está correctamente inicializado con metadatos del proyecto y un endpoint de prueba (`/`). Los comentarios indican la intención de añadir endpoints para datos de sensores, estado, históricos y configuración.
+
+\subsection*{3.2. ``cal\_monitoring\_backend/core\_logic.py''}
+Contiene la lógica de negocio central, incluyendo:
+\begin{itemize}
+    \item Funciones para cargar datos de sensores de Excel y configuraciones de alarmas de JSON.
+    \item Utilidades para mapear TAGs a columnas de Excel.
+    \item Constantes para umbrales de alarma (actualmente hardcodeadas, se recomienda externalizarlas).
+    \item Funciones para evaluar condiciones de alarma (absolutas, relativas a setpoints, `multiple_and`).
+    \item Lógica para determinar el modo de operación actual del sistema.
+    \item La clase `ReactivityMonitor`, que implementa la detección y clasificación de curvas de reactividad de la cal basada en cambios de temperatura a lo largo del tiempo.
+\end{itemize}
+Este archivo es una base sólida con funcionalidades avanzadas ya implementadas.
+
+\subsection*{3.3. ``cal\_monitoring\_backend/test\_core\_logic.py''}
+Un script de prueba básico que demuestra la funcionalidad de `core_logic.py`.
+\begin{itemize}
+    \item Carga datos de ``D:\Cal\Antiguo\Sensor\Tabla\_Completa.xlsx``.
+    \item Contenía un 	extbf{error crítico} al intentar cargar la configuración JSON desde ``D:\Cal\Antiguo\Sensor\logica\_planta.py`` (un archivo .py que contenía JSON) en lugar de un .json.
+\end{itemize}
+
+\section*{4. Corrección de Ruta de Configuración de Alarmas}
+\begin{itemize}
+    \item Se identificó que ``D:\Cal\Antiguo\Sensor\logica\_planta.py`` era en realidad un contenido JSON con la configuración de alarmas.
+    \item Se creó la carpeta ``cal\_monitoring\_backend/config``.
+    \item Se movió el contenido JSON a ``cal\_monitoring\_backend/config/alarm\_config.json``.
+    \item Se actualizó la ruta en ``cal\_monitoring\_backend/test\_core\_logic.py`` para cargar correctamente el nuevo archivo JSON.
+\end{itemize}
+Esta acción asegura una mejor estructura del proyecto y corrige el problema de carga de configuración.
+
+\section*{5. Librerías a Utilizar}
+Se han recomendado e instalado las siguientes librerías esenciales para el proyecto:
+\begin{itemize}
+    \item 	extbf{fastapi}: Framework web.
+    \item 	extbf{uvicorn}: Servidor ASGI para FastAPI.
+    \item 	extbf{sqlalchemy}: ORM para interacción con base de datos.
+    \item 	extbf{pandas}: Manipulación y análisis de datos.
+    \item 	extbf{python-dotenv}: Gestión de variables de entorno.
+    \item 	extbf{pytest}: Herramienta de testing.
+    \item 	extbf{pydantic}: (Dependencia de FastAPI) Validación de datos.
+\end{itemize}
+
+\section*{6. Próximos Pasos (TODO List)}
+Se ha generado un TODO list detallado para las próximas fases del proyecto, enfocándose en la Etapa 2 y sentando las bases para la Etapa 3.
+
+\end{document}

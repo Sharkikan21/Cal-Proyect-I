@@ -1,0 +1,207 @@
+/* Estilos Generales */
+.container {
+    width: 100%;
+    max-width: 500px;
+    /* Un poco más ancho para las tablas */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin: 2rem auto;
+    box-sizing: border-box;
+}
+
+.container h1,
+.container h2,
+.container h3 {
+    text-align: center;
+    color: #1c1e21;
+}
+
+/* --- NUEVO: Estilos para el Formulario de Configuración --- */
+.config-form p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- Estilos del Dashboard (existentes y nuevos) --- */
+.silo-container {
+    margin: 20px auto;
+    width: 100px;
+    height: 250px;
+    border: 4px solid #555;
+    border-radius: 10px 10px 0 0;
+    background-color: #e0e0e0;
+    position: relative;
+    overflow: hidden;
+}
+
+#silo-fill {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #facc15;
+    transition: height 0.5s ease-in-out;
+}
+
+#level-percentage {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0;
+}
+
+#level-tons {
+    font-size: 18px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.alert {
+    padding: 12px;
+    margin: 20px 0;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.alert-normal {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-solicitar {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-urgente {
+    background-color: #fdcba0;
+    color: #a54c0f;
+}
+
+.alert-peligro {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+#btn-recepcion {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+#btn-recepcion:enabled {
+    background-color: #28a745;
+}
+
+#btn-recepcion:enabled:hover {
+    background-color: #218838;
+}
+
+#btn-recepcion:disabled {
+    background-color: #6c757d;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.tooltip-text {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    height: 14px;
+    margin-top: 4px;
+}
+
+.simulation-controls {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.simulation-controls label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.simulation-controls input[type="range"] {
+    width: 100%;
+    margin-top: 8px;
+}
+
+
+/* --- NUEVO: Estilos para la Tabla de Registros --- */
+.log-table-container {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.log-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.log-table-container th,
+.log-table-container td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.log-table-container thead {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.log-table-container tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

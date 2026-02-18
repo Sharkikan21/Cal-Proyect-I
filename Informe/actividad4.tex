@@ -1,0 +1,154 @@
+\section{Desarrollo:}
+\subsection{¿Qué es BIM?}
+Building Information Modeling (BIM) es una metodología de trabajo colaborativa que utiliza modelos digitales 3D para concentrar, en un solo entorno, la información geométrica y alfanumérica de un proyecto de arquitectura, ingeniería y construcción a lo largo de todo su ciclo de vida: diseño, construcción, operación y eventual demolición. Un modelo BIM no es sólo una “maqueta 3D”; cada elemento (muros, losas, equipos, tuberías, caminos, estructuras, etc.) está asociado a propiedades como materiales, dimensiones, costos, vida útil, desempeño energético y vínculos a documentos externos.\\
+
+En la practica, BIM agrega diferentes $"dimensiones"$ al modelo:
+
+\begin{itemize}
+    \item 3D: geometría y coordinación espacial.
+    \item 4D: programación de obra (tiempo y secuencia constructiva).
+    \item 5D: costos y presupuestos vinculados a cantidades automáticas.
+    \item 6D y más: información de sostenibilidad, impactos ambientales, mantenimiento, huella de carbono, entre otros.
+\end{itemize}
+
+El modelo se gestiona en un entorno común de datos (CDE) que permite a los distintos actores (mandantes, proyectistas, constructores, operadores y autoridades) trabajar sobre una base de información única y trazable, reduciendo errores por incoherencias entre planos, memorias y planillas.\\
+
+En Chile, desde 2016 el programa Planbim Corfo impulsa la adopción de BIM en proyectos públicos, generando el Estándar BIM para Proyectos Públicos y guías de implementación.
+
+ A partir de 2020 diversos mandantes del Estado han empezado a exigir la entrega de modelos BIM en licitaciones, y actualmente (2025) existe una Hoja de Ruta BIM que busca alcanzar cerca de un 70 \% de adopción de BIM al 2028, especialmente en edificación pública e infraestructura.
+
+\newpage
+\subsection{¿Cómo aplicar BIM en el desarrollo de una EIA?}
+
+La aplicación de BIM en el desarrollo de un Estudio de Impacto Ambiental (EIA) consiste en usar el modelo digital del proyecto como ``columna vertebral'' de la información técnica y ambiental. En lugar de elaborar el EIA sólo a partir de planos 2D, memorias y planillas desconectadas, BIM permite integrar en un mismo entorno la geometría del proyecto, los datos del entorno físico y las variables ambientales relevantes, manteniendo coherencia y trazabilidad a lo largo de todo el ciclo del estudio.
+
+En una visión general, BIM puede apoyar las distintas partes del EIA de la siguiente manera:
+
+\begin{itemize}
+    \item \textbf{Formulación del proyecto y alternativas.}  
+    En la etapa temprana se modelan en BIM las distintas alternativas de emplazamiento, trazado o configuración del proyecto (por ejemplo, variantes de una carretera, de una línea eléctrica o de un edificio). Cada alternativa puede asociarse a información territorial y normativa (uso de suelo, áreas protegidas, servidumbres, distancias a receptores sensibles), lo que facilita comparar sus implicancias ambientales antes de definir la alternativa a someter al SEIA.
+
+    \item \textbf{Descripción del entorno y línea base.}  
+    El modelo BIM puede vincularse con información geoespacial (GIS), levantamientos topográficos, catastros de vegetación, hidrología, equipamientos existentes, etc. De este modo, el entorno relevante se representa tridimensionalmente (relieve, cuerpos de agua, edificaciones cercanas) y se le agregan atributos ambientales (calidad de aire, niveles de ruido de fondo, sensibilidad ecológica), lo que mejora la comprensión espacial de la línea base.
+
+    \item \textbf{Identificación y evaluación de impactos.}  
+    A partir del modelo 3D--4D se pueden simular y cuantificar impactos: volúmenes de movimiento de tierras, ocupación de fajas, áreas de intervención de vegetación, sombras proyectadas, visibilidad desde ciertos puntos de observación, proximidad a cursos de agua, entre otros. El carácter paramétrico de BIM hace que cualquier cambio de diseño se actualice automáticamente en las métricas usadas en el EIA (superficies afectadas, volúmenes, distancias), reduciendo errores de cálculo y de coherencia entre capítulos.
+
+    \item \textbf{Diseño de medidas de mitigación, reparación y compensación.}  
+    Las medidas ambientales (pantallas acústicas, franjas de reforestación, drenajes, cierres perimetrales, pasos de fauna, etc.) pueden modelarse como elementos BIM con propiedades específicas (dimensiones, materiales, eficiencia acústica o hidráulica, costos). Esto permite verificar visual y cuantitativamente su efectividad, chequear interferencias con otras disciplinas y asegurar el cumplimiento de exigencias normativas o de los términos de referencia.
+
+    \item \textbf{Programación y costos de la gestión ambiental (4D y 5D).}  
+    Asociando el modelo a un cronograma (4D) y a datos de costos (5D), es posible planificar en detalle cuándo se ejecuta cada actividad con implicancias ambientales (despeje de vegetación, excavaciones, manejo de residuos, implementación de medidas de control) y cuánto cuesta. Esto facilita elaborar el Plan de Manejo Ambiental, estimar recursos necesarios y respaldar la viabilidad económica de las medidas propuestas.
+
+    \item \textbf{Participación ciudadana y comunicación de impactos.}  
+    El modelo BIM permite generar visualizaciones comprensibles para actores no técnicos (recorridos virtuales, imágenes 3D, animaciones de la fase de construcción), lo que mejora la transparencia del EIA y el diálogo con comunidades y autoridades, reduciendo la brecha entre la documentación técnica y la percepción de los impactos.
+
+\end{itemize}
+
+
+\subsection{¿Cómo utilizar BIM para la descripción del proyecto que se presenta en el EIA?}
+
+En un Estudio de Impacto Ambiental, la \textit{Descripción del Proyecto} debe explicar con claridad qué se quiere construir, dónde y cómo. BIM puede ser la fuente única de información desde la cual se generan planos, tablas y figuras, manteniendo coherencia entre texto, dibujos y planillas.
+
+\subsubsection{ Localización y emplazamiento}
+
+El modelo BIM puede georreferenciarse y vincularse a cartografía oficial, ortofotos y modelos digitales de terreno.  
+Así se representan en 3D la ubicación del proyecto, sus accesos, límites y fajas de servidumbre, y se visualiza su relación con elementos sensibles del entorno (cursos de agua, áreas protegidas, centros poblados, infraestructura existente). Estos insumos permiten elaborar planos de ubicación y secciones típicas directamente desde el modelo.
+
+\subsubsection{Componentes del proyecto: obras principales y auxiliares}
+
+Las distintas partes del proyecto (edificaciones, estructuras, caminos, tuberías, líneas eléctricas, equipos, instalaciones de faena, etc.) se modelan como categorías o sistemas dentro del BIM.  
+A partir de ello se obtienen listados automáticos de obras principales y auxiliares con sus dimensiones relevantes (largo, área, volumen, capacidad, potencia). Los elementos temporales pueden asignarse a fases específicas, diferenciándolos de las obras permanentes. Al modificar un parámetro de diseño, el modelo actualiza de forma consistente planos y tablas usados en la descripción del proyecto.
+
+\subsubsection{Fases: construcción, operación y cierre}
+
+Mediante BIM 4D es posible asociar el cronograma a los elementos del modelo.  
+En construcción, las simulaciones muestran la secuencia de actividades (despeje, movimiento de tierras, montajes), ayudando a explicar en qué momentos se generan ciertos impactos.  
+En operación, el modelo describe el estado final del proyecto y las capacidades de cada sistema.  
+Para el cierre, se pueden representar las obras a desmantelar, las estabilizaciones y las recuperaciones paisajísticas, generando planos específicos que respaldan el plan de abandono.
+
+\subsubsection{Procesos, insumos y flujos}
+
+Elementos del modelo pueden vincularse a datos de consumo de agua, energía, combustibles y materias primas.  
+También se asocian parámetros de operación (caudales, emisiones, niveles de ruido, temperaturas) a equipos y sistemas, que luego se usan en la modelación de impactos.  
+Con vistas 3D simplificadas se pueden elaborar esquemas de procesos (tratamiento de aguas, ventilación, transporte interno) que sustituyen o complementan los diagramas de bloques tradicionales.
+
+\subsubsection{Representación gráfica y apoyo a la comprensión}
+
+Desde el modelo BIM se generan plantas, cortes y elevaciones coherentes, además de vistas 3D y recorridos virtuales que muestran la volumetría del proyecto y su inserción en el paisaje.  
+Las animaciones 4D de la secuencia constructiva son útiles en la participación ciudadana y en reuniones técnicas, al hacer más comprensible el desarrollo de las obras.
+
+\subsection{Uso de BIM en la Presentación de la Línea Base}
+
+En un Estudio de Impacto Ambiental, la \textbf{línea base} describe el estado del medio antes de la ejecución del proyecto. Incluye componentes físicos, bióticos y sociales que puedan verse afectados.  
+Su calidad es clave: si la línea base es pobre o poco clara, la evaluación de impactos será débil.
+
+BIM puede apoyar fuertemente esta etapa si se concibe el modelo no sólo como una representación del proyecto, sino también como un contenedor estructurado de información del \emph{entorno}. La idea central es integrar, alrededor del modelo BIM, la cartografía, los levantamientos y los datos medidos en terreno, de manera que la línea base se presente de forma espacialmente coherente y fácil de entender.
+
+\subsubsection{Integración BIM--GIS y representación del territorio}
+
+El primer paso es \textbf{georreferenciar} el modelo BIM y vincularlo con información GIS.  
+Sobre el terreno digital (modelo digital de elevación, curvas de nivel, ortofotos) se pueden cargar capas como:
+
+\begin{itemize}
+    \item Uso de suelo y coberturas de vegetación,
+    \item Hidrografía (ríos, esteros, humedales, zonas inundables),
+    \item Geología y riesgos naturales (fallas, inestabilidades de ladera),
+    \item Límites administrativos, áreas protegidas y zonas con restricciones normativas.
+\end{itemize}
+
+Estas capas se vinculan al modelo BIM como referencias externas o nubes de puntos.  
+De este modo, las figuras de la línea base (mapas de ubicación de elementos relevantes) se generan coherentemente con la misma geometría usada en la descripción del proyecto.
+
+\subsubsection{Componentes físicos: clima, aire, agua, suelo y ruido}
+
+Para la \textbf{línea base física}, los puntos de medición y estaciones se pueden representar como objetos BIM (familias de “punto de monitoreo”) con atributos asociados:
+
+\begin{itemize}
+    \item Coordenadas y cota.
+    \item Tipo de variable medida (calidad de aire, ruido, caudal, calidad de agua, etc.).
+    \item Fechas de campaña y valores estadísticos (promedios, máximos, percentiles).
+\end{itemize}
+
+Por ejemplo, los \emph{puntos de ruido} se ubican en el modelo alrededor de receptores sensibles (viviendas, escuelas, hospitales). Cada punto almacena los niveles medidos e información de respaldo.  
+Las figuras de la línea base (mapas de isófonas, ubicación de estaciones hidrométricas, etc.) pueden generarse combinando vistas 3D/2D del modelo con simbología estándar.
+
+En hidrología, cursos y cuerpos de agua se representan como elementos lineales o volumétricos vinculados a datos de caudal, régimen y calidad. Esto ayuda a entender la relación espacial entre el proyecto y las unidades hidrográficas relevantes.
+
+\subsubsection{Componentes bióticos: flora, fauna y hábitats}
+
+Para la \textbf{línea base biótica}, el entorno se puede dividir en \textbf{unidades de hábitat} modeladas como volúmenes o polígonos sobre el terreno BIM:
+
+\begin{itemize}
+    \item Cada unidad contiene atributos como tipo de vegetación, estado de conservación, presencia de especies protegidas o endémicas.
+    \item Los puntos o transectos de muestreo de flora y fauna se incorporan como objetos con información de campañas, especies registradas y abundancias.
+\end{itemize}
+
+Esto permite visualizar claramente qué hábitats y comunidades biológicas se encuentran dentro del área de influencia y cómo se distribuyen respecto del proyecto.  
+Además, facilita cuantificar superficies por tipo de hábitat, información que luego se usa para evaluar impactos y diseñar medidas de mitigación o compensación (por ejemplo, reforestaciones equivalentes).
+
+\subsubsection{Medio humano: asentamientos, usos y sensibilidad social}
+
+En el \textbf{medio humano}, BIM puede representar:
+
+\begin{itemize}
+    \item Localización de poblados, viviendas dispersas, equipamientos (escuelas, postas, sedes comunitarias).
+    \item Rutas de acceso, caminos vecinales y redes de transporte.
+    \item Usos del territorio relevantes: actividades productivas, turismo, recreación, sitios de valor cultural.
+\end{itemize}
+
+Estos elementos se pueden modelar como volúmenes simples o bloques referenciados, con atributos que describan población, número de viviendas, principales actividades económicas y nivel de sensibilidad frente a cambios (por ejemplo, comunidades que dependen del agua de un determinado estero).
+
+De esta forma, las figuras de la línea base social (mapas de asentamientos, redes viales, zonas de influencia) se obtienen directamente a partir del modelo, manteniendo la misma base espacial que el resto del EIA.
+
+\subsubsection{Coherencia, trazabilidad y actualización}
+
+Un beneficio importante de usar BIM en la línea base es la \textbf{trazabilidad}.  
+Cada mapa, tabla o gráfico puede vincularse al objeto BIM o a la capa de datos de la cual proviene, registrando fuente, fecha y responsable de la información.  
+Si en una etapa posterior se actualiza un dato (por ejemplo, una nueva campaña de monitoreo o una corrección de cartografía), el modelo permite identificar rápidamente qué figuras y secciones del EIA se ven afectadas.
+
+Además, el modelo se puede reutilizar en etapas de seguimiento: los mismos puntos de monitoreo definidos en la línea base sirven para controlar el cumplimiento de compromisos ambientales durante la construcción y operación, manteniendo continuidad entre diagnóstico, evaluación y seguimiento.
+
+
+
+

@@ -1,0 +1,90 @@
+\section{ok}
+
+\begin{equation}
+    V(x) = V(x+c)
+\end{equation}
+
+\begin{equation}
+\psi(x+c)=e^{ikc}\psi(x)
+\end{equation}
+\begin{equation}
+\frac{d^{2}\psi}{dx^{2}} \approx \frac{\psi(x+h)-2\psi(x)+\psi(x-h)}{h^{2}}
+\end{equation}
+% Condiciones de borde "caja" (Dirichlet)
+\begin{equation}
+\psi(0)=0,\qquad \psi(L)=0.
+\end{equation}
+
+% Solución: condiciones de borde tipo Bloch en los puntos frontera
+\begin{equation}
+\psi(N+1)=e^{ikc}\,\psi(1), 
+\qquad 
+\psi(0)=e^{-ikc}\,\psi(N).
+\end{equation}
+
+% Matriz resultante (Hamiltoniano) con esquinas destacadas
+\begin{equation}
+H=
+\begin{pmatrix}
+\mathrm{Diag} & -t & 0 & \cdots & -t\,e^{-ikc}\\
+-t & \mathrm{Diag} & -t & \cdots & 0\\
+0 & -t & \mathrm{Diag} & \ddots & \vdots\\
+\vdots & \vdots & \ddots & \mathrm{Diag} & -t\\
+-t\,e^{ikc} & 0 & \cdots & -t & \mathrm{Diag}
+\end{pmatrix}.
+\end{equation}
+
+
+
+
+
+\begin{lstlisting}[language=Python, caption={Construcción del Hamiltoniano tridiagonal disperso con condiciones de Bloch}, label={lst:hamiltoniano_bloch}]
+import scipy.sparse as sp
+
+# H tridiagonal "sparse" (solo 3 diagonales no-cero)
+H = sp.diags([off, main, off], offsets=[-1, 0, 1],
+             dtype=np.complex128, format="lil")
+
+# (Bloch) agregar solo 2 entradas no-cero extra en las esquinas
+H[0, N-1] = -t_kin * np.exp(-1j * k * c)
+H[N-1, 0] = -t_kin * np.exp(+1j * k * c)
+
+H = H.tocsr()  # convertir a formato eficiente para álgebra lineal
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[language=Python]
+def build_hamiltonian_sparse(Vcell: np.ndarray, period: float, h_step: float,
+                             t_kin: float, k_bloch: float) -> sp.csr_matrix:
+    
+    Nloc = Vcell.size
+    main = 2.0 * t_kin + Vcell
+    off  = -t_kin * np.ones(Nloc - 1)
+
+    H = sp.diags([off, main, off], offsets=[-1, 0, 1],
+                 dtype=np.complex128, format="lil")
+
+    phase_plus  = np.exp(-1j * k_bloch * period)
+    phase_minus = np.exp(+1j * k_bloch * period)
+    H[0, Nloc-1] = -t_kin * phase_plus
+    H[Nloc-1, 0] = -t_kin * phase_minus
+
+    return H.tocsr()
+\end{lstlisting}
+
+El \textbf{número de Froude} (\(Fr\)) es un \textbf{número adimensional} que compara la \textbf{inercia} del flujo (tendencia a seguir moviéndose) versus la \textbf{gravedad} (tendencia a ``aplanar'' la superficie y frenar ondas). Se usa muchísimo en \textbf{canales abiertos} (ríos, canales), \textbf{olas}, \textbf{barcos}, \textbf{vertederos}, etc., porque indica cómo se comportan las \textbf{ondas superficiales} y el régimen del flujo.
+
+Una forma típica en canales abiertos es:
+\begin{equation}
+Fr=\frac{V}{\sqrt{g\,D}}
+\end{equation}
+donde \(V\) es la velocidad del flujo, \(g\) la gravedad, y \(D\) una ``profundidad característica'' (en un canal rectangular suele ser la \textbf{profundidad hidráulica}).
+
+Interpretación rápida:
+\begin{itemize}
+    \item \(Fr<1\): \textbf{subcrítico} (la gravedad ``domina''; las perturbaciones/ondas pueden viajar aguas arriba).
+    \item \(Fr=1\): \textbf{crítico} (límite).
+    \item \(Fr>1\): \textbf{supercrítico} (la inercia ``domina''; las ondas no logran ir aguas arriba).
+\end{itemize}
+

@@ -1,0 +1,212 @@
+\section*{Problema 1: Oscilador Armónico Isotrópico y Efecto Zeeman (Reconstrucción)}
+
+Considere una partícula de masa $m$ y carga $q$ sometida a un potencial armónico tridimensional isotrópico
+\begin{equation}
+V(r)=\frac{1}{2} m \omega^{2} r^{2}.
+\end{equation}
+
+El Hamiltoniano en coordenadas esféricas se escribe como:
+\begin{equation}
+H_{0} = -\frac{\hbar^{2}}{2m}\left[\frac{1}{r^{2}}\frac{\partial}{\partial r}\left(r^{2}\frac{\partial}{\partial r}\right) - \frac{\hat{L}^{2}}{\hbar^{2} r^{2}}\right] 
++ \frac{1}{2} m \omega^{2} r^{2}.
+\end{equation}
+
+Los autovalores de energía para este sistema están dados por
+\begin{equation}
+E_{N} = \hbar \omega \left( N + \frac{3}{2} \right), \qquad N = 0,1,2,\ldots
+\end{equation}
+donde $N$ es el número cuántico principal.
+
+\subsection*{1) Degeneración en base Cartesiana}
+
+Determine la degeneración del nivel de energía correspondiente a $N=1$.
+
+\textbf{Hint:} Para determinar la degeneración de manera sencilla, recuerde que el Hamiltoniano puede separarse en coordenadas cartesianas como la suma de tres osciladores independientes en $x,y,z$. Cuente las posibles combinaciones de números cuánticos $(n_x,n_y,n_z)$ que satisfacen la condición de energía para $N=1$.
+
+\subsection*{2) Momento Angular y Paridad}
+
+Dado que el Hamiltoniano es invariante ante rotaciones ($[H_{0},\hat{L}^{2}]=0$), los autoestados pueden caracterizarse por los números cuánticos $(N,l,m)$. Utilizando la relación entre el número cuántico principal y los nodos radiales, o argumentos de paridad, determine qué valores del momento angular orbital $l$ son posibles para el nivel $N=1$.
+
+\textbf{Nota:} Recuerde que la paridad del estado en coordenadas esféricas está determinada por el armónico esférico $Y^{m}_{l}$, teniendo paridad $(-1)^{l}$.
+
+\subsection*{3) Perturbación Magnética (Efecto Zeeman)}
+
+El sistema se coloca ahora en presencia de un campo magnético uniforme y constante en la dirección $z$, 
+\begin{equation}
+\vec{B} = B_{0} \, \hat{z}.
+\end{equation}
+
+La interacción con el campo magnético agrega un término perturbativo al Hamiltoniano debido al momento magnético orbital, dado por:
+\begin{equation}
+H' = -\vec{\mu}_{L} \cdot \vec{B} = \frac{q B_{0}}{2m} \, \hat{L}_{z},
+\end{equation}
+donde se ha despreciado el término diamagnético proporcional a $B_{0}^{2}$.
+
+\subsubsection*{a) Escriba el Hamiltoniano total}
+\begin{equation}
+H = H_{0} + H'.
+\end{equation}
+
+\subsubsection*{b) Explique física y matemáticamente por qué este término rompe la degeneración del nivel $N=1$ encontrada en el inciso 1.}
+
+\subsubsection*{c) Calcule las correcciones de energía a primer orden y bosqueje el desdoblamiento de los niveles de energía indicando el valor de $m$ correspondiente a cada nuevo nivel.}
+
+\section*{Problema 2 : Entrelazamiento y Correlaciones de Espín}
+
+Considere un sistema de dos partículas de espín $1/2$ (A y B) preparadas en el \textit{estado singlete} (espín total cero). 
+En la base de autoestados de $\hat{S}_z$ ($\lvert +_z \rangle$, $\lvert -_z \rangle$), este estado se escribe como:
+\begin{equation}
+\lvert \psi_{\text{singlete}} \rangle
+= \frac{1}{\sqrt{2}}
+\left( \lvert +_z \rangle_A \lvert -_z \rangle_B
+      - \lvert -_z \rangle_A \lvert +_z \rangle_B \right).
+\end{equation}
+
+Suponga que un observador (Alicia) mide la componente del espín de la partícula A en la dirección $x$ ($\hat{S}_x$) y obtiene el resultado $+ \hbar / 2$. Inmediatamente después, un segundo observador (Beto) mide la componente del espín de la partícula B en la dirección $z$ ($\hat{S}_z$).
+
+Calcule la probabilidad de que Beto obtenga el resultado $+ \hbar / 2$ en su medición.
+
+
+
+\section*{Problema 2 : Comportamiento de la función de onda frente a un potencial escalón}
+
+Considere el potencial unidimensional definido por
+\[
+V(x) =
+\begin{cases}
+V_0, & 0 < x < a, \\
+0, & x > a,
+\end{cases}
+\]
+y suponga que una partícula de energía total \(E\) satisface \(E > V_0\).
+La figura adjunta muestra cuatro posibles formas cualitativas para la densidad
+de probabilidad \(|\psi(x)|^2\), cada una dibujada sobre el mismo potencial.
+ \begin{figure}[!h]
+     \centering
+     \includegraphics[width=0.5\linewidth]{img/ejemplos/potenciales god asi.png}
+     \caption{Potenciales P2}
+     \label{fig:placeholder}
+ \end{figure}
+
+\begin{enumerate}
+    \item Basándose en la ecuación de Schrödinger y en las condiciones de continuidad
+    de la función de onda, determine cuál de las cuatro gráficas podría corresponder
+    a una solución física para \(\psi(x)\).
+
+    \item Justifique rigurosamente por qué las restantes gráficas no pueden representar
+    una solución válida para \(\psi(x)\) en este potencial.
+
+\end{enumerate}
+
+
+\section*{Problema 2 : Dinámica y Estacionariedad}
+
+En el contexto de la evolución temporal de sistemas cuánticos:
+
+\begin{enumerate}[a)]
+    \item Defina rigurosamente qué es un \textit{Estado Estacionario} tanto matemáticamente como físicamente. 
+    Mencione dos propiedades fundamentales que caracterizan a estos estados y dé un ejemplo concreto de un sistema físico en dicho estado.
+    
+    \item Considere ahora la siguiente afirmación hecha por un estudiante:
+    \begin{quote}
+        ``Dado que el colapso de la función de onda lleva al sistema a un autoestado del operador medido, 
+        la densidad de probabilidad
+        \begin{equation}
+        \lvert \Psi(x,t) \rvert^{2}
+        \end{equation}
+        de dicho estado permanecerá congelada en el tiempo (estacionaria) mientras no se realicen nuevas mediciones, 
+        independientemente de qué observable se haya medido''.
+    \end{quote}
+    
+    ¿Está usted de acuerdo con esta afirmación? Justifique su respuesta utilizando la ecuación de Schrödinger
+    \begin{equation}
+    i\hbar \frac{\partial}{\partial t} \lvert \Psi(t) \rangle = \hat{H} \lvert \Psi(t) \rangle
+    \end{equation}
+    y argumentos de conmutación
+    \begin{equation}
+    [\hat{Q},\hat{H}].
+    \end{equation}
+\end{enumerate}
+
+\section*{Problema 3, Inciso 1: Resonancias de Transmisión}
+
+\textbf{Enunciado Reconstruido:}
+
+``Considere una partícula de energía $E$ que incide sobre una barrera de potencial rectangular de altura $V_{0}$ y ancho $L$, tal que $E > V_{0}$. Aunque clásicamente la partícula debería atravesar la barrera sin problemas, cuánticamente existe una probabilidad de reflexión no nula. Sin embargo, para ciertos valores específicos de la energía, se observa que el coeficiente de transmisión es exactamente 
+\begin{equation}
+T = 1
+\end{equation}
+(transmisión perfecta).
+
+\begin{enumerate}[a)]
+    \item Explique físicamente cómo es posible que no haya reflexión ($R = 0$) utilizando conceptos de \textit{interferencia de ondas}.
+    \item Mencione la \textit{analogía óptica} correspondiente a este fenómeno físico.
+\end{enumerate}
+''
+
+\section*{Problema: Semejanza y operadores hermíticos}
+
+Considere la matriz
+\[
+E =
+\begin{pmatrix}
+1 & \Delta \\
+0 & 1
+\end{pmatrix},
+\qquad \Delta \in \mathbb{C}.
+\]
+
+Dos estudiantes, Abi y Abel, discuten sobre esta matriz:
+
+\begin{itemize}
+    \item Abi afirma que es posible encontrar una matriz invertible $S$ tal que
+    la matriz transformada
+    \[
+    E' = S^{-1} E S
+    \]
+    sea hermítica.
+
+    \item Abel duda de esta afirmación.
+\end{itemize}
+
+\begin{enumerate}
+    \item Determine quién tiene razón. 
+
+    \item Sea ahora $A$ un operador hermítico arbitrario, es decir,
+    $A^\dagger = A$, y considere la transformación de semejanza
+    \[
+    A' = S^{-1} A S,
+    \]
+    donde $S$ es una matriz invertible (no necesariamente unitaria).
+    Encuentre la condición que debe satisfacer $S$ para que $A'$ resulte
+    hermítico, es decir, para que $(A')^\dagger = A'$.
+
+\end{enumerate}
+
+
+
+\section*{Problema: Colapso de la Función de Onda y Mediciones}
+
+La figura adjunta muestra la densidad de probabilidad de posición 
+$\lvert \Psi(x,y) \rvert^{2}$ para una partícula en el plano $xy$, 
+preparada en un estado de paquete de ondas gaussiano en el instante $t = t_{0}$.
+
+Considerando los postulados de la mecánica cuántica respecto a la medición, responda:
+
+\begin{enumerate}[a)]
+    \item Bosqueje cualitativamente, en el plano $xy$, cómo se vería la densidad de probabilidad 
+    $\lvert \Psi(x,y) \rvert^{2}$ inmediatamente después de realizar una medición precisa 
+    de la posición de la partícula.
+
+    \item Bosqueje cualitativamente, en el mismo plano $xy$, cómo se vería la densidad de probabilidad 
+    $\lvert \Psi(x,y) \rvert^{2}$ inmediatamente después de realizar una medición precisa 
+    del momentum lineal $p$ de la partícula.
+\end{enumerate}
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{img/ejemplos/Plot_probabilidad.png}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
