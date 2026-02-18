@@ -2,15 +2,21 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 from datetime import datetime
+from pathlib import Path
 
 # Importar la lógica y el simulador
-from .data_generator import PlantSimulator
-from .core_logic import (
+from data_generator import PlantSimulator
+from core_logic import (
     load_alarm_config_from_json,
     determinar_modo_actual,
     evaluar_alarmas_directo,
     ReactivityMonitor
 )
+
+# Ruta al config relativa a este archivo (funciona desde cualquier directorio de ejecución)
+_THIS_DIR = Path(__file__).resolve().parent
+ALARM_CONFIG_PATH = _THIS_DIR / "config" / "alarm_config.json"
+
 
 # --- Inicialización de la Aplicación y Estado Global ---
 
@@ -23,7 +29,7 @@ app = FastAPI(
 # Estado global de la aplicación (para una PoC, en producción se usaría un sistema de estado más robusto)
 simulator = PlantSimulator()
 reactivity_monitor = ReactivityMonitor()
-alarm_config = load_alarm_config_from_json("cal_monitoring_backend/config/alarm_config.json")
+alarm_config = load_alarm_config_from_json(str(ALARM_CONFIG_PATH))
 setpoints = {} # Diccionario para futuros setpoints dinámicos
 
 if not alarm_config:

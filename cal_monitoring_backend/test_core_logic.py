@@ -6,7 +6,7 @@ from core_logic import (
     evaluar_sensores_json,
     determinar_modo_actual,
     ReactivityMonitor,
-    es_cero,
+    es_cero,lee 
 )
 from datetime import datetime
 
