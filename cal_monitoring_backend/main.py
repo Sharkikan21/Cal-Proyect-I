@@ -1,7 +1,4 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from typing import List, Dict, Any
-from datetime import datetime
 from pathlib import Path
 
 # Importar la lógica y el simulador
@@ -12,6 +9,7 @@ from core_logic import (
     evaluar_alarmas_directo,
     ReactivityMonitor
 )
+from models import ReactivityCurve, PlantStatusResponse, ScenarioControlResponse
 
 # Ruta al config relativa a este archivo (funciona desde cualquier directorio de ejecución)
 _THIS_DIR = Path(__file__).resolve().parent
@@ -35,28 +33,6 @@ setpoints = {} # Diccionario para futuros setpoints dinámicos
 if not alarm_config:
     raise RuntimeError("No se pudo cargar la configuración de alarmas. La API no puede iniciar.")
 
-# --- Modelos de Datos (Pydantic) ---
-
-class ReactivityCurve(BaseModel):
-    timestamp_inicio: datetime
-    timestamp_fin: datetime
-    temp_inicio: float
-    temp_fin: float
-    tipo: str
-    minutos: int
-    segundos: int
-
-class PlantStatusResponse(BaseModel):
-    timestamp: datetime = Field(..., description="El timestamp de los datos de sensores.")
-    mode: str = Field(..., description="El modo de operación actual de la planta (ej: 'produciendo', 'inactivo').")
-    active_alarms: List[str] = Field(..., description="Una lista de las descripciones de las alarmas actualmente activas.")
-    new_reactivity_curves: List[ReactivityCurve] = Field(..., description="Una lista de las curvas de reactividad completadas en este ciclo.")
-    sensor_data: Dict[str, Any] = Field(..., description="Los valores crudos de los sensores para este ciclo.")
-
-class ScenarioControlResponse(BaseModel):
-    message: str
-    scenario_started: str
-
 # --- Endpoints de la API ---
 
 @app.get("/", tags=["General"])
@@ -76,10 +52,10 @@ async def get_plant_status():
     screw_val = sensor_data.get("2270-SAL-11817", 0.0)
     rotary_val = sensor_data.get("2270-SAL-11818", 0.0)
     agua_val = sensor_data.get("2270-FIT-11801", 0.0)
-    
+
     # Asumimos que 'cal' está relacionado con la operación del tornillo
-    cal_val = screw_val 
-    
+    cal_val = screw_val
+
     current_mode = determinar_modo_actual(cal=cal_val, agua=agua_val, rotary_val=rotary_val, screw_val=screw_val)
     simulator.mode = current_mode # Sincronizar el modo del simulador si la lógica lo cambia
 
@@ -112,7 +88,7 @@ async def get_plant_status():
 async def start_scenario(scenario_name: str):
     """
     Inicia un escenario de prueba en el simulador.
-    
+
     Escenarios válidos:
     - `reactividad_alta`
     - `reactividad_media`
@@ -136,7 +112,7 @@ async def start_scenario(scenario_name: str):
             status_code=404,
             detail=f"Escenario '{scenario_name}' no reconocido. Escenarios válidos: reactividad_alta, reactividad_media, reactividad_baja, lavado, inactivo."
         )
-    
+
     return ScenarioControlResponse(
         message=f"Comando recibido. Iniciando escenario: {scenario_name}",
         scenario_started=scenario_name
