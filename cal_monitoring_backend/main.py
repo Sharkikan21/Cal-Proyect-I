@@ -1,7 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from pathlib import Path
-
-# Importar la lógica y el simulador
 from data_generator import PlantSimulator
 from core_logic import (
     load_alarm_config_from_json,
@@ -11,12 +9,9 @@ from core_logic import (
 )
 from models import ReactivityCurve, PlantStatusResponse, ScenarioControlResponse
 
-# Ruta al config relativa a este archivo (funciona desde cualquier directorio de ejecución)
 _THIS_DIR = Path(__file__).resolve().parent
 ALARM_CONFIG_PATH = _THIS_DIR / "config" / "alarm_config.json"
 
-
-# --- Inicialización de la Aplicación y Estado Global ---
 
 app = FastAPI(
     title="Sistema de Monitoreo de Cal Lechada",
@@ -24,16 +19,12 @@ app = FastAPI(
     version="0.2.0",
 )
 
-# Estado global de la aplicación (para una PoC, en producción se usaría un sistema de estado más robusto)
 simulator = PlantSimulator()
 reactivity_monitor = ReactivityMonitor()
 alarm_config = load_alarm_config_from_json(str(ALARM_CONFIG_PATH))
-setpoints = {} # Diccionario para futuros setpoints dinámicos
 
 if not alarm_config:
     raise RuntimeError("No se pudo cargar la configuración de alarmas. La API no puede iniciar.")
-
-# --- Endpoints de la API ---
 
 @app.get("/", tags=["General"])
 async def read_root():
