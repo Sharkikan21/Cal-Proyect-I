@@ -16,9 +16,9 @@
 
 \section*{1. Resumen de Análisis Inicial}
 
-En esta sesión se comenzó con un análisis completo del estado actual del proyecto. Se revisaron los documentos de progreso (`resumen_progreso.txt`, `bitacora_05_02_2026.tex`), el código fuente del backend (`cal_monitoring_backend/`) y la estructura del informe (`Informe/`).
+En esta sesión se comenzó con un análisis completo del estado actual del proyecto. Se revisaron los documentos de progreso (`resumen\_progreso.txt`, `bitacora\_05\_02\_2026.tex`), el código fuente del backend (`cal\_monitoring\_backend/`) y la estructura del informe (`Informe/`).
 
-El análisis concluyó que el proyecto tiene una lógica de negocio (`core_logic.py`) robusta y bien definida, capaz de procesar datos de sensores, evaluar un sistema de alarmas configurable y analizar curvas de reactividad de la cal. La capa de API (`main.py`) está inicializada pero pendiente de desarrollo para exponer dicha lógica.
+El análisis concluyó que el proyecto tiene una lógica de negocio (`core\_logic.py`) robusta y bien definida, capaz de procesar datos de sensores, evaluar un sistema de alarmas configurable y analizar curvas de reactividad de la cal. La capa de API (`main.py`) está inicializada pero pendiente de desarrollo para exponer dicha lógica.
 
 \section*{2. Aclaraciones y Requisitos Clave para el Desarrollo}
 
@@ -29,7 +29,7 @@ Se establecieron dos puntos fundamentales que guiarán las siguientes fases del 
 Se confirma que se tiene acceso a servicios de **Amazon Web Services (AWS)** para la gestión de datos. Esto representa un cambio estratégico a mediano y largo plazo.
 
 \begin{itemize}
-    \item El uso actual de un archivo Excel (`Tabla_Completa.xlsx`) para la ingesta de datos se considera una solución temporal para el desarrollo y las pruebas iniciales.
+    \item El uso actual de un archivo Excel (`Tabla\_Completa.xlsx`) para la ingesta de datos se considera una solución temporal para el desarrollo y las pruebas iniciales.
     \item En el futuro, la arquitectura del sistema deberá migrar hacia el uso de servicios de AWS. Posibles candidatos incluyen:
     \begin{itemize}
         \item 	extbf{Amazon S3:} Para el almacenamiento de datos históricos o archivos planos.

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Fase 2: Dosificación y Alimentación{% endblock %}
+{% block content %}
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 2: Dosificación y Alimentación</h1>
+<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Balance de masa. La cal viva se dosifica de forma controlada hacia el slaker mediante tornillo sinfín y pesómetro.</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
+    <div class="card">
+        <h3>Pesómetro — Ton/h</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Caudal másico de cal alimentada al slaker.</p>
+        <p class="data-value" style="font-size: 1.5rem;">—</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted);">Tag: 2280-WI-01769 (ej.)</p>
+    </div>
+    <div class="card">
+        <h3>Estado del Tornillo Alimentador</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Indicador de marcha/parada del tornillo dosificador.</p>
+        <p class="data-value" style="font-size: 1rem;">—</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted);">2270-SAL-11817</p>
+    </div>
+</div>
+{% endblock %}

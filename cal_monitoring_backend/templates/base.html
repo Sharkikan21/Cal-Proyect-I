@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Monitor de Flujo de Cal{% endblock %} | ICS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --bg-card-hover: #1c2128;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-amber: #d29922;
+            --accent-red: #f85149;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        .nav-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+        .nav-bar .brand {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+            margin-right: 1rem;
+        }
+        .nav-bar a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 4px;
+            transition: color 0.15s, background 0.15s;
+        }
+        .nav-bar a:hover {
+            color: var(--accent);
+            background: rgba(88, 166, 255, 0.08);
+        }
+        .nav-bar a.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        main {
+            padding: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .data-value {
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .card h2, .card h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+        {% block extra_css %}{% endblock %}
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <span class="brand">Monitor de Flujo de Cal</span>
+        <a href="/" class="{% if current_phase == 'index' %}active{% endif %}">Visión General</a>
+        <a href="/phase/1" class="{% if current_phase == '1' %}active{% endif %}">Fase 1: Almacenamiento</a>
+        <a href="/phase/2" class="{% if current_phase == '2' %}active{% endif %}">Fase 2: Dosificación</a>
+        <a href="/phase/3" class="{% if current_phase == '3' %}active{% endif %}">Fase 3: Hidratación</a>
+        <a href="/phase/4" class="{% if current_phase == '4' %}active{% endif %}">Fase 4: Separación</a>
+        <a href="/phase/5" class="{% if current_phase == '5' %}active{% endif %}">Fase 5: Distribución</a>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

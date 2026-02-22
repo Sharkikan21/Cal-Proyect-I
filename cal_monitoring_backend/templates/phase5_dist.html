@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Fase 5: Distribución de Lechada{% endblock %}
+{% block content %}
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 5: Distribución de Lechada</h1>
+<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Transporte hidráulico de lechada de cal. Monitoreo de densidad, flujo y presión para prevenir sedimentación e incrustaciones en tuberías y bombas.</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
+    <div class="card">
+        <h3>Densidad de Lechada</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Concentración (% sólidos o kg/m³) para evitar bloqueos.</p>
+        <p class="data-value" style="font-size: 1.25rem;">—</p>
+    </div>
+    <div class="card">
+        <h3>Flujo de Lechada</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Caudal en línea hacia puntos de dosificación.</p>
+        <p class="data-value" style="font-size: 1.25rem;">—</p>
+    </div>
+    <div class="card">
+        <h3>Presión de Bombas</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Presión de descarga para garantizar circulación.</p>
+        <p class="data-value" style="font-size: 1.25rem;">—</p>
+    </div>
+</div>
+{% endblock %}

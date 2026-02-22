@@ -1,0 +1,92 @@
+
+\section*{1. Entendimiento del Flujo de Proceso ("La Historia de la Cal")}
+
+Se ha realizado un análisis detallado del diagrama de flujo de proceso (PFD) `flujo\_mineria.pdf` y se ha correlacionado con la información existente en el código (`cal\_monitoring\_backend/`) y las referencias a archivos previos (`Antiguo/`). Este análisis nos permite establecer una narrativa clara del viaje de la cal a través de la planta, fundamental para la creación de escenarios de prueba realistas.
+
+\subsection*{1.1. Etapas del Proceso}
+
+El proceso de monitoreo de la lechada de cal se descompone en las siguientes etapas principales:
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Almacenamiento de Cal Viva:}
+    \begin{itemize}
+        \item \textit{Historia:} La cal viva (materia prima) se recibe y almacena en un gran silo.
+        \item \textit{Relación con el Proyecto:} El PFD muestra el "Silo de Cal". En el código, los sensores `2270-LIT-11825` (nivel) y las alarmas asociadas (`2270-LSHH-11826`, `2270-LSLL-11829`) se refieren directamente a esta etapa.
+    \end{itemize}
+
+    \item \textbf{Dosificación y Alimentación:}
+    \begin{itemize}
+        \item \textit{Historia:} La cal viva se extrae del silo y se alimenta de manera controlada al equipo de hidratación.
+        \item \textit{Relación con el Proyecto:} El control se realiza mediante el "Alimentador de Tornillo" (`2270-SAL-11817`) y la "Válvula Rotatoria" (`2270-SAL-11818`), cuyas señales son utilizadas en `data\_generator.py` para simular la alimentación de cal.
+    \end{itemize}
+
+    \item \textbf{Hidratación (El "Apagado" de la Cal):}
+    \begin{itemize}
+        \item \textit{Historia:} La cal viva reacciona exotérmicamente con agua en un "Slaker" o "Apagador" para formar hidróxido de calcio (lechada de cal). Esta es la etapa central del proceso.
+        \item \textit{Relación con el Proyecto:} El PFD muestra el equipo de mezcla. Los sensores `2270-FIT-11801` (flujo de agua) y `2270-TT-11824A/B` (temperaturas del slaker) son críticos aquí. La clase `ReactivityMonitor` en `core\_logic.py` analiza la curva de temperatura del sensor `2270-TT-11824B`, implementando directamente el concepto de \textit{reactividad} explicado en los libros de Guillermo.
+    \end{itemize}
+
+    \item \textbf{Separación y Clasificación:}
+    \begin{itemize}
+        \item \textit{Historia:} La lechada de cal se procesa para remover impurezas y partículas gruesas ("arenilla" o "grit") en una cámara de separación o hidrociclones.
+        \item \textit{Relación con el Proyecto:} El PFD muestra los hidrociclones. Los sensores `2270-LIT-11850` (nivel de la cámara de separación) y alarmas como `2270-PALL-11834` (presión del hidrociclón) en `alarm\_config.json` confirman la relevancia de esta etapa para el monitoreo.
+    \end{itemize}
+
+    \item \textbf{Almacenamiento y Distribución de Lechada Final:}
+    \begin{itemize}
+        \item \textit{Historia:} La lechada de cal lista para su uso se almacena en tanques y se bombea a los puntos de aplicación en la minera.
+        \item \textit{Relación con el Proyecto:} El PFD finaliza con tanques de lechada y bombas. Sensores como `2270-LIT-11845` (nivel de tanque de descarga) y variables de monitoreo de bombas y sistemas de lubricación (`2270-PIT-11895`, `2270-TIT-11893`, `2270-FSL-11896`) están asociados a esta etapa.
+    \end{itemize}
+\end{enumerate}
+
+\section*{2. Relación Clave con los Libros de Guillermo y el Diseño del Software}
+
+La comprensión profunda de los libros de Guillermo Coloma Álvarez es \textbf{esencial} para desarrollar un software que no solo monitoree, sino que interprete y optimice el proceso de la cal de manera inteligente. Los libros no son solo teoría; proporcionan el marco conceptual para validar y enriquecer nuestro modelo de simulación y lógica de control.
+
+\begin{itemize}
+    \item \textbf{La Reactividad de la Cal como Fundamento:} Los libros de Guillermo enfatizan que la \textit{reactividad de la cal} (definida por la velocidad y magnitud del aumento de temperatura durante el apagado) es una propiedad crítica que determina su eficiencia.
+    \begin{itemize}
+        \item \textit{Conexión con Datos:} Nuestro sensor `2270-TT-11824B` (temperatura del slaker) mide directamente esta reacción. Un simulador avanzado debe poder generar curvas de temperatura que varíen significativamente según la \textit{calidad de cal simulada} (ej. una cal "dura de apagar" o de baja reactividad mostrará una curva más lenta y menos intensa, como se describe en los Gráficos de Reactividad de los libros).
+        \item \textit{Impacto en el Software:} La clase `ReactivityMonitor` de `core\_logic.py` está perfectamente posicionada para clasificar estas curvas, pero su eficacia depende de que el simulador le proporcione datos que reflejen las distintas calidades de cal.
+    \end{itemize}
+
+    \item \textbf{La Calidad de la Cal y el "CaO Equivalente":} Los libros distinguen entre `CaO libre`, `CaO crudo` y `CaO combinado/requemado`, todos contribuyentes al `CaO Equivalente` y a la capacidad alcalinizante total. La presencia de impurezas impacta directamente en estas proporciones.
+    \begin{itemize}
+        \item \textit{Conexión con Datos:} Actualmente, nuestro simulador genera solo valores de sensores. Para reflejar la riqueza de los libros, el simulador debe permitir definir el \textbf{perfil de calidad de la cal de entrada} (ej. 90\% CaO libre, 5\% impurezas). Estos parámetros, aunque no son directamente sensores, deben influir en el comportamiento de los sensores simulados (ej. un mayor porcentaje de `CaO crudo` podría generar lecturas de temperatura de apagado anómalas o más lentas).
+        \item \textit{Impacto en el Software:} `core\_logic.py` podría entonces calcular el "CaO Equivalente" simulado, y este valor, junto con la reactividad, sería un indicador clave de rendimiento de la cal procesada, directamente extraído de la teoría de Guillermo.
+    \end{itemize}
+
+    \item \textbf{Impurezas, Agua y Eventos Anormales:} Los libros detallan cómo las impurezas de la caliza o del agua, así como la temperatura o la dosificación incorrecta de agua, pueden llevar a problemas como la formación de "arenillas", incrustaciones, menor reactividad o consumo excesivo de energía.
+    \begin{itemize}
+        \item \textit{Conexión con Datos:} Nuestros escenarios de prueba deben contemplar estas situaciones. Por ejemplo, simular un "exceso de impurezas en el agua" podría generar datos de sensores que gradualmente lleven a una alarma de "incrustación" (si desarrollamos una lógica para ello), o un escenario de "cal de baja calidad" resultaría en una reactividad pobre que el software debería detectar.
+        \item \textit{Impacto en el Software:} Esto nos guiará para crear lógica de alarmas y monitoreo más sofisticada en `core\_logic.py` que considere estas interacciones complejas, tal como se detalla en los diagramas de control de las plantas de lechada de los libros (ej. el diagrama de calidad de la lechada en la página 117 de "CaO más alto implica ahorro...").
+    \end{itemize}
+\end{itemize}
+
+Esta integración de la teoría de Guillermo con los datos simulados permitirá que nuestro software no solo sea funcional, sino que también actúe como una herramienta de aprendizaje y optimización basada en un conocimiento profundo del proceso de la cal.
+
+\section*{3. Avances de la Sesión Actual (17 de Febrero de 2026)}
+
+Durante esta sesión, se han logrado los siguientes avances significativos:
+
+\begin{enumerate}[label=\arabic*.]
+    \item \textbf{Recopilación de Contexto Inicial:} Se realizó una revisión exhaustiva de todos los archivos del proyecto, incluyendo `resumen\_progreso.txt`, las bitácoras anteriores y el código base en `cal\_monitoring\_backend/`.
+
+    \item \textbf{Análisis Profundo de la Documentación Clave:} Se leyeron y analizaron los libros de Guillermo Coloma Álvarez, "La Cal ¡Es un Reactivo Químico!" y "CaO más alto implica ahorro de energía y agua", extrayendo insights críticos sobre la química de la cal, su reactividad, impurezas y la optimización del proceso. Este análisis ha sido fundamental para comprender la "Historia de la Cal" y las bases conceptuales del proyecto.
+
+    \item \textbf{Diagnóstico y Solución del Problema de Ejecución de la API:} Se identificó la causa del problema reportado ("imagen en blanco" en el navegador) como una ejecución incorrecta de la aplicación FastAPI. Se proporcionaron instrucciones claras sobre cómo ejecutarla correctamente usando `uvicorn cal\_monitoring\_backend.main:app --reload` desde la raíz del proyecto, asegurando que las importaciones relativas funcionen como se espera.
+
+    \item \textbf{Definición Detallada de la "Historia de la Cal":} Se desglosó el flujo de proceso de la planta de cal en 5 etapas principales (Almacenamiento de Cal Viva, Dosificación y Alimentación, Hidratación, Separación y Clasificación, Almacenamiento y Distribución de Lechada Final). Para cada etapa, se identificaron los equipos clave del PFD (`flujo\_mineria.pdf`), los TAGs de sensores relevantes del código existente (`alarm\_config.json`, `data\_generator.py`) y su propósito funcional, creando una narrativa coherente del proceso.
+
+    \item \textbf{Relación Crítica de los Libros con el Diseño del Software:} Se estableció y documentó explícitamente cómo los conceptos de los libros de Guillermo (como la reactividad de la cal, el CaO equivalente, el impacto de las impurezas y la calidad del agua) deben ser integrados en el diseño del software, particularmente en la generación de datos de prueba y la lógica de negocio. Se enfatizó que estos conceptos son cruciales para crear un modelo de simulación realista y una lógica de monitoreo inteligente.
+
+    \item \textbf{Generación de Datos de Prueba para la Etapa 1 (Almacenamiento de Cal Viva):}
+    \begin{itemize}
+        \item Se definieron 5 micro-escenarios específicos para la simulación del nivel del silo y sus alarmas asociadas (`2270-LIT-11825`, `2270-LSHH-11826`, `2270-LSLL-11829`): nivel estable, vaciándose, llenándose, alarma de nivel alto y alarma de nivel bajo.
+        \item Se proporcionó un prompt detallado para un asistente de código IA para generar un script de Python (`scenario\_generator.py`) que produce estos 5 escenarios en archivos CSV individuales.
+        \item Se confirmó la exitosa generación del script `scenario\_generator.py` y los cinco archivos CSV correspondientes dentro de la carpeta `cal\_monitoring\_backend/`.
+    \end{itemize}
+\end{enumerate}
+
+Los avances realizados en esta sesión han sentado una base sólida para el desarrollo futuro, asegurando que el software se construya con una comprensión profunda del proceso y una alineación directa con los principios fundamentales establecidos en la documentación del proyecto y los libros de referencia.
+

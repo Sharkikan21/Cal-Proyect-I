@@ -1,0 +1,21 @@
+\section{Avance en Visualización de Datos Estáticos (19/02/2026)}
+
+Se ha implementado con éxito una capacidad de visualización gráfica dentro de la API para analizar los resultados del simulador. Este avance permite validar visualmente la coherencia de los datos generados antes de proceder con la lógica en tiempo real.
+
+\subsection{Implementación Técnica}
+\begin{itemize}
+    \item 	extbf{Endpoint de Visualización:} Se añadió la ruta 	exttt{/visualization} en 	exttt{main.py} utilizando 	exttt{HTMLResponse}.
+    \item 	extbf{Integración de Chart.js:} Se utiliza la librería Chart.js para renderizar gráficos de líneas dinámicos en el navegador.
+    \item 	extbf{Consumo de Datos:} El sistema lee el archivo 	exttt{plant\_simulator\_output.csv} mediante 	exttt{pandas} y lo transfiere al frontend en formato JSON.
+\end{itemize}
+
+\subsection{Variables Graficadas}
+Para esta primera etapa de pruebas, se seleccionaron tres sensores críticos que representan el flujo principal de la ``Historia de la Cal'':
+\begin{enumerate}
+    \item 	extbf{Nivel del Silo (	exttt{2270-LIT-11825}):} Permite observar la tasa de vaciado durante la producción.
+    \item 	extbf{Flujo de Cal (	exttt{2280-WI-01769}):} Muestra la estabilidad de la dosificación de masa.
+    \item 	extbf{Temperatura del Slaker (	exttt{2270-TT-11824B}):} Crucial para validar el aumento de temperatura por la reacción de hidratación.
+\end{enumerate}
+
+\subsection{Resultados}
+Las gráficas confirmaron que el simulador 	exttt{data\_generator.py} está produciendo señales coherentes con el modo 	exttt{produciendo}, mostrando una correlación lógica entre el consumo de materia prima y el aumento de temperatura en el proceso de apagado.
