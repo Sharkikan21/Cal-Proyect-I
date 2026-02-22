@@ -1,0 +1,98 @@
+LISTADO DEFINITIVO DE VARIABLES Y SENSORES - PROYECTO MONITOREO DE CAL
+Fecha: 19 de febrero de 2026
+Estado: Consolidación Etapas 2 y 3 (BHP - SGO WP2)
+
+Este documento contiene el listado maestro de todas las señales, sensores y variables lógicas identificadas.
+
+--------------------------------------------------------------------------------
+1. AREA DE ALMACENAMIENTO (SILO DE CAL VIVA)
+--------------------------------------------------------------------------------
+TAG                 | DESCRIPCION                          | TIPO        | ESTADO
+--------------------------------------------------------------------------------
+2270-LIT-11825      | Transmisor de Nivel Radar Silo       | AI          | Configurado
+2270-LSHH-11826     | Alarma Nivel Muy Alto (Switch)       | DI          | Configurado
+2270-LSLL-11829     | Alarma Nivel Muy Bajo (Switch)       | DI          | Configurado
+2270-SILO-LT        | Nivel Continuo Silo Cal Viva         | AI (0-100%) | Detectado
+2270-PDAH-11827     | Presion Diferencial Filtro de Mangas | AI/DI       | Configurado
+2270-ZM-009-22      | Ventilador Ventilacion Silo          | Estado      | Detectado
+2270-ZM-009-02      | Compresor de Descarga de Cal         | Estado      | Detectado
+2270-YL-11826       | Indicador de Nivel (Switch 70%)      | DI          | Configurado
+MANUAL_GATE_VALVE   | Valvula de Compuerta Manual (Silo)   | Logico      | Detectado
+PNEUMATIC_GATE      | Valvula de Compuerta Neumatica       | Logico      | Detectado
+
+--------------------------------------------------------------------------------
+2. AREA DE DOSIFICACION Y PREPARACION (VORTEX Y SLAKER)
+--------------------------------------------------------------------------------
+TAG                 | DESCRIPCION                          | TIPO        | ESTADO
+--------------------------------------------------------------------------------
+2280-WI-01769       | Pesometro de Cal (Alimentacion)      | AI (Tph)    | Detectado
+2270-FIT-11801      | Flujo Agua a Apagado (Slaking Water) | AI (m3/h)   | Configurado
+2270-SAL-11818      | Valvula Rotatoria Silo (Estado)      | DI          | Configurado
+2270-SE-11818       | Sensor Velocidad Cero V. Rotatoria   | DI          | Detectado
+2270-SAL-11817      | Alimentador de Tornillo (Estado)     | DI          | Configurado
+2270-SE-11817       | Sensor Velocidad Cero Tornillo       | DI          | Detectado
+2270-TIC-11801      | Controlador Temp. Vortex Pre-Mixer   | AI/Loop     | Configurado
+2270-TAHH-11801     | Alarma Temp. Muy Alta Vortex         | DI          | Configurado
+2270-PALL-11834     | Presion de Agua Vortex               | AI (kPa)    | Configurado
+2270-TT-11824A/B    | Temperatura Slaker (Molino) A/B      | AI (degC)   | Configurado
+2270-TAHH-11824B    | Parada de Emergencia Temp Slaker     | DI          | Configurado
+2270-ZM-009-06      | Motor Principal Slaker (Mill)        | Estado      | Detectado
+2270-TV-11801       | Valvula de Control Agua Slaking      | AO/Pos      | Configurado
+2270-HV-11808       | Valvula de Emergencia Agua           | DO          | Configurado
+
+--------------------------------------------------------------------------------
+3. AREA DE CLASIFICACION Y TRANSFERENCIA (TANQUES Y BOMBAS)
+--------------------------------------------------------------------------------
+TAG                 | DESCRIPCION                          | TIPO        | ESTADO
+--------------------------------------------------------------------------------
+2270-LIT-11850      | Nivel Camara de Separacion           | AI (%)      | Configurado
+2270-LALL-11850     | Alarma Nivel Muy Bajo Camara         | DI          | Configurado
+2270-ZM-009-31/32   | Agitadores Camara Separacion         | Estado      | Detectado
+2270-LIT-11845      | Nivel Caja Bomba Descarga (Pumpbox)  | AI (%)      | Configurado
+2270-ZM-009-23      | Agitador Caja de Bomba               | Estado      | Detectado
+2270-ZM-009-12/13   | Bombas de Transferencia              | Estado      | Detectado
+2270-PP-208A / 209  | Bombas de Alimentacion (Feed)        | Estado      | Detectado
+2270-LI-11875/885   | Niveles adicionales de tanques       | AI          | Detectado
+2270-FIC-11870      | Controlador Flujo Dilucion           | AI/Loop     | Detectado
+
+--------------------------------------------------------------------------------
+4. DISTRIBUCION E HIDRAULICA (ETAPA 3 - AVANZADO)
+--------------------------------------------------------------------------------
+TAG                 | DESCRIPCION                          | TIPO        | ESTADO
+--------------------------------------------------------------------------------
+2270-MOL-HDR-FT     | Caudal Lechada Header Distribucion   | AI          | Detectado
+2270-MOL-SAG-FT     | Caudal Lechada a SAG                 | AI          | Detectado
+2270-MOL-BM-FT      | Caudal Lechada a Ball Mill           | AI          | Detectado
+2270-MOL-RGH-FT     | Caudal Lechada a Rougher             | AI          | Detectado
+pHT-2270-RGH        | pH en Rougher                        | AI          | Detectado
+pHT-2270-CLN        | pH en Cleaner                        | AI          | Detectado
+DT-2270-HDR         | Densidad de Lechada (Header)         | AI          | Detectado
+CV-2270-RGH         | Valvula Modulante Lechada            | AO          | Detectado
+PT-2270-HDR-OUT     | Presion descarga bomba               | AI          | Detectado
+EM-2270-P028        | Potencia Electrica Bomba Lechada     | AI          | Detectado
+VIB-2270-P028       | Vibracion Bomba Lechada              | AI          | Detectado
+
+--------------------------------------------------------------------------------
+5. SISTEMAS AUXILIARES (LUBRICACION Y SCRUBBER)
+--------------------------------------------------------------------------------
+TAG                 | DESCRIPCION                          | TIPO        | ESTADO
+--------------------------------------------------------------------------------
+2270-PIT-11895      | Presion Sistema Lubricacion          | AI          | Configurado
+2270-PDIA-11892     | Presion Diferencial Filtro Aceite    | AI          | Configurado
+2270-TIT-11893/4    | Temperaturas Aceite Lubricacion      | AI          | Configurado
+2270-FSL-11896      | Flujo Aceite Lubricacion             | AI          | Configurado
+2270-ZM-009-20/29   | Ventiladores de Extraccion (Scrubber)| Estado      | Detectado
+2270-ZV-11852/80    | Valvulas Solenoides Scrubber         | DO          | Configurado
+
+--------------------------------------------------------------------------------
+6. VARIABLES ANALITICAS Y DE CONTROL (DCS / LOGICAS)
+--------------------------------------------------------------------------------
+TAG                 | DESCRIPCION                          | TIPO        | ESTADO
+--------------------------------------------------------------------------------
+2220-AIC-02671      | Analizador de Calidad/Concentracion  | AI          | Detectado
+2270-HS-11810       | Selector de Modo (Manual/Auto)       | DI          | Detectado
+2270-HS-11812       | Boton de Inicio Automatico           | DI          | Detectado
+% Solidos           | Concentracion de la Lechada (15%)    | Calculado   | Detectado
+Relacion Agua/Cal   | Relacion Estequiometrica (3:1 / 4:1) | Calculado   | Detectado
+Consumo Molino      | Calculo de masa de cal procesada     | Calculado   | Detectado
+--------------------------------------------------------------------------------

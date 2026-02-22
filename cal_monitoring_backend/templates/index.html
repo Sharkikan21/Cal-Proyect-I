@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Visión General de Planta{% endblock %}
+{% block content %}
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Visión General de Planta</h1>
+<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Resumen operativo del ciclo de la cal según la Historia de la Cal (Coloma)</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;">
+    <a href="/phase/1" style="text-decoration: none; color: inherit;">
+        <div class="card" style="transition: background 0.15s;">
+            <h2>Fase 1 — Almacenamiento</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Inventario y disponibilidad de cal viva en silo. Punto de partida del flujo.</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--accent);">Ver silo 2270-LIT-11825 →</p>
+        </div>
+    </a>
+    <a href="/phase/2" style="text-decoration: none; color: inherit;">
+        <div class="card" style="transition: background 0.15s;">
+            <h2>Fase 2 — Dosificación</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Balance de masa: alimentación controlada hacia el slaker (Ton/h).</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--accent);">Ver pesómetro y tornillo →</p>
+        </div>
+    </a>
+    <a href="/phase/3" style="text-decoration: none; color: inherit;">
+        <div class="card" style="border-color: var(--accent-amber);">
+            <h2 style="color: var(--accent-amber);">Fase 3 — Hidratación (Apagado)</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Reactividad y exotermicidad. Detección de cal muerta vs cal reactiva.</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--accent-amber);">FASE CRÍTICA — Curva de temperatura →</p>
+        </div>
+    </a>
+    <a href="/phase/4" style="text-decoration: none; color: inherit;">
+        <div class="card" style="transition: background 0.15s;">
+            <h2>Fase 4 — Separación</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Clasificación y eliminación de grit/arenilla e impurezas (carbonatos incrustados).</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--accent);">Ver hidrociclones y molinos →</p>
+        </div>
+    </a>
+    <a href="/phase/5" style="text-decoration: none; color: inherit;">
+        <div class="card" style="transition: background 0.15s;">
+            <h2>Fase 5 — Distribución</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Transporte hidráulico de lechada. Densidad, flujo y prevención de incrustaciones.</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--accent);">Ver bombas y líneas →</p>
+        </div>
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+% !TEX root = main.tex
+\section*{Mapeo de Sensores: La Historia de la Cal}
+
+Este documento establece la relación explícita entre el listado definitivo de sensores y las 5 etapas de la ``Historia de la Cal''. Este mapeo es la base para la lógica de simulación, la configuración de alarmas y el desarrollo de la interfaz de usuario.
+
+\begin{longtable}{|l|p{6cm}|l|l|}
+\hline
+\textbf{TAG} & \textbf{Descripción} & \textbf{Tipo} & \textbf{Rol en la Historia} \\ \hline
+\endfirsthead
+\hline
+\textbf{TAG} & \textbf{Descripción} & \textbf{Tipo} & \textbf{Rol en la Historia} \\ \hline
+\endhead
+
+\multicolumn{4}{|l|}{\textit{\textbf{Etapa 1: Almacenamiento de Cal Viva (Silo)}}} \\ \hline
+2270-LIT-11825 & Transmisor de Nivel Radar Silo & AI (\%) & Inventario principal \\ \hline
+2270-LSHH-11826 & Alarma Nivel Muy Alto (Switch) & DI & Protección rebalse \\ \hline
+2270-LSLL-11829 & Alarma Nivel Muy Bajo (Switch) & DI & Protección vacío \\ \hline
+2270-YL-11826 & Indicador de Nivel (70\%) & DI & Control de recarga \\ \hline
+2270-PDAH-11827 & Presión Dif. Filtro de Mangas & AI & Salud del sistema filtrado \\ \hline
+
+\multicolumn{4}{|l|}{\textit{\textbf{Etapa 2: Dosificación y Alimentación}}} \\ \hline
+2280-WI-01769 & Pesómetro de Cal (Tph) & AI & Flujo de masa de entrada \\ \hline
+2270-SAL-11817 & Alimentador de Tornillo (Estado) & DI & Actuador de carga \\ \hline
+2270-SAL-11818 & Válvula Rotatoria Silo (Estado) & DI & Actuador de descarga \\ \hline
+2270-SE-11817 & Velocidad Cero Tornillo & DI & Confirmación mecánica \\ \hline
+
+\multicolumn{4}{|l|}{\textit{\textbf{Etapa 3: Hidratación o ``Apagado'' (Vortex/Slaker)}}} \\ \hline
+2270-FIT-11801 & Flujo Agua a Apagado & AI & Reactivo de hidratación \\ \hline
+2270-TT-11824A & Temperatura Slaker A & AI & Control térmico \\ \hline
+2270-TT-11824B & Temperatura Slaker B & AI & \textbf{Cálculo de Reactividad} \\ \hline
+2270-PALL-11834 & Presión de Agua Vortex & AI & Eficiencia de pre-mezcla \\ \hline
+2270-TAHH-11801 & Alarma Temp. Muy Alta Vortex & DI & Seguridad operativa \\ \hline
+2270-ZM-009-06 & Motor Principal Slaker & DI & Estado de proceso \\ \hline
+
+\multicolumn{4}{|l|}{\textit{\textbf{Etapa 4: Separación y Clasificación}}} \\ \hline
+2270-LIT-11850 & Nivel Cámara de Separación & AI (\%) & Control de desbaste \\ \hline
+2270-LALL-11850 & Alarma Nivel Muy Bajo Cámara & DI & Protección de agitación \\ \hline
+2270-ZM-009-31 & Agitador Cámara Separación 1 & DI & Homogeneización \\ \hline
+
+\multicolumn{4}{|l|}{\textit{\textbf{Etapa 5: Almacenamiento y Distribución Final}}} \\ \hline
+2270-LIT-11845 & Nivel Caja Bomba Descarga & AI (\%) & Pulmón de distribución \\ \hline
+2270-PIT-11895 & Presión Sistema Lubricación & AI & Salud mecánica bombas \\ \hline
+2270-FSL-11896 & Flujo Aceite Lubricación & AI & Salud mecánica bombas \\ \hline
+2270-TIT-11893 & Temperatura Aceite T1 & AI & Salud mecánica bombas \\ \hline
+DT-2270-HDR & Densidad de Lechada & AI & Calidad del producto final \\ \hline
+pHT-2270-RGH & pH en Flotación Rougher & AI & Control de proceso final \\ \hline
+
+\end{longtable}
+
+\textbf{Conclusión:} Esta estructura permite que el backend evalúe la salud del sistema no solo por sensor individual, sino por la continuidad lógica del flujo: si el Silo (E1) baja, el Tornillo (E2) debe estar ON, la Temperatura (E3) debe subir y la Densidad (E5) debe estabilizarse.

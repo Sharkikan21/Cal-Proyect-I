@@ -75,14 +75,14 @@ Contiene la lógica de negocio central, incluyendo:
     \item Funciones para cargar datos de sensores de Excel y configuraciones de alarmas de JSON.
     \item Utilidades para mapear TAGs a columnas de Excel.
     \item Constantes para umbrales de alarma (actualmente hardcodeadas, se recomienda externalizarlas).
-    \item Funciones para evaluar condiciones de alarma (absolutas, relativas a setpoints, `multiple_and`).
+    \item Funciones para evaluar condiciones de alarma (absolutas, relativas a setpoints, `multiple\_and`).
     \item Lógica para determinar el modo de operación actual del sistema.
     \item La clase `ReactivityMonitor`, que implementa la detección y clasificación de curvas de reactividad de la cal basada en cambios de temperatura a lo largo del tiempo.
 \end{itemize}
 Este archivo es una base sólida con funcionalidades avanzadas ya implementadas.
 
 \subsection*{3.3. ``cal\_monitoring\_backend/test\_core\_logic.py''}
-Un script de prueba básico que demuestra la funcionalidad de `core_logic.py`.
+Un script de prueba básico que demuestra la funcionalidad de `core\_logic.py`.
 \begin{itemize}
     \item Carga datos de ``D:\Cal\Antiguo\Sensor\Tabla\_Completa.xlsx``.
     \item Contenía un 	extbf{error crítico} al intentar cargar la configuración JSON desde ``D:\Cal\Antiguo\Sensor\logica\_planta.py`` (un archivo .py que contenía JSON) en lugar de un .json.

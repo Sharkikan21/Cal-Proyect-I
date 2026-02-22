@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Fase 3: Hidratación (Apagado){% endblock %}
+{% block extra_css %}
+.canvas-container { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-top: 0.5rem; }
+.canvas-container canvas { width: 100%; max-height: 400px; display: block; }
+{% endblock %}
+{% block content %}
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 3: Hidratación (Apagado)</h1>
+<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Reactividad y exotermicidad (concepto clave según Coloma). CaO + H₂O → Ca(OH)₂. La curva de temperatura permite distinguir cal reactiva de cal &quot;muerta&quot; o sobrecocida.</p>
+
+<div class="card" style="border-color: var(--accent-amber);">
+    <h2 style="color: var(--accent-amber);">Curva de Temperatura de Apagado</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Temperatura en el slaker (2270-TT-11824B). Un pico pronunciado y rápido indica buena reactividad; una curva plana sugiere cal de baja calidad.</p>
+    <div class="canvas-container">
+        <canvas id="slakerTempCurve" width="800" height="350"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    const ctx = document.getElementById('slakerTempCurve');
+    if (!ctx) return;
+    fetch('/api/visualization/data').then(r => r.json()).then(function(data) {
+        const labels = data.timestamps || [];
+        const temps = data['2270-TT-11824B'] || [];
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperatura Slaker (°C)',
+                    data: temps,
+                    borderColor: '#d29922',
+                    backgroundColor: 'rgba(210, 153, 34, 0.15)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { labels: { color: '#8b949e' } } },
+                scales: {
+                    x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', maxTicksLimit: 12 } },
+                    y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e' } }
+                }
+            }
+        });
+    }).catch(function() {
+        ctx.getContext('2d').font = '14px JetBrains Mono';
+        ctx.getContext('2d').fillStyle = '#8b949e';
+        ctx.getContext('2d').fillText('Sin datos. Ejecute el simulador y recargue.', 20, 180);
+    });
+})();
+</script>
+{% endblock %}

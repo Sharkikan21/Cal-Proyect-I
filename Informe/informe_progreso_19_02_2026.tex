@@ -1,0 +1,91 @@
+
+
+\section{Introducción y Objetivos}
+
+El presente informe detalla el progreso, los análisis realizados y los desarrollos implementados en el proyecto de software para el \textbf{monitoreo del flujo y proceso de la cal} en una operación minera.
+
+El objetivo principal es construir un sistema de software robusto que permita la supervisión integral y el análisis operacional del sistema de preparación y distribución de lechada de cal. Esto se alinea con los requisitos de la \textbf{Etapa 2 (Supervisión Integral)} y sienta las bases para la futura \textbf{Etapa 3 (Control Avanzado y Optimización)}.
+
+\section{Análisis de Documentación Fundamental}
+
+Se realizó un análisis exhaustivo de la documentación técnica proporcionada, extrayendo el contexto esencial para el diseño y desarrollo del software.
+
+\subsection{La Cal como Reactivo Químico (Libro de G. Coloma)}
+Este texto proporcionó la base teórica sobre la química de la cal, destacando la importancia crítica de la \textbf{reactividad}, la hidratación (apagado) y las variables de proceso (temperatura, calidad del agua, etc.) que afectan la calidad final de la lechada.
+
+\subsection{Especificación de Instrumentación y Software}
+Este documento es la hoja de ruta del proyecto. Define las \textbf{Etapas 2 y 3}, detallando los requisitos funcionales como dashboards en tiempo real, registro histórico, sistema de alarmas y la necesidad de monitorear la instrumentación existente (LT, FT, pHT, DT).
+
+\subsection{Filosofía de Control}
+Proporciona el ``cómo'' se controla la planta actualmente. Se extrajeron tablas de \textbf{alarmas e interlocks}, secuencias operacionales, y los \textbf{TAGs} específicos de la instrumentación del Sistema de Control Distribuido (DCS), que son la base para nuestra configuración de alarmas.
+
+\subsection{Diagrama de Flujo de Proceso (PFD)}
+El PFD (`flujo\_mineria.pdf`) ofreció una representación visual completa de la planta, permitiendo unir los conceptos teóricos y los requisitos de software en una vista arquitectónica unificada del proceso físico.
+
+\section{Estructura y Lógica del Software Actual}
+
+El núcleo del proyecto reside en la carpeta `cal\_monitoring\_backend/`, que contiene una aplicación Python moderna basada en FastAPI.
+
+\begin{itemize}
+    \item \textbf{`main.py`}: Es el punto de entrada de la \textbf{API REST}. Está diseñado para exponer los datos y la lógica del sistema a través de endpoints, como `/api/v1/status`, permitiendo que una futura interfaz de usuario (frontend) consuma la información en tiempo real.
+    
+    \item \textbf{`core\_logic.py`}: Es el cerebro de la aplicación. Contiene la lógica de negocio para:
+    \begin{itemize}
+        \item Cargar configuraciones y datos.
+        \item \textbf{Evaluar un sistema de alarmas complejo} basado en condiciones absolutas, relativas a setpoints y lógicas (`multiple\_and`).
+        \item Determinar el \textbf{modo de operación} de la planta (ej.\ ``produciendo'', ``lavando'', ``inactivo'').
+        \item La clase \textbf{`ReactivityMonitor`}, una implementación clave inspirada en los libros de Guillermo Coloma, diseñada para detectar y clasificar las curvas de reactividad de la cal basándose en la evolución de la temperatura.
+    \end{itemize}
+    
+    \item \textbf{`config/alarm\_config.json`}: Archivo de configuración que \textbf{externaliza toda la lógica de alarmas}. Contiene los TAGs de los sensores, los equipos asociados, los umbrales y las descripciones de cada condición de alarma, replicando la filosofía de control del DCS.
+    
+    \item \textbf{`data\_generator.py` y `scenario\_generator.py`}: Scripts de Python dedicados a la \textbf{simulación de datos de sensores}. Permiten generar escenarios realistas y dinámicos para probar la lógica del backend y facilitar el desarrollo del frontend sin depender de datos de una planta real.
+\end{itemize}
+
+\section{Avances Significativos y Decisiones Clave}
+
+\subsection{Definición de la ``Historia de la Cal''}
+Se ha establecido una narrativa clara y detallada del proceso de la cal, correlacionando el PFD con los conceptos de los libros de Guillermo Coloma y los TAGs de los sensores del proyecto. Este entendimiento es fundamental para crear simulaciones y lógicas de monitoreo que reflejen fielmente la realidad operativa. El proceso se ha dividido en 5 etapas:
+\begin{enumerate}
+    \item Almacenamiento de Cal Viva (Silo de Cal).
+    \item Dosificación y Alimentación (Alimentador de Tornillo).
+    \item Hidratación o ``Apagado'' (Slaker).
+    \item Separación y Clasificación (Hidrociclones).
+    \item Almacenamiento y Distribución de Lechada Final.
+\end{enumerate}
+
+\subsection{Integración de Conocimiento Experto}
+Se ha documentado explícitamente cómo los conceptos de los libros de Guillermo Coloma (reactividad, CaO equivalente, impurezas) deben guiar el desarrollo. El software no solo debe monitorear, sino \textbf{interpretar el proceso} a la luz de esta teoría, permitiendo una optimización futura.
+
+\subsection{Desarrollo de un Simulador de Escenarios}
+Reconociendo la necesidad de datos dinámicos para el desarrollo y las pruebas, se ha priorizado y completado la creación de un generador de escenarios.
+\begin{itemize}
+    \item Se creó el script \textbf{`scenario\_generator.py`}.
+    \item Este script genera archivos \textbf{CSV} con datos que simulan 5 micro-escenarios para el nivel del silo de cal:
+    \begin{enumerate}
+        \item Nivel estable.
+        \item Vaciándose (en producción).
+        \item Llenándose (recargando).
+        \item Alarma de nivel alto.
+        \item Alarma de nivel bajo.
+    \end{enumerate}
+    \item Estos escenarios son la primera implementación del generador de datos y sirven como base para futuras simulaciones más complejas.
+\end{itemize}
+
+\subsection{Aclaración de Requisitos Futuros}
+Se ha establecido que la arquitectura a mediano plazo deberá migrar hacia el uso de servicios en la nube de \textbf{Amazon Web Services (AWS)} para la persistencia y gestión de datos (ej. S3, RDS, Kinesis), reemplazando las soluciones temporales basadas en archivos.
+
+\section{Próximos Pasos}
+
+El plan de acción inmediato se centra en expandir la funcionalidad de la API y la simulación:
+\begin{enumerate}
+    \item \textbf{Expandir la API (`main.py`):} Desarrollar y refinar los endpoints de la API para que consuman los datos generados por el simulador y expongan de manera clara el estado de la planta, las alarmas activas y las curvas de reactividad.
+    
+    \item \textbf{Integrar Escenarios Generados:} Modificar el simulador principal (`data\_generator.py`) para que pueda leer y utilizar los archivos CSV generados por `scenario\_generator.py`, permitiendo ejecutar pruebas controladas desde la API.
+    
+    \item \textbf{Ampliar el Generador de Escenarios:} Crear nuevos escenarios de simulación que cubran otras etapas del proceso, como las curvas de reactividad (alta, media, baja) y condiciones de alarma en el Slaker.
+    
+    \item \textbf{Iniciar Desarrollo de Interfaz de Usuario (Frontend):} Con una API funcional que provee datos dinámicos, se puede comenzar el desarrollo de una página web que visualice en tiempo real el estado de la planta, las alarmas y los gráficos de tendencia.
+\end{enumerate}
+
+

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Fase 1: Almacenamiento de Cal Viva{% endblock %}
+{% block content %}
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 1: Almacenamiento de Cal Viva</h1>
+<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Inventario y disponibilidad. La cal viva (óxido de calcio) se almacena en condiciones controladas antes del apagado.</p>
+
+<div class="card">
+    <h2>Nivel de Silo — 2270-LIT-11825</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Transmisor de nivel del silo de cal viva. Monitoreo de inventario para garantizar continuidad operativa.</p>
+    <div class="chart-placeholder" style="height: 220px; background: var(--bg-dark); border: 1px dashed var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85rem;">
+        [ Gráfico de Nivel de Silo — datos desde API /api/visualization/data ]
+    </div>
+</div>
+{% endblock %}
