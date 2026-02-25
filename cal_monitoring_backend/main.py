@@ -2,12 +2,12 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
 
-# Importar la lógica y el simulador
+# Importar la l?gica y el simulador
 from data_generator import PlantSimulator
 from core_logic import (
     load_alarm_config_from_json,
@@ -16,40 +16,63 @@ from core_logic import (
     ReactivityMonitor
 )
 
-# Ruta al config relativa a este archivo (funciona desde cualquier directorio de ejecución)
+# Ruta al config relativa a este archivo (funciona desde cualquier directorio de ejecuci?n)
 _THIS_DIR = Path(__file__).resolve().parent
 ALARM_CONFIG_PATH = _THIS_DIR / "config" / "alarm_config.json"
-CSV_VISUALIZATION_PATH = _THIS_DIR / "plant_simulator_output.csv"
 TEMPLATES_DIR = _THIS_DIR / "templates"
+
+
+def get_csv_path_in_folder() -> Optional[Path]:
+    """
+    Devuelve la ruta del CSV a usar: el ?nico .csv en cal_monitoring_backend.
+    Si hay varios, usa el m?s recientemente modificado (el ?ltimo generado).
+    Si no hay ninguno, devuelve None.
+    """
+    csvs = list(_THIS_DIR.glob("*.csv"))
+    if not csvs:
+        return None
+    return max(csvs, key=lambda p: p.stat().st_mtime)
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 
-# --- Inicialización de la Aplicación y Estado Global ---
+# --- Inicializaci?n de la Aplicaci?n y Estado Global ---
 
 app = FastAPI(
     title="Sistema de Monitoreo de Cal Lechada",
-    description="API para la supervisión y análisis operacional del sistema de preparación de lechada de cal.",
+    description="API para la supervisi?n y an?lisis operacional del sistema de preparaci?n de lechada de cal.",
     version="0.2.0",
 )
 
-# Estado global de la aplicación (para una PoC, en producción se usaría un sistema de estado más robusto)
+# Estado global de la aplicaci?n (para una PoC, en producci?n se usar?a un sistema de estado m?s robusto)
 simulator = PlantSimulator()
 reactivity_monitor = ReactivityMonitor()
 alarm_config = load_alarm_config_from_json(str(ALARM_CONFIG_PATH))
-setpoints = {} # Diccionario para futuros setpoints dinámicos
+setpoints = {} # Diccionario para futuros setpoints din?micos
 
 if not alarm_config:
-    raise RuntimeError("No se pudo cargar la configuración de alarmas. La API no puede iniciar.")
+    raise RuntimeError("No se pudo cargar la configuraci?n de alarmas. La API no puede iniciar.")
+
+
+# Mapeo de sensores por fase (La Historia de la Cal) para la API de datos
+# Coincide con columnas de plant_simulator_output.csv generado por data_generator.py
+PHASE_SENSORS: Dict[str, List[str]] = {
+    "1": ["2270-LIT-11825", "2270-LSHH-11826", "2270-LSLL-11829", "2270-PDAH-11827"],  # Silo
+    "2": ["2280-WI-01769", "2270-SAL-11817", "2270-SAL-11818"],                        # Dosificaci?n
+    "3": ["2270-FIT-11801", "2270-TT-11824B", "2270-ZM-009-06"],                       # Hidrataci?n
+    "4": ["2270-LIT-11850", "2270-ZM-009-31"],                                          # Separaci?n
+    "5": ["DT-2270-HDR", "pHT-2270-RGH", "2270-PIT-11895"],                            # Distribuci?n
+}
 
 
 def get_csv_visualization_data() -> Dict[str, Any]:
     """
-    Lee el CSV del simulador y devuelve los datos necesarios para la visualización
-    en formato JSON (timestamps + columnas: Nivel Silo, Flujo Cal, Temperatura Slaker).
+    Lee el ?nico CSV de la carpeta y devuelve los datos para la visualizaci?n
+    (timestamps + columnas: Nivel Silo, Flujo Cal, Temperatura Slaker).
     """
-    if not CSV_VISUALIZATION_PATH.exists():
+    csv_path = get_csv_path_in_folder()
+    if csv_path is None:
         return {"timestamps": [], "2270-LIT-11825": [], "2280-WI-01769": [], "2270-TT-11824B": []}
-    df = pd.read_csv(CSV_VISUALIZATION_PATH)
+    df = pd.read_csv(csv_path)
     cols = ["timestamp", "2270-LIT-11825", "2280-WI-01769", "2270-TT-11824B"]
     existing = [c for c in cols if c in df.columns]
     if not existing or "timestamp" not in df.columns:
@@ -57,6 +80,25 @@ def get_csv_visualization_data() -> Dict[str, Any]:
     out = {"timestamps": df["timestamp"].astype(str).tolist()}
     for c in ["2270-LIT-11825", "2280-WI-01769", "2270-TT-11824B"]:
         out[c] = df[c].tolist() if c in df.columns else []
+    return out
+
+
+def get_phase_data(phase_id: str) -> Dict[str, Any]:
+    """
+    Lee el ?nico CSV de la carpeta y devuelve timestamps y columnas de la fase dada.
+    Retorna listas vac?as si no hay CSV o la fase no es v?lida.
+    """
+    if phase_id not in PHASE_SENSORS:
+        return {"timestamps": [], **{tag: [] for tag in PHASE_SENSORS.get("1", [])}}
+    csv_path = get_csv_path_in_folder()
+    if csv_path is None:
+        return {"timestamps": [], **{tag: [] for tag in PHASE_SENSORS[phase_id]}}
+    df = pd.read_csv(csv_path)
+    if "timestamp" not in df.columns:
+        return {"timestamps": [], **{tag: [] for tag in PHASE_SENSORS[phase_id]}}
+    out: Dict[str, Any] = {"timestamps": df["timestamp"].astype(str).tolist()}
+    for tag in PHASE_SENSORS[phase_id]:
+        out[tag] = df[tag].tolist() if tag in df.columns else []
     return out
 
 
@@ -73,7 +115,7 @@ class ReactivityCurve(BaseModel):
 
 class PlantStatusResponse(BaseModel):
     timestamp: datetime = Field(..., description="El timestamp de los datos de sensores.")
-    mode: str = Field(..., description="El modo de operación actual de la planta (ej: 'produciendo', 'inactivo').")
+    mode: str = Field(..., description="El modo de operaci?n actual de la planta (ej: 'produciendo', 'inactivo').")
     active_alarms: List[str] = Field(..., description="Una lista de las descripciones de las alarmas actualmente activas.")
     new_reactivity_curves: List[ReactivityCurve] = Field(..., description="Una lista de las curvas de reactividad completadas en este ciclo.")
     sensor_data: Dict[str, Any] = Field(..., description="Los valores crudos de los sensores para este ciclo.")
@@ -86,15 +128,26 @@ class ScenarioControlResponse(BaseModel):
 
 @app.get("/api", tags=["General"])
 async def api_info():
-    """Información de la API (raíz de servicios REST)."""
+    """Informaci?n de la API (ra?z de servicios REST)."""
     return {"message": "API de Monitoreo de Cal Lechada en funcionamiento!", "version": app.version}
+
+
+@app.get("/api/data/{phase_id}", tags=["Visualizaci?n"])
+async def get_data_by_phase(phase_id: str):
+    """
+    Devuelve los datos del CSV filtrados por fase (1-5).
+    Formato: { timestamps: [...], tag1: [...], tag2: [...] }.
+    """
+    if phase_id not in PHASE_SENSORS:
+        raise HTTPException(status_code=404, detail=f"Fase '{phase_id}' no v?lida. Use 1, 2, 3, 4 o 5.")
+    return get_phase_data(phase_id)
 
 
 # --- Vistas HTML (La Historia de la Cal - 5 fases) ---
 
 @app.get("/", tags=["Frontend"])
 async def index(request: Request):
-    """Dashboard general / Visión General de Planta."""
+    """Dashboard general / Visi?n General de Planta."""
     return templates.TemplateResponse("index.html", {"request": request, "current_phase": "index"})
 
 
@@ -106,44 +159,44 @@ async def phase1_silo(request: Request):
 
 @app.get("/phase/2", tags=["Frontend"])
 async def phase2_dosing(request: Request):
-    """Fase 2: Dosificación y Alimentación."""
+    """Fase 2: Dosificaci?n y Alimentaci?n."""
     return templates.TemplateResponse("phase2_dosing.html", {"request": request, "current_phase": "2"})
 
 
 @app.get("/phase/3", tags=["Frontend"])
 async def phase3_slaker(request: Request):
-    """Fase 3: Hidratación (Apagado) - Fase crítica."""
+    """Fase 3: Hidrataci?n (Apagado) - Fase cr?tica."""
     return templates.TemplateResponse("phase3_slaker.html", {"request": request, "current_phase": "3"})
 
 
 @app.get("/phase/4", tags=["Frontend"])
 async def phase4_separation(request: Request):
-    """Fase 4: Clasificación y Limpieza."""
+    """Fase 4: Clasificaci?n y Limpieza."""
     return templates.TemplateResponse("phase4_separation.html", {"request": request, "current_phase": "4"})
 
 
 @app.get("/phase/5", tags=["Frontend"])
 async def phase5_dist(request: Request):
-    """Fase 5: Distribución de Lechada."""
+    """Fase 5: Distribuci?n de Lechada."""
     return templates.TemplateResponse("phase5_dist.html", {"request": request, "current_phase": "5"})
 
 
-@app.get("/api/visualization/data", tags=["Visualización"])
+@app.get("/api/visualization/data", tags=["Visualizaci?n"])
 async def get_visualization_data():
-    """Devuelve los datos del CSV de simulación en JSON para los gráficos."""
+    """Devuelve los datos del CSV de simulaci?n en JSON para los gr?ficos."""
     return get_csv_visualization_data()
 
 
-@app.get("/visualization", response_class=HTMLResponse, tags=["Visualización"])
+@app.get("/visualization", response_class=HTMLResponse, tags=["Visualizaci?n"])
 async def visualization_page():
-    """Página HTML con gráficos Chart.js para Nivel Silo, Flujo de Cal y Temperatura Slaker."""
+    """P?gina HTML con gr?ficos Chart.js para Nivel Silo, Flujo de Cal y Temperatura Slaker."""
     html_content = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización de Sensores - Cal Lechada</title>
+    <title>Visualizaci?n de Sensores - Cal Lechada</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root { --bg: #0f1419; --card: #1a2332; --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --border: #30363d; }
@@ -159,8 +212,8 @@ async def visualization_page():
     </style>
 </head>
 <body>
-    <h1>Visualización de sensores</h1>
-    <p class="subtitle">Datos estáticos desde plant_simulator_output.csv</p>
+    <h1>Visualizaci?n de sensores</h1>
+    <p class="subtitle">Datos desde el CSV en la carpeta del backend (escenario generado)</p>
     <div class="chart-card">
         <h2>Nivel del Silo (2270-LIT-11825)</h2>
         <div class="chart-container"><canvas id="chartSilo"></canvas></div>
@@ -208,22 +261,22 @@ async def visualization_page():
 @app.get("/api/v1/status", response_model=PlantStatusResponse, tags=["Monitoreo"])
 async def get_plant_status():
     """
-    Ejecuta un ciclo de simulación y devuelve el estado completo y actual de la planta.
+    Ejecuta un ciclo de simulaci?n y devuelve el estado completo y actual de la planta.
     """
-    # 1. Obtener los datos más recientes del simulador
+    # 1. Obtener los datos m?s recientes del simulador
     sensor_data = simulator.tick()
 
-    # 2. Determinar el modo de operación
-    # Mapeo de valores a los argumentos de la función
+    # 2. Determinar el modo de operaci?n
+    # Mapeo de valores a los argumentos de la funci?n
     screw_val = sensor_data.get("2270-SAL-11817", 0.0)
     rotary_val = sensor_data.get("2270-SAL-11818", 0.0)
     agua_val = sensor_data.get("2270-FIT-11801", 0.0)
     
-    # Asumimos que 'cal' está relacionado con la operación del tornillo
+    # Asumimos que 'cal' est? relacionado con la operaci?n del tornillo
     cal_val = screw_val 
     
     current_mode = determinar_modo_actual(cal=cal_val, agua=agua_val, rotary_val=rotary_val, screw_val=screw_val)
-    simulator.mode = current_mode # Sincronizar el modo del simulador si la lógica lo cambia
+    simulator.mode = current_mode # Sincronizar el modo del simulador si la l?gica lo cambia
 
     # 3. Evaluar alarmas
     active_alarms = evaluar_alarmas_directo(
@@ -255,7 +308,7 @@ async def start_scenario(scenario_name: str):
     """
     Inicia un escenario de prueba en el simulador.
     
-    Escenarios válidos:
+    Escenarios v?lidos:
     - `reactividad_alta`
     - `reactividad_media`
     - `reactividad_baja`
@@ -276,7 +329,7 @@ async def start_scenario(scenario_name: str):
     else:
         raise HTTPException(
             status_code=404,
-            detail=f"Escenario '{scenario_name}' no reconocido. Escenarios válidos: reactividad_alta, reactividad_media, reactividad_baja, lavado, inactivo."
+            detail=f"Escenario '{scenario_name}' no reconocido. Escenarios v?lidos: reactividad_alta, reactividad_media, reactividad_baja, lavado, inactivo."
         )
     
     return ScenarioControlResponse(

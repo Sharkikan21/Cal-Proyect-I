@@ -4,21 +4,47 @@
 <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 5: Distribución de Lechada</h1>
 <p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Transporte hidráulico de lechada de cal. Monitoreo de densidad, flujo y presión para prevenir sedimentación e incrustaciones en tuberías y bombas.</p>
 
+<div class="card">
+    <h2>Densidad y pH de Lechada</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">DT-2270-HDR (densidad) y pHT-2270-RGH (pH). Transporte hidráulico y prevención de incrustaciones.</p>
+    <div class="chart-container">
+        <canvas id="chartPhase5"></canvas>
+    </div>
+</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
     <div class="card">
-        <h3>Densidad de Lechada</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Concentración (% sólidos o kg/m³) para evitar bloqueos.</p>
+        <h3>Densidad (DT-2270-HDR)</h3>
         <p class="data-value" style="font-size: 1.25rem;">—</p>
     </div>
     <div class="card">
-        <h3>Flujo de Lechada</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Caudal en línea hacia puntos de dosificación.</p>
-        <p class="data-value" style="font-size: 1.25rem;">—</p>
-    </div>
-    <div class="card">
-        <h3>Presión de Bombas</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Presión de descarga para garantizar circulación.</p>
+        <h3>pH (pHT-2270-RGH)</h3>
         <p class="data-value" style="font-size: 1.25rem;">—</p>
     </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+(function() {
+    var ctx = document.getElementById('chartPhase5');
+    if (!ctx) return;
+    fetch('/api/data/5').then(function(r) { return r.json(); }).then(function(data) {
+        var labels = data.timestamps || [];
+        var d = data['DT-2270-HDR'] || [], ph = data['pHT-2270-RGH'] || [];
+        var datasets = [];
+        if (d.length) datasets.push({ label: 'Densidad (DT-2270-HDR)', data: d, borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3 });
+        if (ph.length) datasets.push({ label: 'pH (pHT-2270-RGH)', data: ph, borderColor: '#ff9500', backgroundColor: 'transparent', fill: false, tension: 0.3 });
+        if (!datasets.length) return;
+        var chartOpts = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
+            scales: {
+                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+            }
+        };
+        new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: chartOpts });
+    });
+})();
+</script>
 {% endblock %}

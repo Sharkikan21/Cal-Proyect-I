@@ -4,6 +4,13 @@
 <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 4: Clasificación y Limpieza</h1>
 <p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Eliminación de grit y arenilla: impurezas y carbonatos no apagados que pueden causar obstrucciones e incrustaciones en líneas y bombas.</p>
 
+<div class="card">
+    <h2>Nivel Cámara de Separación</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-LIT-11850. Monitoreo del nivel en cámara de clasificación (hidrociclones / grit).</p>
+    <div class="chart-container">
+        <canvas id="chartPhase4"></canvas>
+    </div>
+</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;">
     <div class="card">
         <h3>Estado de Hidrociclones</h3>
@@ -16,4 +23,31 @@
         <p class="data-value" style="font-size: 1rem;">—</p>
     </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+(function() {
+    var ctx = document.getElementById('chartPhase4');
+    if (!ctx) return;
+    fetch('/api/data/4').then(function(r) { return r.json(); }).then(function(data) {
+        var labels = data.timestamps || [];
+        var vals = data['2270-LIT-11850'] || [];
+        if (!vals.length) return;
+        var chartOpts = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
+            scales: {
+                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+            }
+        };
+        new Chart(ctx, {
+            type: 'line',
+            data: { labels: labels, datasets: [{ label: 'Nivel Cámara % (2270-LIT-11850)', data: vals, borderColor: '#ff9500', backgroundColor: 'transparent', fill: false, tension: 0.3 }] },
+            options: chartOpts
+        });
+    });
+})();
+</script>
 {% endblock %}

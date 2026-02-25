@@ -1,0 +1,33 @@
+\section{Definición de Escenarios de Simulación Basados en la Teoría de Guillermo Coloma (24/02/2026)}
+
+En esta sesión se han establecido los fundamentos científicos para la generación de datos sintéticos de largo plazo, alineando la lógica del simulador con los principios de reactividad y termodinámica descritos por Guillermo Coloma Álvarez en su obra 	extit{"La Cal ¡Es un Reactivo Químico!"}. Se definieron cuatro escenarios críticos que permitirán estresar el sistema de monitoreo y validar la capacidad interpretativa del software.
+
+\subsection{Escenario 1: Cinética de Reactividad Exponencial (Fase 3)}
+\begin{itemize}
+    \item 	extbf{Fundamento Teórico:} La reacción de hidratación es exotérmica ($15.300$ cal/mol). La velocidad de liberación de calor depende de la porosidad del CaO.
+    \item 	extbf{Implementación:} Se utilizará una función exponencial para el TAG 	exttt{2270-TT-11824B}: $T(t) = T_{inicial} + 40 \cdot (1 - e^{-kt})$.
+    \item 	extbf{Objetivo:} Evaluar la precisión del 	exttt{ReactivityMonitor} al clasificar cales de alta, media y baja reactividad mediante la variación de la constante $k$.
+\end{itemize}
+
+\subsection{Escenario 2: "Ahogamiento" de la Cal (Fases 2 y 3)}
+\begin{itemize}
+    \item 	extbf{Fundamento Teórico:} Un exceso de agua fría (relación $>$ 5:1) rompe el balance térmico, impidiendo que la suspensión alcance la zona de temperatura óptima ($70^{\circ}$C - $90^{\circ}$C).
+    \item 	extbf{Implementación:} Incremento desproporcionado del flujo de agua en 	exttt{2270-FIT-11801} respecto al pesómetro 	exttt{2280-WI-01769}, forzando una caída de temperatura en el Slaker.
+    \item 	extbf{Objetivo:} Validar la detección de alarmas por desbalance estequiométrico y pérdida de eficiencia térmica.
+\end{itemize}
+
+\subsection{Escenario 3: Generación de "Arenilla" (Grit) por Cal de Baja Calidad (Fase 4)}
+\begin{itemize}
+    \item 	extbf{Fundamento Teórico:} El carbonato de calcio no calcinado y los silicatos de cal requemada no reaccionan y decantan, saturando los sistemas de clasificación.
+    \item 	extbf{Implementación:} Creación de una dependencia lógica encadenada. Si el 	exttt{ReactivityMonitor} detecta una curva lenta, el simulador aumentará gradualmente el nivel en la cámara de separación (	exttt{2270-LIT-11850}).
+    \item 	extbf{Objetivo:} Simular el embancamiento del sistema como consecuencia directa de una mala calidad de reactivo.
+\end{itemize}
+
+\subsection{Escenario 4: Incrustación Progresiva por Carbonatación (Fase 5)}
+\begin{itemize}
+    \item 	extbf{Fundamento Teórico:} La formación de depósitos de carbonato debido al $CO_2$ ambiental o dureza del agua reduce el diámetro efectivo de las tuberías.
+    \item 	extbf{Implementación:} Mantener estables el flujo y la densidad (	exttt{DT-2270-HDR}) mientras se aplica un incremento incremental en la presión de las bombas (	exttt{2270-PIT-11895}).
+    \item 	extbf{Objetivo:} Facilitar el análisis predictivo para operaciones de mantenimiento y purga del sistema de distribución.
+\end{itemize}
+
+Estos escenarios transforman el simulador 	exttt{data\_generator.py} en un activo estratégico para el entrenamiento de operadores y la validación de algoritmos de control avanzado (Etapa 3).

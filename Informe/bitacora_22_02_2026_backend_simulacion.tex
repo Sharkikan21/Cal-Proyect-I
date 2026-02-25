@@ -1,0 +1,30 @@
+\section{Implementación de API Dinámica y Simulación de Procesos Correlacionados (22/02/2026)}
+
+En esta fase, se ha transformado el prototipo visual en un sistema funcional capaz de procesar y visualizar datos industriales simulados con coherencia física y química.
+
+\subsection{1. API de Datos por Fase (	exttt{main.py})}
+Se desarrolló un endpoint inteligente 	exttt{/api/data/\{phase\_id\}} que actúa como el puente entre el almacenamiento de datos y la interfaz de usuario. Este componente:
+\begin{itemize}
+    \item Realiza un filtrado selectivo de TAGs industriales según la etapa de la ``Historia de la Cal'' solicitada.
+    \item Transforma archivos CSV generados por el simulador en estructuras JSON optimizadas para la visualización en tiempo real.
+    \item Permite que cada una de las 5 vistas HTML consuma únicamente los datos relevantes para su operación (ej. la Fase 1 solo recibe niveles de silo y presiones de filtro).
+\end{itemize}
+
+\subsection{2. Visualización Dinámica con Chart.js}
+Se integró la librería 	extbf{Chart.js} en los templates de Jinja2, estableciendo una estética de ``Industrial Dashboard'':
+\begin{itemize}
+    \item 	extbf{Estilo:} Gráficos de líneas con alto contraste (verde y naranja neón) sobre fondos oscuros, facilitando la lectura en entornos de operación.
+    \item 	extbf{Interactividad:} Implementación de 	extit{tooltips} dinámicos para la inspección de valores exactos en cada 	extit{timestamp}.
+    \item 	extbf{Zona Crítica:} En la Fase 3 (Hidratación), se priorizó la visualización de la curva de temperatura (	exttt{2270-TT-11824B}), permitiendo al operador identificar visualmente la reactividad de la cal según las pendientes de calentamiento.
+\end{itemize}
+
+\subsection{3. El Simulador como Gemelo Digital (	exttt{data\_generator.py})}
+Se rediseñó completamente la lógica de generación de datos para pasar de valores aleatorios a una simulación de procesos interdependientes basada en los principios de 	extbf{Guillermo Coloma}:
+\begin{itemize}
+    \item 	extbf{Balance de Masa:} Si el tornillo alimentador (	exttt{2270-SAL-11817}) está activo, el nivel del silo (	exttt{2270-LIT-11825}) disminuye proporcionalmente al flujo marcado por el pesómetro (	exttt{2280-WI-01769}).
+    \item 	extbf{Cinética de Reacción:} La temperatura del Slaker no es azarosa; sigue una curva asintótica que sube desde temperatura ambiente hasta la zona de reactividad óptima (75°C - 85°C) solo cuando hay presencia simultánea de flujo de cal y agua (	exttt{2270-FIT-11801}).
+    \item 	extbf{Cálculo de Densidad:} La variable 	exttt{DT-2270-HDR} se calcula ahora en función de la relación Agua/Cal, simulando la formación de lechada industrial con densidades realistas entre 1.15 y 1.25 g/cm³.
+    \item 	extbf{Lógica de Alarmas:} Se implementó la activación automática de señales digitales (	exttt{LSHH}, 	exttt{LSLL}) cuando las variables analógicas cruzan los umbrales críticos de seguridad definidos en la ingeniería.
+\end{itemize}
+
+Este avance permite probar el software en condiciones de estrés operativo y validar que las interfaces de usuario responden correctamente a eventos físicos reales de la planta de cal.

@@ -1,55 +1,59 @@
 {% extends "base.html" %}
 {% block title %}Fase 3: Hidratación (Apagado){% endblock %}
 {% block extra_css %}
-.canvas-container { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-top: 0.5rem; }
-.canvas-container canvas { width: 100%; max-height: 400px; display: block; }
+<style>
+.chart-container-phase3 { position: relative; width: 100%; height: 380px; margin-top: 0.5rem; }
+@media (min-width: 768px) { .chart-container-phase3 { height: 420px; } }
+.chart-container-phase3 canvas { max-height: 100%; }
+</style>
 {% endblock %}
 {% block content %}
 <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 3: Hidratación (Apagado)</h1>
 <p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Reactividad y exotermicidad (concepto clave según Coloma). CaO + H₂O → Ca(OH)₂. La curva de temperatura permite distinguir cal reactiva de cal &quot;muerta&quot; o sobrecocida.</p>
 
 <div class="card" style="border-color: var(--accent-amber);">
-    <h2 style="color: var(--accent-amber);">Curva de Temperatura de Apagado</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Temperatura en el slaker (2270-TT-11824B). Un pico pronunciado y rápido indica buena reactividad; una curva plana sugiere cal de baja calidad.</p>
-    <div class="canvas-container">
-        <canvas id="slakerTempCurve" width="800" height="350"></canvas>
+    <h2 style="color: var(--accent-amber);">Curva de Temperatura de Apagado y Zona de Reactividad Óptima</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-TT-11824B (temperatura slaker) y 2270-FIT-11801 (flujo agua). Zona óptima 70–90°C según Coloma.</p>
+    <div class="chart-container-phase3">
+        <canvas id="chartPhase3"></canvas>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+{% endblock %}
+{% block extra_js %}
 <script>
 (function() {
-    const ctx = document.getElementById('slakerTempCurve');
+    var ctx = document.getElementById('chartPhase3');
     if (!ctx) return;
-    fetch('/api/visualization/data').then(r => r.json()).then(function(data) {
-        const labels = data.timestamps || [];
-        const temps = data['2270-TT-11824B'] || [];
+    fetch('/api/data/3').then(function(r) { return r.json(); }).then(function(data) {
+        var labels = data.timestamps || [];
+        var temps = data['2270-TT-11824B'] || [];
+        var flow = data['2270-FIT-11801'] || [];
+        var n = Math.max(labels.length, 1);
+        var zone70 = Array(n).fill(70);
+        var zone90 = Array(n).fill(90);
+        var datasets = [
+            { label: 'Zona óptima 70°C', data: zone70, borderColor: 'rgba(0,255,136,0.45)', borderDash: [4,4], pointRadius: 0, fill: false, order: 0 },
+            { label: 'Zona óptima 90°C (Coloma)', data: zone90, borderColor: 'rgba(0,255,136,0.45)', borderDash: [4,4], pointRadius: 0, fill: '-1', backgroundColor: 'rgba(0,255,136,0.12)', order: 0 }
+        ];
+        if (temps.length) datasets.push({ label: 'Temperatura Slaker °C (2270-TT-11824B)', data: temps, borderColor: '#ff9500', borderWidth: 2.5, backgroundColor: 'transparent', fill: false, tension: 0.3, order: 1 });
+        if (flow.length) datasets.push({ label: 'Flujo Agua (2270-FIT-11801)', data: flow, borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3, order: 2 });
         new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Temperatura Slaker (°C)',
-                    data: temps,
-                    borderColor: '#d29922',
-                    backgroundColor: 'rgba(210, 153, 34, 0.15)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
+            data: { labels: labels, datasets: datasets },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { labels: { color: '#8b949e' } } },
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } },
+                    tooltip: { titleFont: { family: 'JetBrains Mono' }, bodyFont: { family: 'JetBrains Mono' } }
+                },
                 scales: {
-                    x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', maxTicksLimit: 12 } },
-                    y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e' } }
+                    x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 12 } },
+                    y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
                 }
             }
         });
-    }).catch(function() {
-        ctx.getContext('2d').font = '14px JetBrains Mono';
-        ctx.getContext('2d').fillStyle = '#8b949e';
-        ctx.getContext('2d').fillText('Sin datos. Ejecute el simulador y recargue.', 20, 180);
     });
 })();
 </script>
