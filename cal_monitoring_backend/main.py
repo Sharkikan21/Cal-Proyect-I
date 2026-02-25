@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from state import alarm_config
-from routers import frontend, visualization, monitoring, simulator
+from .state import alarm_config
+from .routers import frontend, visualization, monitoring, simulator
 
 app = FastAPI(
     title="Sistema de Monitoreo de Cal Lechada",

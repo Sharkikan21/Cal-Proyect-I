@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 from datetime import datetime
-from models.reactivity_curve import ReactivityCurve
+from .reactivity_curve import ReactivityCurve
 
 class PlantStatusResponse(BaseModel):
     timestamp: datetime = Field(..., description="El timestamp de los datos de sensores.")

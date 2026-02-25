@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from models import ScenarioControlResponse
-from state import simulator
+from ..models import ScenarioControlResponse
+from ..state import simulator
 
 router = APIRouter(tags=["Simulador"])
 

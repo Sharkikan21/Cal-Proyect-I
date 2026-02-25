@@ -4,7 +4,7 @@ import pandas as pd
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 
-from state import CSV_VISUALIZATION_PATH
+from ..state import CSV_VISUALIZATION_PATH
 
 router = APIRouter(tags=["Visualización"])
 
