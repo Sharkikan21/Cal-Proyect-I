@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from ..core_logic import determinar_modo_actual, evaluar_alarmas_directo
 from ..models import PlantStatusResponse
-from ..state import simulator, reactivity_monitor, alarm_config
+from ..state import simulator, reactivity_monitor, alarm_config, setpoints
 
 router = APIRouter(tags=["Monitoreo"])
 

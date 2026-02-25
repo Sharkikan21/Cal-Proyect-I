@@ -1,36 +1,26 @@
-from typing import Dict, Any
-
-import pandas as pd
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import HTMLResponse
 
-from ..state import CSV_VISUALIZATION_PATH
+from ..services.csv_service import PHASE_SENSORS, get_csv_visualization_data, get_phase_data
 
 router = APIRouter(tags=["Visualización"])
-
-
-def get_csv_visualization_data() -> Dict[str, Any]:
-    """
-    Lee el CSV del simulador y devuelve los datos necesarios para la visualización
-    en formato JSON (timestamps + columnas: Nivel Silo, Flujo Cal, Temperatura Slaker).
-    """
-    if not CSV_VISUALIZATION_PATH.exists():
-        return {"timestamps": [], "2270-LIT-11825": [], "2280-WI-01769": [], "2270-TT-11824B": []}
-    df = pd.read_csv(CSV_VISUALIZATION_PATH)
-    cols = ["timestamp", "2270-LIT-11825", "2280-WI-01769", "2270-TT-11824B"]
-    existing = [c for c in cols if c in df.columns]
-    if not existing or "timestamp" not in df.columns:
-        return {"timestamps": [], "2270-LIT-11825": [], "2280-WI-01769": [], "2270-TT-11824B": []}
-    out = {"timestamps": df["timestamp"].astype(str).tolist()}
-    for c in ["2270-LIT-11825", "2280-WI-01769", "2270-TT-11824B"]:
-        out[c] = df[c].tolist() if c in df.columns else []
-    return out
 
 
 @router.get("/api/visualization/data")
 async def get_visualization_data():
     """Devuelve los datos del CSV de simulación en JSON para los gráficos."""
     return get_csv_visualization_data()
+
+
+@router.get("/api/data/{phase_id}")
+async def get_data_by_phase(phase_id: str):
+    """
+    Devuelve los datos del CSV filtrados por fase (1-5).
+    Formato: { timestamps: [...], tag1: [...], tag2: [...] }.
+    """
+    if phase_id not in PHASE_SENSORS:
+        raise HTTPException(status_code=404, detail=f"Fase '{phase_id}' no válida. Use 1, 2, 3, 4 o 5.")
+    return get_phase_data(phase_id)
 
 
 @router.get("/visualization", response_class=HTMLResponse)

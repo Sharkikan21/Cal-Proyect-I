@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .data_generator import PlantSimulator
+from .simulation.plant_simulator import PlantSimulator
 from .core_logic import load_alarm_config_from_json, ReactivityMonitor
 
 _THIS_DIR = Path(__file__).resolve().parent
@@ -11,3 +11,4 @@ TEMPLATES_DIR = _THIS_DIR / "templates"
 simulator = PlantSimulator()
 reactivity_monitor = ReactivityMonitor()
 alarm_config = load_alarm_config_from_json(str(ALARM_CONFIG_PATH))
+setpoints: dict = {}
