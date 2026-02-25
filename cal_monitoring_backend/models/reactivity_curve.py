@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-
 class ReactivityCurve(BaseModel):
     timestamp_inicio: datetime
     timestamp_fin: datetime

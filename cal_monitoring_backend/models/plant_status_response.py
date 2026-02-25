@@ -3,7 +3,6 @@ from typing import List, Dict, Any
 from datetime import datetime
 from models.reactivity_curve import ReactivityCurve
 
-
 class PlantStatusResponse(BaseModel):
     timestamp: datetime = Field(..., description="El timestamp de los datos de sensores.")
     mode: str = Field(..., description="El modo de operación actual de la planta (ej: 'produciendo', 'inactivo').")
