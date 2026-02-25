@@ -5,10 +5,39 @@
 <p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Inventario y disponibilidad. La cal viva (óxido de calcio) se almacena en condiciones controladas antes del apagado.</p>
 
 <div class="card">
-    <h2>Nivel de Silo — 2270-LIT-11825</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Transmisor de nivel del silo de cal viva. Monitoreo de inventario para garantizar continuidad operativa.</p>
-    <div class="chart-placeholder" style="height: 220px; background: var(--bg-dark); border: 1px dashed var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85rem;">
-        [ Gráfico de Nivel de Silo — datos desde API /api/visualization/data ]
+    <h2>Nivel de Silo y Presión de Filtro</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Nivel AI (2270-LIT-11825) y Presión Filtro (2270-PDAH-11827). Monitoreo de inventario y condición del filtro.</p>
+    <div class="chart-container">
+        <canvas id="chartPhase1"></canvas>
     </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+(function() {
+    const ctx = document.getElementById('chartPhase1');
+    if (!ctx) return;
+    fetch('/api/data/1').then(function(r) { return r.json(); }).then(function(data) {
+        var labels = data.timestamps || [];
+        var chartOpts = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
+            scales: {
+                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+            }
+        };
+        var datasets = [];
+        if ((data['2270-LIT-11825'] || []).length) {
+            datasets.push({ label: 'Nivel Silo % (2270-LIT-11825)', data: data['2270-LIT-11825'], borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3 });
+        }
+        if ((data['2270-PDAH-11827'] || []).length) {
+            datasets.push({ label: 'Presión Filtro (2270-PDAH-11827)', data: data['2270-PDAH-11827'], borderColor: '#ff9500', backgroundColor: 'transparent', fill: false, tension: 0.3 });
+        }
+        if (!datasets.length) return;
+        new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: chartOpts });
+    });
+})();
+</script>
 {% endblock %}

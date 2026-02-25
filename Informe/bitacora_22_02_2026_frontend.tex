@@ -1,0 +1,39 @@
+\section{Arquitectura Frontend y Fundamentación Teórica (22/02/2026)}
+
+Durante esta sesión, el desarrollo del software ha dado un giro cualitativo importante, alineando la arquitectura técnica del frontend con los principios teóricos fundamentales extraídos de la bibliografía experta.
+
+\subsection{1. Integración de la Teoría de Guillermo Coloma}
+Se procedió a la lectura y análisis del libro 	extit{``La Cal ¡Es un Reactivo Químico!''} de Guillermo Coloma Álvarez. De este texto se extrajeron cuatro pilares que ahora rigen la lógica del monitoreo:
+
+\begin{itemize}
+    \item 	extbf{La Reactividad como Corazón:} Se determinó que la medición de temperatura en el Slaker no es solo operativa, sino un indicador de calidad. Las curvas deben clasificarse en Alta ($<$3 min), Media (5-10 min) y Baja/Muerta ($>$15 min).
+    \item 	extbf{Estequiometría Operacional:} Se estableció la importancia de la relación Agua/Cal (idealmente 3.3:1 a 5:1) para evitar el ahogamiento de la cal o la generación excesiva de arenilla.
+    \item 	extbf{Transporte Hidráulico:} Se identificó la densidad y la velocidad de flujo como variables críticas para prevenir dos fallas opuestas: sedimentación (velocidad baja) e incrustación (velocidad baja o química del agua).
+    \item 	extbf{Seguridad Térmica:} Dada la exotermicidad de la reacción (15.300 cal/mol), el monitoreo de temperatura es también un sistema de seguridad ante la generación súbita de vapor.
+\end{itemize}
+
+\subsection{2. Estructura de Interfaz: ``La Historia de la Cal''}
+Basado en lo anterior, se reestructuró la navegación del sistema dividiéndola en 5 fases operativas, cada una con un foco cognitivo distinto para el operador:
+
+\begin{enumerate}
+    \item 	extbf{Fase 1 - Almacenamiento (Silo):} Foco en Logística e Inventario (archivos: 	exttt{phase1\_silo.html}).
+    \item 	extbf{Fase 2 - Dosificación:} Foco en Balance de Masa y Alimentación (archivos: 	exttt{phase2\_dosing.html}).
+    \item 	extbf{Fase 3 - Hidratación (Slaker):} Foco Químico. Es la etapa crítica donde se visualizarán las curvas de reactividad (archivos: 	exttt{phase3\_slaker.html}).
+    \item 	extbf{Fase 4 - Separación:} Foco en limpieza y rechazo de impurezas o ``Grit'' (archivos: 	exttt{phase4\_separation.html}).
+    \item 	extbf{Fase 5 - Distribución:} Foco Hidráulico. Monitoreo de bombeo y transporte a planta (archivos: 	exttt{phase5\_dist.html}).
+\end{enumerate}
+
+\subsection{3. Implementación Técnica: Patrón de Herencia Jinja2}
+Para implementar esta visión de manera mantenible y escalable, se utilizó el motor de plantillas 	extbf{Jinja2} integrado en FastAPI, aplicando el patrón de ``Herencia de Plantillas''.
+
+La arquitectura se compone de tres capas:
+
+\begin{itemize}
+    \item 	extbf{El Controlador (	exttt{main.py}):} Actúa como el ``cerebro'' que dirige el tráfico. Define las rutas (endpoints) como 	exttt{/phase/3} y selecciona qué plantilla renderizar.
+    
+    \item 	extbf{El Esqueleto (	exttt{base.html}):} Es la plantilla padre. Define la estructura visual común (menú de navegación, pie de página, importación de estilos CSS). Contiene un bloque vacío (	exttt{\{\% block content \%\}}) esperando ser llenado. Esto simula la consistencia de una interfaz HMI industrial.
+    
+    \item 	extbf{Las Vistas Específicas (	exttt{phaseX.html}):} Son archivos ligeros que heredan de 	exttt{base.html}. Solo contienen la información y gráficos específicos de su etapa (ej. la curva de temperatura del Slaker). Al renderizarse, inyectan su contenido dentro del bloque del padre.
+\end{itemize}
+
+Este diseño permite que el software sea modular: cambios en el diseño general se aplican una sola vez en 	exttt{base.html}, mientras que la lógica específica de cada etapa de la cal se mantiene aislada y clara.

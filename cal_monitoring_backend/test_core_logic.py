@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import datetime
 from core_logic import (
     load_sensor_data_from_excel,
     load_alarm_config_from_json,
@@ -6,13 +7,14 @@ from core_logic import (
     evaluar_sensores_json,
     determinar_modo_actual,
     ReactivityMonitor,
-    es_cero,lee 
+    es_cero
 )
-from datetime import datetime
+from pathlib import Path
 
 # --- Rutas a tus archivos originales ---
+_THIS_DIR = Path(__file__).resolve().parent
 EXCEL_FILE_PATH = r"D:\Cal\Antiguo\Sensor\Tabla_Completa.xlsx"
-JSON_FILE_PATH = "cal_monitoring_backend/config/alarm_config.json" # Contiene el JSON de alarmas
+JSON_FILE_PATH = _THIS_DIR / "config" / "alarm_config.json" # Contiene el JSON de alarmas
 
 def run_basic_test():
     print("--- Iniciando prueba básica de core_logic.py ---")
