@@ -1,0 +1,53 @@
+\section{Bitácora de Avances - 02 de marzo de 2026}
+
+En la sesión de hoy se realizó un análisis comparativo entre la implementación actual del software de monitoreo y el nuevo listado de instrumentación definido en el documento 	extit{Software\_Cal\_tags\_actualizados\_v2.pdf}. Se identificaron múltiples variables, principalmente de diagnóstico eléctrico y estados de marcha de motores, que deben ser incorporadas para cumplir con los requerimientos de la Etapa 2 y 3.
+
+A continuación, se presenta el listado de TAGs pendientes por integrar en el backend (simulador y lógica de alarmas) y en las visualizaciones del frontend:
+
+\begin{center}
+\begin{small}
+\begin{tabular}{|l|l|l|}
+\hline
+	extbf{Fase} & 	extbf{TAG del Sensor / Equipo} & 	extbf{Descripción del Pendiente} \ \hline
+Fase 1 & 2270-ZM-009-02\_CMD\_RUN & Comando marcha blower silo \ \hline
+Fase 1 & 2270-ZM-009-02\_RUN\_FB & Confirmación marcha blower \ \hline
+Fase 1 & 2270-ZM-009-02\_VFD\_FAULT & Falla variador blower \ \hline
+Fase 1 & 2270-ZM-009-02\_SPEED\_REF & Referencia velocidad blower \ \hline
+Fase 1 & 2270-ZM-009-02\_SPEED\_FB & Velocidad real blower \ \hline
+Fase 1 & 2270-ZM-009-02\_MOTOR\_CURRENT & Corriente motor blower \ \hline
+Fase 1 & 2270-ZM-009-14\_CMD\_RUN & Comando marcha activador fondo \ \hline
+Fase 1 & 2270-ZM-009-14\_RUN\_FB & Confirmación marcha activador \ \hline
+Fase 1 & 2270-ZM-009-14\_MOTOR\_CURRENT & Corriente motor activador \ \hline
+Fase 2 & 2270-ZM-009-04\_CMD\_RUN & Comando marcha tornillo \ \hline
+Fase 2 & 2270-ZM-009-04\_RUN\_FB & Confirmación marcha tornillo \ \hline
+Fase 2 & 2270-ZM-009-04\_SPEED\_REF & Referencia velocidad tornillo \ \hline
+Fase 2 & 2270-ZM-009-04\_SPEED\_FB & Velocidad real tornillo \ \hline
+Fase 2 & 2270-ZM-009-04\_MOTOR\_CURRENT & Corriente motor tornillo \ \hline
+Fase 2 & 2270-ZM-009-04\_MOTOR\_POWER & Potencia motor tornillo \ \hline
+Fase 2 & 2270-SAL-11818\_MOTOR\_CURRENT & Corriente motor válvula rotatoria \ \hline
+Fase 2 & 2270-SAL-11818\_SPEED\_FB & Velocidad real válvula rotatoria \ \hline
+Fase 3 & 2270-TT-11824A & Temperatura Slaker A (Sensor Dual) \ \hline
+Fase 3 & 2270-TAHH-11801 & Alarma Temp. Muy Alta Vortex \ \hline
+Fase 3 & 2270-PALL-11834 & Presión de Agua Vortex \ \hline
+Fase 3 & 2270-ZM-009-06\_CMD\_RUN & Comando marcha Slaker \ \hline
+Fase 3 & 2270-ZM-009-06\_RUN\_FB & Confirmación marcha Slaker \ \hline
+Fase 3 & 2270-ZM-009-06\_SPEED\_FB & Velocidad real Slaker \ \hline
+Fase 3 & 2270-ZM-009-06\_MOTOR\_CURRENT & Corriente motor Slaker \ \hline
+Fase 3 & 2270-ZM-009-06\_MOTOR\_POWER & Potencia motor Slaker \ \hline
+Fase 4 & 2270-ZM-009-31\_CMD\_RUN & Comando marcha agitador 1 \ \hline
+Fase 4 & 2270-ZM-009-31\_RUN\_FB & Confirmación marcha agitador 1 \ \hline
+Fase 4 & 2270-ZM-009-31\_SPEED\_REF & Referencia velocidad agitador 1 \ \hline
+Fase 4 & 2270-ZM-009-31\_MOTOR\_CURRENT & Corriente motor agitador 1 \ \hline
+Fase 5 & 2270-TK-068\_AG\_CMD\_RUN / \_FB & Comando/FB Agitador Tank 1 \ \hline
+Fase 5 & 2270-TK-068\_AG\_MOTOR\_CURRENT & Corriente Agitador Tank 1 \ \hline
+Fase 5 & 2270-TK-069\_AG\_CMD\_RUN / \_FB & Comando/FB Agitador Tank 2 \ \hline
+Fase 5 & 2270-PP-208\_CMD\_RUN / \_FB & Comando/FB Bomba Alimentación 1 \ \hline
+Fase 5 & 2270-PP-208\_SPEED\_FB & Velocidad real Bomba 1 \ \hline
+Fase 5 & 2270-PP-208\_MOTOR\_CURRENT & Corriente motor Bomba 1 \ \hline
+Fase 5 & 2270-PP-098\_CMD\_RUN / \_FB & Comando/FB Bomba Circulación 1 \ \hline
+Fase 5 & 2220-PP-300\_CMD\_RUN / \_FB & Comando/FB Bomba Circ. Secundaria \ \hline
+\end{tabular}
+\end{small}
+\end{center}
+
+Este listado servirá como hoja de ruta para las próximas modificaciones en el código fuente, garantizando que el sistema de monitoreo sea un reflejo fiel de la instrumentación real de la planta.

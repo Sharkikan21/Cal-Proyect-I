@@ -1,48 +1,269 @@
 {% extends "base.html" %}
 {% block title %}Fase 2: Dosificación y Alimentación{% endblock %}
+{% block extra_css %}
+<style>
+    .phase2-grid { display: grid; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .phase2-section {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem;
+        min-height: 0;
+    }
+    .phase2-section h2 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+    }
+    .flow-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+    .big-number {
+        font-family: var(--font-mono);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-green);
+        line-height: 1.2;
+    }
+    .big-number + .unit { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; margin-left: 0.25rem; }
+    .big-number.zero { color: var(--text-muted); }
+    .chart-container-lg { position: relative; width: 100%; height: 260px; margin-top: 0.5rem; }
+    .equip-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    .equip-card {
+        background: var(--bg-dark);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+    }
+    .equip-card h3 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600; }
+    .equip-card .tag-id { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 auto 0.25rem;
+        box-shadow: 0 0 8px currentColor;
+    }
+    .status-dot.run   { background: var(--accent-green); color: var(--accent-green); }
+    .status-dot.stop  { background: var(--text-muted); color: var(--text-muted); }
+    .status-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .mode-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .perf-grid { grid-template-columns: 1fr; } }
+    .perf-chart { height: 220px; position: relative; }
+    .current-alert {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        padding: 0.35rem 0.6rem;
+        border-radius: 4px;
+        margin-top: 0.5rem;
+        font-weight: 600;
+    }
+    .current-alert.normal { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.4); }
+    .current-alert.warning { background: rgba(210, 153, 34, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+    .current-alert.danger  { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+</style>
+{% endblock %}
 {% block content %}
 <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 2: Dosificación y Alimentación</h1>
-<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Balance de masa. La cal viva se dosifica de forma controlada hacia el slaker mediante tornillo sinfín y pesómetro.</p>
+<p class="subtitle">Flujo de masa hacia el slaker. Supervisión del tornillo alimentador y válvula rotatoria (Coloma).</p>
 
-<div class="card">
-    <h2>Pesómetro — Caudal másico (Ton/h)</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">2280-WI-01769. Balance de masa hacia el slaker.</p>
-    <div class="chart-container">
-        <canvas id="chartPhase2"></canvas>
+<!-- Monitor de Flujo de Masa -->
+<div class="phase2-section phase2-grid">
+    <h2>Monitor de Flujo de Masa</h2>
+    <div class="flow-header">
+        <div>
+            <span class="big-number" id="bigNumberFlow">—</span><span class="unit">Ton/h</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">2280-WI-01769 — Valor actual</p>
+    </div>
+    <div class="chart-container-lg">
+        <canvas id="chartFlow"></canvas>
     </div>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
-    <div class="card">
-        <h3>Estado del Tornillo Alimentador</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Indicador de marcha/parada del tornillo dosificador. Tag: 2270-SAL-11817.</p>
-        <p class="data-value" style="font-size: 1rem;">—</p>
+
+<!-- Control de Equipos -->
+<div class="phase2-section" style="margin-bottom: 1.25rem;">
+    <h2>Control de Equipos</h2>
+    <div class="equip-cards">
+        <div class="equip-card">
+            <h3>Tornillo Alimentador</h3>
+            <div class="tag-id">2270-ZM-009-04</div>
+            <div id="tornilloRunDot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+            <div class="mode-label">Modo: Automático</div>
+        </div>
+        <div class="equip-card">
+            <h3>Válvula Rotatoria</h3>
+            <div class="tag-id">2270-SAL-11818</div>
+            <div id="valvulaRunDot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+            <div class="mode-label">Modo: Automático</div>
+        </div>
+    </div>
+</div>
+
+<!-- Análisis Eléctrico y de Velocidad -->
+<div class="phase2-section">
+    <h2>Análisis Eléctrico y de Velocidad</h2>
+    <div class="perf-grid">
+        <div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Tornillo — SPEED_REF / SPEED_FB (2270-ZM-009-04)</p>
+            <div class="perf-chart">
+                <canvas id="chartSpeed"></canvas>
+            </div>
+        </div>
+        <div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Tornillo — MOTOR_CURRENT / MOTOR_POWER (2270-ZM-009-04)</p>
+            <div id="currentAlert" class="current-alert normal">Corriente: — A (umbral alarma: 30 A)</div>
+            <div class="perf-chart">
+                <canvas id="chartCurrentPower"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
 (function() {
-    var ctx = document.getElementById('chartPhase2');
-    if (!ctx) return;
-    fetch('/api/data/2').then(function(r) { return r.json(); }).then(function(data) {
+    var POLL_INTERVAL_MS = 3000;
+    var CURRENT_ALARM_THRESHOLD_A = 30;
+    var chartFlow, chartSpeed, chartCurrentPower;
+
+    var scaleOpts = {
+        x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+    };
+    var commonOpts = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+        scales: scaleOpts
+    };
+
+    function destroyCharts() {
+        if (chartFlow) { chartFlow.destroy(); chartFlow = null; }
+        if (chartSpeed) { chartSpeed.destroy(); chartSpeed = null; }
+        if (chartCurrentPower) { chartCurrentPower.destroy(); chartCurrentPower = null; }
+    }
+
+    function last(arr) { return arr && arr.length ? arr[arr.length - 1] : null; }
+
+    function updateBigNumber(data) {
+        var wi = data['2280-WI-01769'] || [];
+        var val = last(wi);
+        var el = document.getElementById('bigNumberFlow');
+        if (!el) return;
+        if (val !== null && val !== undefined) {
+            el.textContent = Number(val).toFixed(2);
+            el.classList.toggle('zero', Number(val) === 0);
+        } else {
+            el.textContent = '—';
+        }
+    }
+
+    function updateEquipStatus(data) {
+        var run04 = data['2270-ZM-009-04_RUN_FB'] || [];
+        var run18 = data['2270-SAL-11818'] || [];
+        var r04 = last(run04);
+        var r18 = last(run18);
+        var dotT = document.getElementById('tornilloRunDot');
+        var dotV = document.getElementById('valvulaRunDot');
+        if (dotT) dotT.className = 'status-dot ' + (r04 === 1 ? 'run' : 'stop');
+        if (dotV) dotV.className = 'status-dot ' + (r18 === 1 ? 'run' : 'stop');
+    }
+
+    function updateCurrentAlert(data) {
+        var cur = data['2270-ZM-009-04_MOTOR_CURRENT'] || [];
+        var val = last(cur);
+        var el = document.getElementById('currentAlert');
+        if (!el) return;
+        var num = val !== null && val !== undefined ? Number(val) : null;
+        el.textContent = 'Corriente: ' + (num !== null ? num.toFixed(1) : '—') + ' A (umbral alarma: ' + CURRENT_ALARM_THRESHOLD_A + ' A)';
+        el.className = 'current-alert ';
+        if (num === null) el.className += 'normal';
+        else if (num >= CURRENT_ALARM_THRESHOLD_A) el.className += 'danger';
+        else if (num >= CURRENT_ALARM_THRESHOLD_A * 0.8) el.className += 'warning';
+        else el.className += 'normal';
+    }
+
+    function renderCharts(data) {
         var labels = data.timestamps || [];
-        var vals = data['2280-WI-01769'] || [];
-        if (!vals.length) return;
-        var chartOpts = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
-            scales: {
-                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
-                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
-            }
-        };
-        new Chart(ctx, {
-            type: 'line',
-            data: { labels: labels, datasets: [{ label: 'Pesómetro Ton/h (2280-WI-01769)', data: vals, borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3 }] },
-            options: chartOpts
-        });
-    });
+        destroyCharts();
+
+        var wi = data['2280-WI-01769'] || [];
+        if (wi.length && document.getElementById('chartFlow')) {
+            chartFlow = new Chart(document.getElementById('chartFlow'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Pesómetro (2280-WI-01769) Ton/h', data: wi, borderColor: '#3fb950', backgroundColor: 'rgba(63, 185, 80, 0.12)', fill: true, tension: 0.3 }]
+                },
+                options: commonOpts
+            });
+        }
+
+        var ref = data['2270-ZM-009-04_SPEED_REF'] || [];
+        var fb = data['2270-ZM-009-04_SPEED_FB'] || [];
+        if ((ref.length || fb.length) && document.getElementById('chartSpeed')) {
+            var sets = [];
+            if (ref.length) sets.push({ label: '2270-ZM-009-04_SPEED_REF (Hz)', data: ref, borderColor: '#58a6ff', borderDash: [4, 2], backgroundColor: 'transparent', fill: false, tension: 0.3 });
+            if (fb.length) sets.push({ label: '2270-ZM-009-04_SPEED_FB (Hz)', data: fb, borderColor: '#3fb950', backgroundColor: 'rgba(63, 185, 80, 0.1)', fill: true, tension: 0.3 });
+            chartSpeed = new Chart(document.getElementById('chartSpeed'), {
+                type: 'line',
+                data: { labels: labels, datasets: sets },
+                options: commonOpts
+            });
+        }
+
+        var cur = data['2270-ZM-009-04_MOTOR_CURRENT'] || [];
+        var pwr = data['2270-ZM-009-04_MOTOR_POWER'] || [];
+        if ((cur.length || pwr.length) && document.getElementById('chartCurrentPower')) {
+            var sets = [];
+            if (cur.length) sets.push({ label: '2270-ZM-009-04_MOTOR_CURRENT (A)', data: cur, borderColor: '#3fb950', backgroundColor: 'transparent', fill: false, tension: 0.3, yAxisID: 'y' });
+            if (pwr.length) sets.push({ label: '2270-ZM-009-04_MOTOR_POWER (kW)', data: pwr, borderColor: '#56d364', backgroundColor: 'rgba(86, 211, 100, 0.08)', fill: true, tension: 0.3, yAxisID: 'y1' });
+            chartCurrentPower = new Chart(document.getElementById('chartCurrentPower'), {
+                type: 'line',
+                data: { labels: labels, datasets: sets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#8b949e' } } },
+                    scales: {
+                        x: scaleOpts.x,
+                        y:  { ...scaleOpts.y, position: 'left',  title: { display: true, text: 'A' } },
+                        y1: { ...scaleOpts.y, position: 'right', title: { display: true, text: 'kW' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+    }
+
+    function fetchAndUpdate() {
+        fetch('/api/data/2')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                updateBigNumber(data);
+                updateEquipStatus(data);
+                updateCurrentAlert(data);
+                renderCharts(data);
+            })
+            .catch(function() {});
+    }
+
+    fetchAndUpdate();
+    setInterval(fetchAndUpdate, POLL_INTERVAL_MS);
 })();
 </script>
 {% endblock %}

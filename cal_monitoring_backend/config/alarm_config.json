@@ -123,11 +123,48 @@
             }
         ]
     },
-    "2270-TAHH-11801": {
+    "2270-ZM-009-04_MOTOR_CURRENT": {
         "equipos": [
-            "2270-ZM-009-30"
+            "2270-ZM-009-04"
         ],
         "condiciones": [
+            {
+                "operador": ">",
+                "valor": 30,
+                "unidad": "A",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Corriente del tornillo superior a 30 A. Posible atascamiento o sobrecarga. Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER SCREW FEEDER - Corriente alta"
+            }
+        ]
+    },
+    "2270-ZM-009-04_TRANSMISSION_FAULT": {
+        "equipos": [
+            "2270-ZM-009-04"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 1,
+                "tipo_alarma": "FAULT",
+                "descripcion": "Falla de transmisión: SPEED_REF > 0 pero SPEED_FB en cero por más de 3 pasos. Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER SCREW FEEDER - Falla de transmisión"
+            }
+        ]
+    },
+    "2270-TAHH-11801": {
+        "equipos": [
+            "2270-ZM-009-30",
+            "2270-ZM-009-06"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 1,
+                "tipo_alarma": "FAULT",
+                "descripcion": "Temperatura slaker alta-alta activa (TT-11824A o B > 90°C). Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER - Alarma Alta Alta Temperatura"
+            },
             {
                 "tipo": "relativo_a_SP",
                 "operador": "+",
@@ -200,9 +237,18 @@
     },
     "2270-PALL-11834": {
         "equipos": [
-            "2270-ZM-009-30"
+            "2270-ZM-009-30",
+            "2270-ZM-009-06"
         ],
         "condiciones": [
+            {
+                "operador": "<",
+                "valor": 250,
+                "unidad": "kPa",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Presión de agua baja. Riesgo de quemado de cal en Slaker. Alarma DCS.",
+                "nombre_equipo": "LIME SLAKER - Presión agua baja"
+            },
             {
                 "operador": "<",
                 "valor": 275.8,
@@ -298,6 +344,35 @@
                 "tipo_alarma": "FAULT",
                 "descripcion": "Cerrar válvula 2270-TV-11801 y HV-11808. Detener tornillo alimentador. Alarma DCS.",
                 "nombre_equipo": "LIME SEPARATING CHAMBER - Nivel Muy Alto"
+            }
+        ]
+    },
+    "2270-ZM-009-31_MOTOR_CURRENT": {
+        "equipos": [
+            "2270-ZM-009-31"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 25,
+                "unidad": "A",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Corriente del agitador superior a 25 A. Posible acumulación excesiva de arenillas en el fondo. Alarma DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER AGITATOR - Corriente alta"
+            }
+        ]
+    },
+    "2270-ZM-009-31_DRY_RUN_FAULT": {
+        "equipos": [
+            "2270-ZM-009-31"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 1,
+                "tipo_alarma": "FAULT",
+                "descripcion": "Interlock crítico: nivel cámara < 5% con agitador en marcha. Proteger aspas contra vibraciones en vacío. Alarma DCS.",
+                "nombre_equipo": "LIME SEPARATING CHAMBER AGITATOR - Operación en vacío"
             }
         ]
     },
@@ -473,6 +548,37 @@
             }
         ]
     },
+    "2270-PP-208_MOTOR_CURRENT": {
+        "equipos": [
+            "2270-PP-208"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 60,
+                "unidad": "A",
+                "tipo_alarma": "FAULT",
+                "descripcion": "Corriente de bomba PP-208 superior a 60 A. Posible obstrucción de la línea de transporte por carbonatación. Alarma DCS.",
+                "nombre_equipo": "BOMBA ALIMENTACIÓN MINA PP-208 - Corriente alta"
+            }
+        ]
+    },
+    "pHT-2270-RGH": {
+        "equipos": [
+            "2270-ZM-009-30",
+            "2270-PP-208"
+        ],
+        "condiciones": [
+            {
+                "operador": "<",
+                "valor": 11.5,
+                "unidad": "pH",
+                "tipo_alarma": "WARNING",
+                "descripcion": "pH por debajo de 11.5. El reactivo no tiene la fuerza alcalinizante necesaria para la flotación. Alarma DCS.",
+                "nombre_equipo": "LECHADA DE CAL - pH bajo"
+            }
+        ]
+    },
     "2270-TIT-11893": {
         "equipos": [
             "2270-ZM-009-34"
@@ -604,6 +710,35 @@
                 "tipo_alarma": "WARNING",
                 "descripcion": "Alarma por condición de presión. Mostrar en DCS.",
                 "nombre_equipo": "LIME SILO VENT - Alarma Alta Presión"
+            }
+        ]
+    },
+    "2270-ZM-009-02_MOTOR_CURRENT": {
+        "equipos": [
+            "2270-ZM-009-02"
+        ],
+        "condiciones": [
+            {
+                "operador": ">",
+                "valor": 45,
+                "unidad": "A",
+                "tipo_alarma": "WARNING",
+                "descripcion": "Corriente del blower superior a 45 A. Alarma en DCS.",
+                "nombre_equipo": "LIME SILO BLOWER - Corriente alta"
+            }
+        ]
+    },
+    "2270-ZM-009-02_VFD_FAULT": {
+        "equipos": [
+            "2270-ZM-009-02"
+        ],
+        "condiciones": [
+            {
+                "operador": "==",
+                "valor": 1,
+                "tipo_alarma": "FAULT",
+                "descripcion": "Fallo del variador de frecuencia del blower. Alarma en DCS.",
+                "nombre_equipo": "LIME SILO BLOWER - Fallo VFD"
             }
         ]
     },

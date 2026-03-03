@@ -1,53 +1,248 @@
 {% extends "base.html" %}
-{% block title %}Fase 4: Clasificación y Limpieza{% endblock %}
+{% block title %}Fase 4: Separación y Clasificación{% endblock %}
+{% block extra_css %}
+<style>
+    .phase4-grid { display: grid; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .phase4-section {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem;
+        min-height: 0;
+    }
+    .phase4-section h2 { font-size: 0.95rem; font-weight: 600; color: var(--accent); margin-bottom: 0.75rem; }
+    .chart-container-lg { position: relative; width: 100%; height: 280px; margin-top: 0.5rem; }
+    .chart-container-md { position: relative; width: 100%; height: 220px; margin-top: 0.5rem; }
+    .chart-card { border: 2px solid var(--border); border-radius: 8px; padding: 0.5rem; transition: border-color 0.3s ease; }
+    .chart-card.sediment-alert { border-color: var(--accent-amber); box-shadow: 0 0 12px rgba(210, 153, 34, 0.25); }
+    .equip-card {
+        background: var(--bg-dark);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+    }
+    .equip-card h3 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600; }
+    .equip-card .tag-id { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .status-dot {
+        width: 12px; height: 12px; border-radius: 50%;
+        margin: 0 auto 0.25rem; box-shadow: 0 0 8px currentColor;
+    }
+    .status-dot.run   { background: var(--accent-green); color: var(--accent-green); }
+    .status-dot.stop  { background: var(--text-muted); color: var(--text-muted); }
+    .status-label { font-size: 0.75rem; color: var(--text-muted); }
+    .interlock-panel {
+        background: rgba(139, 148, 158, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    .interlock-panel .item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+    .interlock-panel .item:last-child { margin-bottom: 0; }
+    .interlock-panel .icon { width: 8px; height: 8px; border-radius: 50%; }
+    .interlock-panel .icon.ok   { background: var(--accent-green); }
+    .interlock-panel .icon.warn { background: var(--accent-amber); }
+    .interlock-panel .icon.fail { background: var(--accent-red); }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .legend-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; }
+    @media (max-width: 700px) {
+        .phase4-two-col { grid-template-columns: 1fr !important; }
+    }
+</style>
+{% endblock %}
 {% block content %}
-<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 4: Clasificación y Limpieza</h1>
-<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Eliminación de grit y arenilla: impurezas y carbonatos no apagados que pueden causar obstrucciones e incrustaciones en líneas y bombas.</p>
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 4: Separación y Clasificación</h1>
+<p class="subtitle">Limpieza de la lechada: nivel bajo control y agitación constante para evitar obstrucciones por arenillas e impurezas gruesas.</p>
 
-<div class="card">
-    <h2>Nivel Cámara de Separación</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-LIT-11850. Monitoreo del nivel en cámara de clasificación (hidrociclones / grit).</p>
-    <div class="chart-container">
-        <canvas id="chartPhase4"></canvas>
+<!-- Control de Nivel de Cámara -->
+<div class="phase4-section phase4-grid">
+    <h2>Control de Nivel de Cámara</h2>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-LIT-11850. Línea de referencia al 40% (umbral de arranque del agitador).</p>
+    <div class="chart-container-lg">
+        <canvas id="chartLevel"></canvas>
     </div>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;">
-    <div class="card">
-        <h3>Estado de Hidrociclones</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Clasificación por centrifugación: bajoflujo (lechada fina) y sobreflujo (grit).</p>
-        <p class="data-value" style="font-size: 1rem;">—</p>
+
+<div class="phase4-two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+    <!-- Monitor de Agitación -->
+    <div class="phase4-section">
+        <h2>Monitor de Agitación (ZM-009-31)</h2>
+        <div class="equip-card" style="margin-bottom: 0.75rem; text-align: center;">
+            <h3>Estado de operación</h3>
+            <div class="tag-id">2270-ZM-009-31</div>
+            <div id="agitadorRunDot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Velocidad: SPEED_REF / SPEED_FB</p>
+        <div class="chart-container-md">
+            <canvas id="chartSpeed"></canvas>
+        </div>
     </div>
-    <div class="card">
-        <h3>Estado de Molinos / Clasificadores</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Molienda de partículas gruesas y rechazo de material no hidratado.</p>
-        <p class="data-value" style="font-size: 1rem;">—</p>
+    <!-- Indicador de Carga de Sólidos -->
+    <div class="phase4-section">
+        <h2>Indicador de Carga de Sólidos (Sedimentación)</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-ZM-009-31_MOTOR_CURRENT. Compare con el nivel: corriente alta puede indicar acumulación de arenillas en el fondo.</p>
+        <div id="currentChartCard" class="chart-card">
+            <div class="chart-container-md">
+                <canvas id="chartCurrent"></canvas>
+            </div>
+        </div>
+        <p class="legend-note">Una corriente del motor del agitador por encima del valor estable (~+15%) puede significar exceso de sólidos insolubles en la cámara. Revisar descarga de grit.</p>
+    </div>
+</div>
+
+<!-- Panel de Interlocks -->
+<div class="phase4-section">
+    <h2>Panel de Interlocks</h2>
+    <div id="interlockPanel" class="interlock-panel">
+        <div class="item"><span id="ic1" class="icon ok"></span><span id="ic1Text">Nivel cámara: —</span></div>
+        <div class="item"><span id="ic2" class="icon ok"></span><span id="ic2Text">Agitador protegido por nivel bajo (&lt;5%): condición inactiva.</span></div>
     </div>
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
 (function() {
-    var ctx = document.getElementById('chartPhase4');
-    if (!ctx) return;
-    fetch('/api/data/4').then(function(r) { return r.json(); }).then(function(data) {
+    var POLL_INTERVAL_MS = 4000;
+    var SEDIMENT_THRESHOLD_PCT = 15;
+    var LEVEL_REF_PCT = 40;
+    var chartLevel, chartSpeed, chartCurrent;
+
+    var scaleOpts = {
+        x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+    };
+    var commonOpts = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+        scales: scaleOpts
+    };
+
+    function destroyCharts() {
+        if (chartLevel) { chartLevel.destroy(); chartLevel = null; }
+        if (chartSpeed) { chartSpeed.destroy(); chartSpeed = null; }
+        if (chartCurrent) { chartCurrent.destroy(); chartCurrent = null; }
+    }
+
+    function last(arr) { return arr && arr.length ? arr[arr.length - 1] : null; }
+
+    function stableAverage(arr) {
+        if (!arr || !arr.length) return 0;
+        var n = Math.max(1, Math.floor(arr.length * 0.5));
+        var sum = 0;
+        for (var i = 0; i < n; i++) sum += Number(arr[i]) || 0;
+        return sum / n;
+    }
+
+    function updateEquipStatus(data) {
+        var runFb = data['2270-ZM-009-31_RUN_FB'] || [];
+        var r = last(runFb);
+        var dot = document.getElementById('agitadorRunDot');
+        if (dot) dot.className = 'status-dot ' + (r === 1 ? 'run' : 'stop');
+    }
+
+    function updateInterlocks(data) {
+        var level = data['2270-LIT-11850'] || [];
+        var dryFault = data['2270-ZM-009-31_DRY_RUN_FAULT'] || [];
+        var vLevel = last(level);
+        var vDry = last(dryFault);
+        var numLevel = vLevel !== null && vLevel !== undefined ? Number(vLevel) : null;
+        var panel = document.getElementById('interlockPanel');
+        var ic1 = document.getElementById('ic1');
+        var ic1Text = document.getElementById('ic1Text');
+        var ic2 = document.getElementById('ic2');
+        var ic2Text = document.getElementById('ic2Text');
+        if (!ic1Text) return;
+        ic1Text.textContent = 'Nivel cámara: ' + (numLevel !== null ? numLevel.toFixed(1) + '%' : '—');
+        if (numLevel !== null) {
+            ic1.className = 'icon ' + (numLevel < 5 ? 'fail' : numLevel < 40 ? 'warn' : 'ok');
+        }
+        if (vDry === 1) {
+            ic2.className = 'icon fail';
+            ic2Text.textContent = 'Agitador en marcha con nivel < 5%: interlock de vacío activo. Proteger aspas.';
+        } else {
+            ic2.className = 'icon ok';
+            ic2Text.textContent = 'Agitador protegido por nivel bajo (<5%): condición cumplida (no operar en vacío).';
+        }
+    }
+
+    function updateSedimentAlert(data) {
+        var cur = data['2270-ZM-009-31_MOTOR_CURRENT'] || [];
+        var avg = stableAverage(cur);
+        var lastVal = last(cur);
+        var card = document.getElementById('currentChartCard');
+        if (!card) return;
+        if (avg > 0 && lastVal !== null && lastVal !== undefined) {
+            var pctAbove = ((Number(lastVal) - avg) / avg) * 100;
+            card.classList.toggle('sediment-alert', pctAbove >= SEDIMENT_THRESHOLD_PCT);
+        } else {
+            card.classList.remove('sediment-alert');
+        }
+    }
+
+    function renderCharts(data) {
         var labels = data.timestamps || [];
-        var vals = data['2270-LIT-11850'] || [];
-        if (!vals.length) return;
-        var chartOpts = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
-            scales: {
-                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
-                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
-            }
-        };
-        new Chart(ctx, {
-            type: 'line',
-            data: { labels: labels, datasets: [{ label: 'Nivel Cámara % (2270-LIT-11850)', data: vals, borderColor: '#ff9500', backgroundColor: 'transparent', fill: false, tension: 0.3 }] },
-            options: chartOpts
-        });
-    });
+        destroyCharts();
+
+        var level = data['2270-LIT-11850'] || [];
+        var ref40 = level.length ? Array(level.length).fill(LEVEL_REF_PCT) : [];
+        if (level.length && document.getElementById('chartLevel')) {
+            chartLevel = new Chart(document.getElementById('chartLevel'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Nivel (2270-LIT-11850) %', data: level, borderColor: '#8b7355', backgroundColor: 'rgba(139,115,85,0.15)', fill: true, tension: 0.3, borderWidth: 2 },
+                        { label: 'Umbral agitador 40%', data: ref40, borderColor: 'rgba(139, 148, 158, 0.7)', borderDash: [6, 4], pointRadius: 0, fill: false }
+                    ]
+                },
+                options: commonOpts
+            });
+        }
+
+        var ref = data['2270-ZM-009-31_SPEED_REF'] || [];
+        var fb = data['2270-ZM-009-31_SPEED_FB'] || [];
+        if ((ref.length || fb.length) && document.getElementById('chartSpeed')) {
+            var sets = [];
+            if (ref.length) sets.push({ label: '2270-ZM-009-31_SPEED_REF', data: ref, borderColor: '#6e7a8a', borderDash: [4, 2], backgroundColor: 'transparent', fill: false, tension: 0.3 });
+            if (fb.length) sets.push({ label: '2270-ZM-009-31_SPEED_FB', data: fb, borderColor: '#7d8b9a', backgroundColor: 'rgba(125,139,154,0.12)', fill: true, tension: 0.3 });
+            chartSpeed = new Chart(document.getElementById('chartSpeed'), {
+                type: 'line',
+                data: { labels: labels, datasets: sets },
+                options: commonOpts
+            });
+        }
+
+        var cur = data['2270-ZM-009-31_MOTOR_CURRENT'] || [];
+        if (cur.length && document.getElementById('chartCurrent')) {
+            chartCurrent = new Chart(document.getElementById('chartCurrent'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: '2270-ZM-009-31_MOTOR_CURRENT (A)', data: cur, borderColor: '#8b7355', backgroundColor: 'rgba(139,115,85,0.12)', fill: true, tension: 0.3 }]
+                },
+                options: commonOpts
+            });
+        }
+    }
+
+    function fetchAndUpdate() {
+        fetch('/api/data/4')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                updateEquipStatus(data);
+                updateInterlocks(data);
+                updateSedimentAlert(data);
+                renderCharts(data);
+            })
+            .catch(function() {});
+    }
+
+    fetchAndUpdate();
+    setInterval(fetchAndUpdate, POLL_INTERVAL_MS);
 })();
 </script>
 {% endblock %}

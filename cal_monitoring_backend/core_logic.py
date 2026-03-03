@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 from datetime import datetime, timedelta
+from typing import Union
 
 def load_sensor_data_from_excel(file_path: str) -> tuple[pd.DataFrame, pd.Series]:
     """
@@ -381,9 +382,22 @@ class ReactivityMonitor:
         return nuevas_curvas_completadas
 
 
+def _normalize_timestamp(timestamp: Union[datetime, str]):
+    """Convierte timestamp a objeto con .strftime (datetime o pd.Timestamp). Acepta string ISO."""
+    if isinstance(timestamp, str):
+        try:
+            return pd.to_datetime(timestamp)
+        except Exception:
+            try:
+                return datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+            except Exception:
+                return datetime.now()
+    return timestamp
+
+
 def evaluar_alarmas_directo(
     datos_sensores: dict[str, float],
-    timestamp: datetime,
+    timestamp: Union[datetime, str],
     setpoints_dict: dict,
     config_json_sensores: dict
 ) -> list[str]:
@@ -391,7 +405,9 @@ def evaluar_alarmas_directo(
     Evalúa las condiciones definidas en el JSON para un diccionario de datos de sensores (tag: valor).
     Retorna una lista de mensajes de alerta.
     Esta versión es ideal para datos en tiempo real o de simuladores.
+    Acepta timestamp como datetime o como string ISO (ej. del simulador).
     """
+    ts = _normalize_timestamp(timestamp)
     alertas_json = []
 
     for tag_principal_json, info_sensor in config_json_sensores.items():
@@ -422,7 +438,7 @@ def evaluar_alarmas_directo(
                     condicion_para_eval["tipo"] = "absoluto"
 
                 if evaluar_condicion(valor_sensor_num, condicion_para_eval, tag_principal_json, setpoints_dict):
-                    alertas_json.append(f"ALERTA ({timestamp.strftime('%H:%M:%S')}): {descripcion_alerta_plantilla} [{nombre_equipo}] (Sensor: {tag_principal_json}, Valor: {valor_sensor_num:.2f})")
+                    alertas_json.append(f"ALERTA ({ts.strftime('%H:%M:%S')}): {descripcion_alerta_plantilla} [{nombre_equipo}] (Sensor: {tag_principal_json}, Valor: {valor_sensor_num:.2f})")
 
             elif tipo_condicion == "multiple_and":
                 sub_condiciones_lista = condicion_config.get("condiciones", [])
@@ -464,6 +480,6 @@ def evaluar_alarmas_directo(
                         break
 
                 if cumple_todas:
-                    alertas_json.append(f"ALERTA ({timestamp.strftime('%H:%M:%S')}): {descripcion_alerta_plantilla} [{nombre_equipo}] (Condiciones 'multiple_and' cumplidas)")
+                    alertas_json.append(f"ALERTA ({ts.strftime('%H:%M:%S')}): {descripcion_alerta_plantilla} [{nombre_equipo}] (Condiciones 'multiple_and' cumplidas)")
 
     return alertas_json

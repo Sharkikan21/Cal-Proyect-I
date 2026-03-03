@@ -56,11 +56,39 @@ if not alarm_config:
 # Mapeo de sensores por fase (La Historia de la Cal) para la API de datos
 # Coincide con columnas de plant_simulator_output.csv generado por data_generator.py
 PHASE_SENSORS: Dict[str, List[str]] = {
-    "1": ["2270-LIT-11825", "2270-LSHH-11826", "2270-LSLL-11829", "2270-PDAH-11827"],  # Silo
-    "2": ["2280-WI-01769", "2270-SAL-11817", "2270-SAL-11818"],                        # Dosificaci?n
-    "3": ["2270-FIT-11801", "2270-TT-11824B", "2270-ZM-009-06"],                       # Hidrataci?n
-    "4": ["2270-LIT-11850", "2270-ZM-009-31"],                                          # Separaci?n
-    "5": ["DT-2270-HDR", "pHT-2270-RGH", "2270-PIT-11895"],                            # Distribuci?n
+    "1": [
+        "2270-LIT-11825", "2270-LSHH-11826", "2270-LSLL-11829", "2270-PDAH-11827",
+        "2270-ZM-009-02_CMD_RUN", "2270-ZM-009-02_RUN_FB", "2270-ZM-009-02_VFD_FAULT",
+        "2270-ZM-009-02_SPEED_REF", "2270-ZM-009-02_SPEED_FB", "2270-ZM-009-02_MOTOR_CURRENT",
+        "2270-ZM-009-14_CMD_RUN", "2270-ZM-009-14_RUN_FB", "2270-ZM-009-14_MOTOR_CURRENT",
+    ],  # Silo + instrumentación eléctrica y control
+    "2": [
+        "2280-WI-01769", "2270-SAL-11817", "2270-SAL-11818",
+        "2270-ZM-009-04_CMD_RUN", "2270-ZM-009-04_RUN_FB",
+        "2270-ZM-009-04_SPEED_REF", "2270-ZM-009-04_SPEED_FB",
+        "2270-ZM-009-04_MOTOR_CURRENT", "2270-ZM-009-04_MOTOR_POWER",
+        "2270-ZM-009-04_TRANSMISSION_FAULT",
+        "2270-SAL-11818_MOTOR_CURRENT", "2270-SAL-11818_SPEED_FB",
+    ],  # Dosificación + control eléctrico
+    "3": [
+        "2270-FIT-11801", "2270-TT-11824A", "2270-TT-11824B", "2270-TAHH-11801", "2270-PALL-11834",
+        "2270-ZM-009-06", "2270-ZM-009-06_CMD_RUN", "2270-ZM-009-06_RUN_FB", "2270-ZM-009-06_SPEED_FB",
+        "2270-ZM-009-06_MOTOR_CURRENT", "2270-ZM-009-06_MOTOR_POWER",
+    ],  # Hidratación / Slaker
+    "4": [
+        "2270-LIT-11850", "2270-ZM-009-31",
+        "2270-ZM-009-31_CMD_RUN", "2270-ZM-009-31_RUN_FB",
+        "2270-ZM-009-31_SPEED_REF", "2270-ZM-009-31_SPEED_FB", "2270-ZM-009-31_MOTOR_CURRENT",
+        "2270-ZM-009-31_DRY_RUN_FAULT",
+    ],  # Separación + control agitador
+    "5": [
+        "DT-2270-HDR", "pHT-2270-RGH", "2270-PIT-11895",
+        "2270-TK-068_AG_CMD_RUN", "2270-TK-068_AG_RUN_FB", "2270-TK-068_AG_MOTOR_CURRENT",
+        "2270-TK-069_AG_CMD_RUN", "2270-TK-069_AG_RUN_FB",
+        "2270-PP-208_CMD_RUN", "2270-PP-208_RUN_FB", "2270-PP-208_SPEED_FB", "2270-PP-208_MOTOR_CURRENT",
+        "2270-PP-098_CMD_RUN", "2270-PP-098_RUN_FB",
+        "2220-PP-300_CMD_RUN", "2220-PP-300_RUN_FB",
+    ],  # Almacenamiento y distribución final
 }
 
 
@@ -286,8 +314,10 @@ async def get_plant_status():
         config_json_sensores=alarm_config
     )
 
-    # 4. Procesar curva de reactividad
-    temp_reactividad = sensor_data.get("2270-TT-11824B", 25.0)
+    # 4. Procesar curva de reactividad (promedio de sensores A y B si ambos existen)
+    temp_a = sensor_data.get("2270-TT-11824A")
+    temp_b = sensor_data.get("2270-TT-11824B", 25.0)
+    temp_reactividad = ((temp_a + temp_b) / 2.0) if temp_a is not None else temp_b
     new_curves = reactivity_monitor.process_reactivity(
         timestamp_fila=sensor_data["timestamp"],
         temp=temp_reactividad,

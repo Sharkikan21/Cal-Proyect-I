@@ -1,50 +1,280 @@
 {% extends "base.html" %}
-{% block title %}Fase 5: Distribución de Lechada{% endblock %}
+{% block title %}Fase 5: Distribución y Calidad{% endblock %}
+{% block extra_css %}
+<style>
+    .phase5-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    @media (max-width: 700px) { .phase5-kpi { grid-template-columns: 1fr; } }
+    .phase5-section {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem;
+        min-height: 0;
+    }
+    .phase5-section h2 { font-size: 0.95rem; font-weight: 600; color: var(--accent); margin-bottom: 0.75rem; }
+    .kpi-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .big-kpi {
+        font-family: var(--font-mono);
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .big-kpi.ph-ok   { color: #3fb950; }
+    .big-kpi.ph-warn { color: #d29922; }
+    .big-kpi.ph-fail { color: #f85149; }
+    .big-kpi.density { color: #2ea8c7; }
+    .chart-container-kpi { position: relative; width: 100%; height: 220px; margin-top: 0.5rem; }
+    .risk-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        background: rgba(210, 153, 34, 0.15);
+        color: var(--accent-amber);
+        border: 1px solid rgba(210, 153, 34, 0.4);
+    }
+    .risk-badge.hidden { display: none; }
+    .assets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+    .asset-card {
+        background: var(--bg-dark);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .asset-card h3 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600; }
+    .asset-card .tag-id { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .status-dot {
+        width: 12px; height: 12px; border-radius: 50%;
+        margin: 0 auto 0.25rem; box-shadow: 0 0 8px currentColor;
+    }
+    .status-dot.run  { background: #2ea8c7; color: #2ea8c7; }
+    .status-dot.stop { background: var(--text-muted); color: var(--text-muted); }
+    .status-label { font-size: 0.75rem; color: var(--text-muted); }
+    .mini-pit { font-family: var(--font-mono); font-size: 0.9rem; color: #2ea8c7; margin-top: 0.5rem; }
+    .chart-mini { height: 160px; position: relative; }
+    .phase5-footer {
+        margin-top: 1.5rem;
+        padding: 0.75rem 1rem;
+        background: rgba(46, 168, 199, 0.08);
+        border: 1px solid rgba(46, 168, 199, 0.25);
+        border-radius: 6px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    .phase5-footer strong { color: #2ea8c7; }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+</style>
+{% endblock %}
 {% block content %}
-<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 5: Distribución de Lechada</h1>
-<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Transporte hidráulico de lechada de cal. Monitoreo de densidad, flujo y presión para prevenir sedimentación e incrustaciones en tuberías y bombas.</p>
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 5: Distribución y Calidad</h1>
+<p class="subtitle">Etapa final: entrega del reactivo a la mina. Estabilidad química y salud de los activos de bombeo.</p>
 
-<div class="card">
-    <h2>Densidad y pH de Lechada</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">DT-2270-HDR (densidad) y pHT-2270-RGH (pH). Transporte hidráulico y prevención de incrustaciones.</p>
-    <div class="chart-container">
-        <canvas id="chartPhase5"></canvas>
+<!-- Dashboard de Calidad (KPIs) -->
+<div class="phase5-kpi">
+    <div class="phase5-section">
+        <h2>Monitor de pH (pHT-2270-RGH)</h2>
+        <div class="kpi-header">
+            <span id="bigPH" class="big-kpi">—</span>
+            <span id="phRiskBadge" class="risk-badge hidden">Densidad baja: pH en riesgo (Coloma)</span>
+        </div>
+        <div class="chart-container-kpi">
+            <canvas id="chartPH"></canvas>
+        </div>
+    </div>
+    <div class="phase5-section">
+        <h2>Monitor de Densidad (DT-2270-HDR)</h2>
+        <div class="kpi-header">
+            <span id="bigDensity" class="big-kpi density">—</span><span style="font-size: 0.9rem; color: var(--text-muted);"> g/cm³</span>
+        </div>
+        <div class="chart-container-kpi">
+            <canvas id="chartDensity"></canvas>
+        </div>
     </div>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-    <div class="card">
-        <h3>Densidad (DT-2270-HDR)</h3>
-        <p class="data-value" style="font-size: 1.25rem;">—</p>
+
+<!-- Estado de Activos de Distribución -->
+<div class="phase5-section" style="margin-bottom: 1.25rem;">
+    <h2>Estado de Activos de Distribución</h2>
+    <div class="assets-grid">
+        <!-- PP-208 -->
+        <div class="asset-card">
+            <h3>Bomba de Alimentación Principal</h3>
+            <div class="tag-id">2270-PP-208</div>
+            <div id="pp208Dot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+            <div id="pitMini" class="mini-pit">PIT-11895: — PSI</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">SPEED_FB / MOTOR_CURRENT</p>
+            <div class="chart-mini">
+                <canvas id="chartPP208"></canvas>
+            </div>
+        </div>
+        <!-- TK-068 -->
+        <div class="asset-card">
+            <h3>Tanque Acondicionamiento</h3>
+            <div class="tag-id">2270-TK-068 (agitador)</div>
+            <div id="tk068Dot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+            <div id="tk068Cur" class="mini-pit">Corriente: — A</div>
+        </div>
+        <!-- TK-069 -->
+        <div class="asset-card">
+            <h3>Tanque Acondicionamiento</h3>
+            <div class="tag-id">2270-TK-069 (agitador)</div>
+            <div id="tk069Dot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+        </div>
+        <!-- PP-098 y PP-300 -->
+        <div class="asset-card" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <h3>Bombas de Circulación</h3>
+            <div class="tag-id">2270-PP-098 / 2220-PP-300</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div id="pp098Dot" class="status-dot stop"></div>
+                <span class="status-label">PP-098</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div id="pp300Dot" class="status-dot stop"></div>
+                <span class="status-label">2220-PP-300</span>
+            </div>
+        </div>
     </div>
-    <div class="card">
-        <h3>pH (pHT-2270-RGH)</h3>
-        <p class="data-value" style="font-size: 1.25rem;">—</p>
-    </div>
+</div>
+
+<div class="phase5-footer">
+    <strong>Reactivo final.</strong> Esta lechada de cal es el producto entregado a los procesos de flotación y cianuración. La calidad (pH y densidad) y el estado de las bombas garantizan un despacho sin fallas mecánicas.
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
 (function() {
-    var ctx = document.getElementById('chartPhase5');
-    if (!ctx) return;
-    fetch('/api/data/5').then(function(r) { return r.json(); }).then(function(data) {
-        var labels = data.timestamps || [];
-        var d = data['DT-2270-HDR'] || [], ph = data['pHT-2270-RGH'] || [];
-        var datasets = [];
-        if (d.length) datasets.push({ label: 'Densidad (DT-2270-HDR)', data: d, borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3 });
-        if (ph.length) datasets.push({ label: 'pH (pHT-2270-RGH)', data: ph, borderColor: '#ff9500', backgroundColor: 'transparent', fill: false, tension: 0.3 });
-        if (!datasets.length) return;
-        var chartOpts = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
-            scales: {
-                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
-                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+    var POLL_INTERVAL_MS = 5000;
+    var PH_OK = 12.0, PH_WARN = 11.5;
+    var DENSITY_RISK = 1.12;
+    var chartPH, chartDensity, chartPP208;
+
+    var scaleOpts = {
+        x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+    };
+    var commonOpts = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+        scales: scaleOpts
+    };
+
+    function destroyCharts() {
+        if (chartPH) { chartPH.destroy(); chartPH = null; }
+        if (chartDensity) { chartDensity.destroy(); chartDensity = null; }
+        if (chartPP208) { chartPP208.destroy(); chartPP208 = null; }
+    }
+
+    function last(arr) { return arr && arr.length ? arr[arr.length - 1] : null; }
+
+    function updateKPIs(data) {
+        var ph = data['pHT-2270-RGH'] || [];
+        var dens = data['DT-2270-HDR'] || [];
+        var vPh = last(ph);
+        var vDens = last(dens);
+        var elPh = document.getElementById('bigPH');
+        var elDens = document.getElementById('bigDensity');
+        var badge = document.getElementById('phRiskBadge');
+        if (elPh) {
+            if (vPh !== null && vPh !== undefined) {
+                var n = Number(vPh);
+                elPh.textContent = n.toFixed(2);
+                elPh.className = 'big-kpi ' + (n >= PH_OK ? 'ph-ok' : n >= PH_WARN ? 'ph-warn' : 'ph-fail');
+            } else { elPh.textContent = '—'; elPh.className = 'big-kpi'; }
+        }
+        if (elDens) {
+            elDens.textContent = vDens !== null && vDens !== undefined ? Number(vDens).toFixed(3) : '—';
+        }
+        if (badge) {
+            var densNum = vDens !== null && vDens !== undefined ? Number(vDens) : 1.2;
+            if (densNum < DENSITY_RISK) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
             }
-        };
-        new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: chartOpts });
-    });
+        }
+    }
+
+    function updateAssets(data) {
+        var run208 = last(data['2270-PP-208_RUN_FB'] || []);
+        var run068 = last(data['2270-TK-068_AG_RUN_FB'] || []);
+        var run069 = last(data['2270-TK-069_AG_RUN_FB'] || []);
+        var run098 = last(data['2270-PP-098_RUN_FB'] || []);
+        var run300 = last(data['2220-PP-300_RUN_FB'] || []);
+        var pit = last(data['2270-PIT-11895'] || []);
+        var cur068 = last(data['2270-TK-068_AG_MOTOR_CURRENT'] || []);
+        function setDot(id, on) { var e = document.getElementById(id); if (e) e.className = 'status-dot ' + (on === 1 ? 'run' : 'stop'); }
+        setDot('pp208Dot', run208);
+        setDot('tk068Dot', run068);
+        setDot('tk069Dot', run069);
+        setDot('pp098Dot', run098);
+        setDot('pp300Dot', run300);
+        var pitEl = document.getElementById('pitMini');
+        if (pitEl) pitEl.textContent = 'PIT-11895: ' + (pit !== null && pit !== undefined ? Number(pit).toFixed(1) : '—') + ' PSI';
+        var curEl = document.getElementById('tk068Cur');
+        if (curEl) curEl.textContent = 'Corriente: ' + (cur068 !== null && cur068 !== undefined ? Number(cur068).toFixed(1) : '—') + ' A';
+    }
+
+    function renderCharts(data) {
+        var labels = data.timestamps || [];
+        destroyCharts();
+
+        var ph = data['pHT-2270-RGH'] || [];
+        if (ph.length && document.getElementById('chartPH')) {
+            chartPH = new Chart(document.getElementById('chartPH'), {
+                type: 'line',
+                data: { labels: labels, datasets: [{ label: 'pHT-2270-RGH (pH)', data: ph, borderColor: '#2ea8c7', backgroundColor: 'rgba(46,168,199,0.12)', fill: true, tension: 0.3 }] },
+                options: commonOpts
+            });
+        }
+
+        var dens = data['DT-2270-HDR'] || [];
+        if (dens.length && document.getElementById('chartDensity')) {
+            chartDensity = new Chart(document.getElementById('chartDensity'), {
+                type: 'line',
+                data: { labels: labels, datasets: [{ label: 'DT-2270-HDR (g/cm³)', data: dens, borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,0.1)', fill: true, tension: 0.3 }] },
+                options: commonOpts
+            });
+        }
+
+        var spd = data['2270-PP-208_SPEED_FB'] || [];
+        var cur = data['2270-PP-208_MOTOR_CURRENT'] || [];
+        if ((spd.length || cur.length) && document.getElementById('chartPP208')) {
+            var sets = [];
+            if (spd.length) sets.push({ label: '2270-PP-208_SPEED_FB (Hz)', data: spd, borderColor: '#2ea8c7', backgroundColor: 'transparent', fill: false, tension: 0.3, yAxisID: 'y' });
+            if (cur.length) sets.push({ label: '2270-PP-208_MOTOR_CURRENT (A)', data: cur, borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,0.08)', fill: true, tension: 0.3, yAxisID: 'y1' });
+            chartPP208 = new Chart(document.getElementById('chartPP208'), {
+                type: 'line',
+                data: { labels: labels, datasets: sets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#8b949e' } } },
+                    scales: {
+                        x: scaleOpts.x,
+                        y:  { ...scaleOpts.y, position: 'left', title: { display: true, text: 'Hz' } },
+                        y1: { ...scaleOpts.y, position: 'right', title: { display: true, text: 'A' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+    }
+
+    function fetchAndUpdate() {
+        fetch('/api/data/5')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                updateKPIs(data);
+                updateAssets(data);
+                renderCharts(data);
+            })
+            .catch(function() {});
+    }
+
+    fetchAndUpdate();
+    setInterval(fetchAndUpdate, POLL_INTERVAL_MS);
 })();
 </script>
 {% endblock %}

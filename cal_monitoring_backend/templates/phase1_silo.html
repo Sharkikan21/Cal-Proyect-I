@@ -1,43 +1,321 @@
 {% extends "base.html" %}
 {% block title %}Fase 1: Almacenamiento de Cal Viva{% endblock %}
+{% block extra_css %}
+<style>
+    .phase1-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    @media (min-width: 900px) {
+        .phase1-grid { grid-template-columns: 2fr 1fr; }
+    }
+    @media (min-width: 1200px) {
+        .phase1-grid { grid-template-columns: 3fr 1fr; }
+    }
+    .phase1-section {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem;
+        min-height: 0;
+    }
+    .phase1-section h2 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .chart-container-lg {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        margin-top: 0.5rem;
+    }
+    .chart-container-sm {
+        position: relative;
+        width: 100%;
+        height: 160px;
+        margin-top: 0.5rem;
+    }
+    .alarm-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    .badge {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+    .badge-neutral { background: var(--border); color: var(--text-muted); }
+    .badge-alarm   { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .equip-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    .equip-card {
+        background: var(--bg-dark);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+    }
+    .equip-card h3 {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+    }
+    .equip-card .tag-id {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+    }
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 auto 0.25rem;
+        box-shadow: 0 0 8px currentColor;
+    }
+    .status-dot.run   { background: var(--accent-green); color: var(--accent-green); }
+    .status-dot.stop  { background: var(--text-muted); color: var(--text-muted); }
+    .status-dot.fault { background: var(--accent-red); color: var(--accent-red); }
+    .status-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .fault-indicator {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+    }
+    .fault-indicator.off { background: transparent; color: var(--text-muted); }
+    .fault-indicator.on  { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); }
+    .perf-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    @media (max-width: 600px) {
+        .perf-grid { grid-template-columns: 1fr; }
+    }
+    .perf-chart { height: 200px; position: relative; }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+</style>
+{% endblock %}
 {% block content %}
 <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 1: Almacenamiento de Cal Viva</h1>
-<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Inventario y disponibilidad. La cal viva (óxido de calcio) se almacena en condiciones controladas antes del apagado.</p>
+<p class="subtitle">Inventario y disponibilidad. Instrumentación de silo, blower y activador de fondo (Coloma).</p>
 
-<div class="card">
-    <h2>Nivel de Silo y Presión de Filtro</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Nivel AI (2270-LIT-11825) y Presión Filtro (2270-PDAH-11827). Monitoreo de inventario y condición del filtro.</p>
-    <div class="chart-container">
-        <canvas id="chartPhase1"></canvas>
+<!-- Monitor de Inventario -->
+<div class="phase1-grid">
+    <div class="phase1-section">
+        <h2>Monitor de Inventario</h2>
+        <div class="alarm-badges">
+            <span id="badgeLSHH" class="badge badge-neutral">LSHH (2270-LSHH-11826): —</span>
+            <span id="badgeLSLL" class="badge badge-neutral">LSLL (2270-LSLL-11829): —</span>
+        </div>
+        <div class="chart-container-lg">
+            <canvas id="chartNivel"></canvas>
+        </div>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">2270-LIT-11825 — Nivel del silo (%)</p>
+    </div>
+    <div class="phase1-section">
+        <h2>Presión del Filtro</h2>
+        <div class="chart-container-sm">
+            <canvas id="chartPresion"></canvas>
+        </div>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">2270-PDAH-11827</p>
+    </div>
+</div>
+
+<!-- Estado de Equipos (Motores) -->
+<div class="phase1-section" style="margin-bottom: 1.25rem;">
+    <h2>Estado de Equipos (Motores)</h2>
+    <div class="equip-cards">
+        <div class="equip-card">
+            <h3>Blower</h3>
+            <div class="tag-id">2270-ZM-009-02</div>
+            <div id="blowerRunDot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+            <div id="blowerFault" class="fault-indicator off">VFD_FAULT: —</div>
+        </div>
+        <div class="equip-card">
+            <h3>Activador de Fondo</h3>
+            <div class="tag-id">2270-ZM-009-14</div>
+            <div id="activadorRunDot" class="status-dot stop"></div>
+            <div class="status-label">Marcha (RUN_FB)</div>
+        </div>
+    </div>
+</div>
+
+<!-- Rendimiento Eléctrico -->
+<div class="phase1-section">
+    <h2>Rendimiento Eléctrico</h2>
+    <div class="perf-grid">
+        <div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-ZM-009-02 — Corriente y Velocidad</p>
+            <div class="perf-chart">
+                <canvas id="chartBlower"></canvas>
+            </div>
+        </div>
+        <div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-ZM-009-14 — Corriente</p>
+            <div class="perf-chart">
+                <canvas id="chartActivador"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
 (function() {
-    const ctx = document.getElementById('chartPhase1');
-    if (!ctx) return;
-    fetch('/api/data/1').then(function(r) { return r.json(); }).then(function(data) {
+    var POLL_INTERVAL_MS = 4000;
+    var chartNivel, chartPresion, chartBlower, chartActivador;
+
+    var scaleOpts = {
+        x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+    };
+    var commonOpts = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+        scales: scaleOpts
+    };
+
+    function destroyCharts() {
+        if (chartNivel) { chartNivel.destroy(); chartNivel = null; }
+        if (chartPresion) { chartPresion.destroy(); chartPresion = null; }
+        if (chartBlower) { chartBlower.destroy(); chartBlower = null; }
+        if (chartActivador) { chartActivador.destroy(); chartActivador = null; }
+    }
+
+    function updateBadges(data) {
+        var lshh = (data['2270-LSHH-11826'] || []);
+        var lsll = (data['2270-LSLL-11829'] || []);
+        var vLshh = lshh.length ? lshh[lshh.length - 1] : null;
+        var vLsll = lsll.length ? lsll[lsll.length - 1] : null;
+        var bLshh = document.getElementById('badgeLSHH');
+        var bLsll = document.getElementById('badgeLSLL');
+        if (bLshh) {
+            bLshh.textContent = 'LSHH (2270-LSHH-11826): ' + (vLshh !== null ? vLshh : '—');
+            bLshh.className = 'badge ' + (vLshh === 1 ? 'badge-alarm' : 'badge-neutral');
+        }
+        if (bLsll) {
+            bLsll.textContent = 'LSLL (2270-LSLL-11829): ' + (vLsll !== null ? vLsll : '—');
+            bLsll.className = 'badge ' + (vLsll === 1 ? 'badge-alarm' : 'badge-neutral');
+        }
+    }
+
+    function updateEquipStatus(data) {
+        var run02 = (data['2270-ZM-009-02_RUN_FB'] || []);
+        var fault02 = (data['2270-ZM-009-02_VFD_FAULT'] || []);
+        var run14 = (data['2270-ZM-009-14_RUN_FB'] || []);
+        var r02 = run02.length ? run02[run02.length - 1] : 0;
+        var f02 = fault02.length ? fault02[fault02.length - 1] : 0;
+        var r14 = run14.length ? run14[run14.length - 1] : 0;
+        var dotBlower = document.getElementById('blowerRunDot');
+        var dotActivador = document.getElementById('activadorRunDot');
+        var faultBlower = document.getElementById('blowerFault');
+        if (dotBlower) {
+            dotBlower.className = 'status-dot ' + (f02 === 1 ? 'fault' : (r02 === 1 ? 'run' : 'stop'));
+        }
+        if (dotActivador) {
+            dotActivador.className = 'status-dot ' + (r14 === 1 ? 'run' : 'stop');
+        }
+        if (faultBlower) {
+            faultBlower.textContent = 'VFD_FAULT: ' + (f02 !== null && f02 !== undefined ? f02 : '—');
+            faultBlower.className = 'fault-indicator ' + (f02 === 1 ? 'on' : 'off');
+        }
+    }
+
+    function renderCharts(data) {
         var labels = data.timestamps || [];
-        var chartOpts = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } } },
-            scales: {
-                x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
-                y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
-            }
-        };
-        var datasets = [];
-        if ((data['2270-LIT-11825'] || []).length) {
-            datasets.push({ label: 'Nivel Silo % (2270-LIT-11825)', data: data['2270-LIT-11825'], borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3 });
+        destroyCharts();
+
+        var nivel = data['2270-LIT-11825'] || [];
+        if (nivel.length && document.getElementById('chartNivel')) {
+            chartNivel = new Chart(document.getElementById('chartNivel'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Nivel Silo % (2270-LIT-11825)', data: nivel, borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.15)', fill: true, tension: 0.3 }]
+                },
+                options: commonOpts
+            });
         }
-        if ((data['2270-PDAH-11827'] || []).length) {
-            datasets.push({ label: 'Presión Filtro (2270-PDAH-11827)', data: data['2270-PDAH-11827'], borderColor: '#ff9500', backgroundColor: 'transparent', fill: false, tension: 0.3 });
+
+        var presion = data['2270-PDAH-11827'] || [];
+        if (presion.length && document.getElementById('chartPresion')) {
+            chartPresion = new Chart(document.getElementById('chartPresion'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Presión Filtro (2270-PDAH-11827)', data: presion, borderColor: '#ff9500', backgroundColor: 'rgba(255,149,0,0.1)', fill: true, tension: 0.3 }]
+                },
+                options: commonOpts
+            });
         }
-        if (!datasets.length) return;
-        new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: chartOpts });
-    });
+
+        var cur02 = data['2270-ZM-009-02_MOTOR_CURRENT'] || [];
+        var spd02 = data['2270-ZM-009-02_SPEED_FB'] || [];
+        if ((cur02.length || spd02.length) && document.getElementById('chartBlower')) {
+            var sets = [];
+            if (cur02.length) sets.push({ label: '2270-ZM-009-02_MOTOR_CURRENT (A)', data: cur02, borderColor: '#3fb950', backgroundColor: 'transparent', fill: false, tension: 0.3, yAxisID: 'y' });
+            if (spd02.length) sets.push({ label: '2270-ZM-009-02_SPEED_FB (Hz)', data: spd02, borderColor: '#56d364', backgroundColor: 'transparent', fill: false, tension: 0.3, yAxisID: 'y1' });
+            chartBlower = new Chart(document.getElementById('chartBlower'), {
+                type: 'line',
+                data: { labels: labels, datasets: sets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#8b949e' } } },
+                    scales: {
+                        x: scaleOpts.x,
+                        y:  { ...scaleOpts.y, position: 'left',  title: { display: true, text: 'A' } },
+                        y1: { ...scaleOpts.y, position: 'right', title: { display: true, text: 'Hz' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+
+        var cur14 = data['2270-ZM-009-14_MOTOR_CURRENT'] || [];
+        if (cur14.length && document.getElementById('chartActivador')) {
+            chartActivador = new Chart(document.getElementById('chartActivador'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: '2270-ZM-009-14_MOTOR_CURRENT (A)', data: cur14, borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,0.1)', fill: true, tension: 0.3 }]
+                },
+                options: commonOpts
+            });
+        }
+    }
+
+    function fetchAndUpdate() {
+        fetch('/api/data/1')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                updateBadges(data);
+                updateEquipStatus(data);
+                renderCharts(data);
+            })
+            .catch(function() {});
+    }
+
+    fetchAndUpdate();
+    setInterval(fetchAndUpdate, POLL_INTERVAL_MS);
 })();
 </script>
 {% endblock %}

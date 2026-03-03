@@ -1,60 +1,281 @@
 {% extends "base.html" %}
-{% block title %}Fase 3: Hidratación (Apagado){% endblock %}
+{% block title %}Fase 3: Hidratación (Slaker){% endblock %}
 {% block extra_css %}
 <style>
-.chart-container-phase3 { position: relative; width: 100%; height: 380px; margin-top: 0.5rem; }
-@media (min-width: 768px) { .chart-container-phase3 { height: 420px; } }
-.chart-container-phase3 canvas { max-height: 100%; }
+    .phase3-grid { display: grid; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .phase3-section {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem;
+        min-height: 0;
+    }
+    .phase3-section h2 { font-size: 0.95rem; font-weight: 600; color: var(--accent); margin-bottom: 0.75rem; }
+    .chart-container-lg { position: relative; width: 100%; height: 320px; margin-top: 0.5rem; }
+    .chart-container-sm { position: relative; width: 100%; height: 180px; margin-top: 0.5rem; }
+    .reactivity-widget {
+        background: linear-gradient(135deg, var(--bg-dark) 0%, #1a2332 100%);
+        border: 1px solid var(--accent-amber);
+        border-radius: 8px;
+        padding: 1.25rem;
+        text-align: center;
+    }
+    .reactivity-widget .class-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .reactivity-widget .class-value { font-size: 1.75rem; font-weight: 700; color: var(--accent-amber); font-family: var(--font-mono); }
+    .reactivity-widget .class-value.alta  { color: #3fb950; }
+    .reactivity-widget .class-value.media { color: #d29922; }
+    .reactivity-widget .class-value.baja  { color: #8b949e; }
+    .reactivity-widget .time-value { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .reactivity-widget .estado-value { font-size: 0.8rem; color: var(--text); margin-top: 0.25rem; }
+    .slaker-status-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    .status-dot {
+        width: 14px; height: 14px; border-radius: 50%;
+        margin: 0; box-shadow: 0 0 10px currentColor;
+    }
+    .status-dot.run   { background: var(--accent-green); color: var(--accent-green); }
+    .status-dot.stop  { background: var(--text-muted); color: var(--text-muted); }
+    .status-dot.fault { background: var(--accent-red); color: var(--accent-red); }
+    .tahh-blink {
+        animation: tahh-blink 0.8s ease-in-out infinite;
+    }
+    @keyframes tahh-blink {
+        0%, 100% { opacity: 1; background: rgba(248, 81, 73, 0.35); color: var(--accent-red); }
+        50% { opacity: 0.85; background: rgba(248, 81, 73, 0.6); color: #fff; }
+    }
+    .tahh-alert {
+        font-size: 0.85rem; font-weight: 600; padding: 0.4rem 0.75rem; border-radius: 6px;
+        border: 1px solid var(--accent-red);
+    }
+    .tahh-alert.off { background: transparent; color: var(--text-muted); }
+    .tahh-alert.on  { background: rgba(248, 81, 73, 0.25); color: var(--accent-red); }
+    .perf-chart { height: 200px; position: relative; }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    @media (min-width: 900px) {
+        .phase3-top { grid-template-columns: 1fr 320px; }
+    }
+    .phase3-top { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
 </style>
 {% endblock %}
 {% block content %}
-<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 3: Hidratación (Apagado)</h1>
-<p class="subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Reactividad y exotermicidad (concepto clave según Coloma). CaO + H₂O → Ca(OH)₂. La curva de temperatura permite distinguir cal reactiva de cal &quot;muerta&quot; o sobrecocida.</p>
+<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">Fase 3: Hidratación (Slaker)</h1>
+<p class="subtitle">Pantalla principal del sistema experto. Análisis de la reacción CaO + H₂O → Ca(OH)₂ según la teoría de Guillermo Coloma.</p>
 
-<div class="card" style="border-color: var(--accent-amber);">
-    <h2 style="color: var(--accent-amber);">Curva de Temperatura de Apagado y Zona de Reactividad Óptima</h2>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-TT-11824B (temperatura slaker) y 2270-FIT-11801 (flujo agua). Zona óptima 70–90°C según Coloma.</p>
-    <div class="chart-container-phase3">
-        <canvas id="chartPhase3"></canvas>
+<!-- Monitor Maestro de Temperatura + Widget Reactividad -->
+<div class="phase3-top phase3-grid">
+    <div class="phase3-section">
+        <h2>Monitor Maestro de Temperatura</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-TT-11824A, 2270-TT-11824B y 2270-FIT-11801. Inyección de agua y aumento de calor.</p>
+        <div class="chart-container-lg">
+            <canvas id="chartTempFlow"></canvas>
+        </div>
+    </div>
+    <div class="phase3-section">
+        <h2>Widget de Reactividad (Sistema Experto)</h2>
+        <div class="reactivity-widget">
+            <div class="class-label">Clasificación</div>
+            <div id="reactivityClass" class="class-value">—</div>
+            <div id="reactivityTime" class="time-value">Tiempo de reacción: —</div>
+            <div id="reactivityEstado" class="estado-value">Estado de la mezcla: —</div>
+        </div>
+    </div>
+</div>
+
+<!-- Salud del Sistema de Agua -->
+<div class="phase3-section" style="margin-bottom: 1.25rem;">
+    <h2>Salud del Sistema de Agua</h2>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-PALL-11834 — Presión de agua (kPa)</p>
+    <div class="chart-container-sm">
+        <canvas id="chartPressure"></canvas>
+    </div>
+</div>
+
+<!-- Estado Mecánico del Slaker -->
+<div class="phase3-section">
+    <h2>Estado Mecánico del Slaker</h2>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-ZM-009-06 — Motor slaker. RUN_FB y 2270-TAHH-11801 (temperatura alta-alta).</p>
+    <div class="slaker-status-row">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div id="slakerRunDot" class="status-dot stop"></div>
+            <span style="font-size: 0.85rem;">Marcha (RUN_FB)</span>
+        </div>
+        <div id="tahhAlert" class="tahh-alert off">TAHH-11801: —</div>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">2270-ZM-009-06_MOTOR_CURRENT / MOTOR_POWER</p>
+    <div class="perf-chart">
+        <canvas id="chartSlakerMotor"></canvas>
     </div>
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
 (function() {
-    var ctx = document.getElementById('chartPhase3');
-    if (!ctx) return;
-    fetch('/api/data/3').then(function(r) { return r.json(); }).then(function(data) {
+    var POLL_INTERVAL_MS = 2000;
+    var chartTempFlow, chartPressure, chartSlakerMotor;
+    var lastReactivity = null;
+
+    var scaleOpts = {
+        x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 12 } },
+        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+    };
+
+    function destroyCharts() {
+        if (chartTempFlow) { chartTempFlow.destroy(); chartTempFlow = null; }
+        if (chartPressure) { chartPressure.destroy(); chartPressure = null; }
+        if (chartSlakerMotor) { chartSlakerMotor.destroy(); chartSlakerMotor = null; }
+    }
+
+    function last(arr) { return arr && arr.length ? arr[arr.length - 1] : null; }
+
+    function computeMaxSlopeSegment(tempArr) {
+        if (!tempArr || tempArr.length < 2) return null;
+        var maxSlope = -1e9, idx = 0;
+        for (var i = 1; i < tempArr.length; i++) {
+            var slope = (tempArr[i] - tempArr[i-1]);
+            if (slope > maxSlope) { maxSlope = slope; idx = i; }
+        }
+        return maxSlope > 0 ? { start: idx - 1, end: Math.min(idx + 2, tempArr.length - 1) } : null;
+    }
+
+    function updateReactivityWidget(statusData) {
+        var curves = statusData && statusData.new_reactivity_curves;
+        if (curves && curves.length) {
+            var c = curves[curves.length - 1];
+            lastReactivity = c;
+        }
+        var elClass = document.getElementById('reactivityClass');
+        var elTime = document.getElementById('reactivityTime');
+        var elEstado = document.getElementById('reactivityEstado');
+        if (!elClass) return;
+        if (lastReactivity) {
+            var t = lastReactivity.tipo || '—';
+            elClass.textContent = t;
+            elClass.className = 'class-value ' + t.toLowerCase();
+            elTime.textContent = 'Tiempo de reacción: ' + (lastReactivity.minutos || 0) + ' min ' + (lastReactivity.segundos || 0) + ' s (Δ40°C)';
+            elEstado.textContent = 'Estado de la mezcla: Reacción ' + (t === 'ALTA' ? 'rápida (cal reactiva)' : t === 'BAJA' ? 'lenta' : 'media') + '.';
+        } else {
+            elClass.textContent = '—';
+            elClass.className = 'class-value';
+            elTime.textContent = 'Tiempo de reacción: —';
+            elEstado.textContent = 'Estado de la mezcla: Sin curva completada.';
+        }
+    }
+
+    function updateTAHHAndMotor(data, statusData) {
+        var tahh = (data['2270-TAHH-11801'] || []);
+        var runFb = (data['2270-ZM-009-06_RUN_FB'] || []);
+        var vTahh = last(tahh);
+        var vRun = last(runFb);
+        var dot = document.getElementById('slakerRunDot');
+        var alert = document.getElementById('tahhAlert');
+        if (dot) dot.className = 'status-dot ' + (vTahh === 1 ? 'fault' : (vRun === 1 ? 'run' : 'stop'));
+        if (alert) {
+            alert.textContent = 'TAHH-11801: ' + (vTahh !== null && vTahh !== undefined ? vTahh : '—');
+            alert.className = 'tahh-alert ' + (vTahh === 1 ? 'on tahh-blink' : 'off');
+        }
+    }
+
+    function renderCharts(data) {
         var labels = data.timestamps || [];
-        var temps = data['2270-TT-11824B'] || [];
+        destroyCharts();
+
+        var tempA = data['2270-TT-11824A'] || [];
+        var tempB = data['2270-TT-11824B'] || [];
         var flow = data['2270-FIT-11801'] || [];
-        var n = Math.max(labels.length, 1);
-        var zone70 = Array(n).fill(70);
-        var zone90 = Array(n).fill(90);
-        var datasets = [
-            { label: 'Zona óptima 70°C', data: zone70, borderColor: 'rgba(0,255,136,0.45)', borderDash: [4,4], pointRadius: 0, fill: false, order: 0 },
-            { label: 'Zona óptima 90°C (Coloma)', data: zone90, borderColor: 'rgba(0,255,136,0.45)', borderDash: [4,4], pointRadius: 0, fill: '-1', backgroundColor: 'rgba(0,255,136,0.12)', order: 0 }
-        ];
-        if (temps.length) datasets.push({ label: 'Temperatura Slaker °C (2270-TT-11824B)', data: temps, borderColor: '#ff9500', borderWidth: 2.5, backgroundColor: 'transparent', fill: false, tension: 0.3, order: 1 });
-        if (flow.length) datasets.push({ label: 'Flujo Agua (2270-FIT-11801)', data: flow, borderColor: '#00ff88', backgroundColor: 'transparent', fill: false, tension: 0.3, order: 2 });
-        new Chart(ctx, {
-            type: 'line',
-            data: { labels: labels, datasets: datasets },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { labels: { color: '#8b949e', font: { family: 'JetBrains Mono' } } },
-                    tooltip: { titleFont: { family: 'JetBrains Mono' }, bodyFont: { family: 'JetBrains Mono' } }
+        var seg = computeMaxSlopeSegment(tempA.length ? tempA : tempB);
+
+        if ((tempA.length || tempB.length || flow.length) && document.getElementById('chartTempFlow')) {
+            var datasets = [];
+            if (tempA.length) datasets.push({ label: '2270-TT-11824A (°C)', data: tempA, borderColor: '#f85149', backgroundColor: 'rgba(248,81,73,0.08)', fill: true, tension: 0.3, borderWidth: 2 });
+            if (tempB.length) datasets.push({ label: '2270-TT-11824B (°C)', data: tempB, borderColor: '#ff9500', backgroundColor: 'rgba(255,149,0,0.06)', fill: true, tension: 0.3, borderWidth: 2 });
+            if (flow.length) datasets.push({ label: '2270-FIT-11801 (flujo)', data: flow, borderColor: '#58a6ff', backgroundColor: 'transparent', fill: false, tension: 0.3, yAxisID: 'y1' });
+            chartTempFlow = new Chart(document.getElementById('chartTempFlow'), {
+                type: 'line',
+                data: { labels: labels, datasets: datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { labels: { color: '#8b949e' } } },
+                    scales: {
+                        x: scaleOpts.x,
+                        y:  { ...scaleOpts.y, title: { display: true, text: '°C' } },
+                        y1: { ...scaleOpts.y, position: 'right', title: { display: true, text: 'Flujo' }, grid: { drawOnChartArea: false } }
+                    }
                 },
-                scales: {
-                    x: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' }, maxTicksLimit: 12 } },
-                    y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } } }
+                plugins: [{
+                    id: 'slopeHighlight',
+                    afterDraw: function(chart) {
+                        if (!seg || !chart.scales.x) return;
+                        var ctx = chart.ctx;
+                        var xScale = chart.scales.x;
+                        var left = xScale.getPixelForValue(seg.start);
+                        var right = xScale.getPixelForValue(seg.end);
+                        var top = chart.chartArea.top;
+                        var bottom = chart.chartArea.bottom;
+                        ctx.save();
+                        ctx.fillStyle = 'rgba(255, 149, 0, 0.08)';
+                        ctx.fillRect(left, top, right - left, bottom - top);
+                        ctx.strokeStyle = 'rgba(255, 149, 0, 0.35)';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(left, top, right - left, bottom - top);
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
+
+        var pall = data['2270-PALL-11834'] || [];
+        if (pall.length && document.getElementById('chartPressure')) {
+            chartPressure = new Chart(document.getElementById('chartPressure'), {
+                type: 'line',
+                data: { labels: labels, datasets: [{ label: '2270-PALL-11834 (kPa)', data: pall, borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.12)', fill: true, tension: 0.3 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8b949e' } } }, scales: scaleOpts }
+            });
+        }
+
+        var cur = data['2270-ZM-009-06_MOTOR_CURRENT'] || [];
+        var pwr = data['2270-ZM-009-06_MOTOR_POWER'] || [];
+        if ((cur.length || pwr.length) && document.getElementById('chartSlakerMotor')) {
+            var sets = [];
+            if (cur.length) sets.push({ label: '2270-ZM-009-06_MOTOR_CURRENT (A)', data: cur, borderColor: '#f85149', backgroundColor: 'transparent', fill: false, tension: 0.3, yAxisID: 'y' });
+            if (pwr.length) sets.push({ label: '2270-ZM-009-06_MOTOR_POWER (kW)', data: pwr, borderColor: '#ff9500', backgroundColor: 'rgba(255,149,0,0.08)', fill: true, tension: 0.3, yAxisID: 'y1' });
+            chartSlakerMotor = new Chart(document.getElementById('chartSlakerMotor'), {
+                type: 'line',
+                data: { labels: labels, datasets: sets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#8b949e' } } },
+                    scales: {
+                        x: scaleOpts.x,
+                        y:  { ...scaleOpts.y, position: 'left', title: { display: true, text: 'A' } },
+                        y1: { ...scaleOpts.y, position: 'right', title: { display: true, text: 'kW' }, grid: { drawOnChartArea: false } }
+                    }
                 }
-            }
-        });
-    });
+            });
+        }
+    }
+
+    function fetchAndUpdate() {
+        Promise.all([ fetch('/api/data/3').then(function(r) { return r.json(); }), fetch('/api/v1/status').then(function(r) { return r.json(); }) ])
+            .then(function(results) {
+                var data = results[0];
+                var statusData = results[1];
+                updateReactivityWidget(statusData);
+                updateTAHHAndMotor(data, statusData);
+                renderCharts(data);
+            })
+            .catch(function() {});
+    }
+
+    fetchAndUpdate();
+    setInterval(fetchAndUpdate, POLL_INTERVAL_MS);
 })();
 </script>
 {% endblock %}
